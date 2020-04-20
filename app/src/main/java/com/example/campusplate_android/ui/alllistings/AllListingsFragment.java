@@ -3,6 +3,7 @@ package com.example.campusplate_android.ui.alllistings;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,8 @@ import java.util.List;
  */
 public class AllListingsFragment extends Fragment {
 
+    public static ListingModel listingModel;
+
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
@@ -46,9 +49,12 @@ public class AllListingsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alllistings_list, container, false);
+        listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
+        View view = inflater.inflate(R.layout.fragment_alllistings2, container, false);
+        final RecyclerView recycler = view.findViewById(R.id.recycler);
+
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -62,7 +68,21 @@ public class AllListingsFragment extends Fragment {
             recyclerView.setAdapter(new MyAllListingsRecyclerViewAdapter(ListingModel.getSharedInstance(this.getActivity().getApplicationContext()).getAllListings(), mListener));
         }
 
-        ListingModel.getSharedInstance(this.getActivity().getApplicationContext()).getListings();
+
+        final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+
+        recycler.setAdapter(adapter);
+        listingModel.getListings(new ListingModel.GetListingsCompletionHandler(){
+            @Override
+            public void receiveListings(List<Listing> listings){
+                adapter.setListings(listings);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        recycler.setAdapter(adapter);
+
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }

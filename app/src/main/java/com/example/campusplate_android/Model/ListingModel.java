@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -21,6 +22,14 @@ public class ListingModel {
     private ArrayList<Listing> listings = new ArrayList<>();
     static private ListingModel sharedInstance = null;
     public Context context;
+
+    public interface GetListingCompletionHandler {
+        void receiveListing(Listing listing);
+    }
+
+    public interface GetListingsCompletionHandler {
+        void receiveListings(List<Listing> listings);
+    }
 
     private ListingModel(Context ctx){
         this.context = ctx;
@@ -60,7 +69,7 @@ public class ListingModel {
         return userListings;
     }
 
-    public synchronized void getListings() {
+    public synchronized void getListings(final GetListingsCompletionHandler completionHandler) {
         ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
         client.get("listings", new Response.Listener<JSONObject>(){
             @Override
@@ -84,10 +93,12 @@ public class ListingModel {
                         addListing(new Listing((double) mapItem.get("listingId"), (double) mapItem.get("userId"), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), (double) mapItem.get("creationTime"), (double) mapItem.get("quantity")));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
                     }
                 }
+                completionHandler.receiveListings(listings);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //TODO: Show an error
             }
         } );
     }

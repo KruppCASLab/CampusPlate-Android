@@ -21,8 +21,12 @@ import java.util.List;
  */
 public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAllListingsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Listing> mValues;
+    private List<Listing> mValues;
     private final OnListFragmentInteractionListener mListener;
+
+    public void setListings(List<Listing> listings){
+        mValues = listings;
+    }
 
     public MyAllListingsRecyclerViewAdapter(List<Listing> items, OnListFragmentInteractionListener listener) {
         mValues = items;
