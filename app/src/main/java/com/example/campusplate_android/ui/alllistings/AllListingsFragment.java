@@ -43,7 +43,6 @@ public class AllListingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -60,8 +59,11 @@ public class AllListingsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAllListingsRecyclerViewAdapter(ListingModel.getSharedInstance().getAllListings(), mListener));
+            recyclerView.setAdapter(new MyAllListingsRecyclerViewAdapter(ListingModel.getSharedInstance(this.getActivity().getApplicationContext()).getAllListings(), mListener));
         }
+
+        ListingModel.getSharedInstance(this.getActivity().getApplicationContext()).getListings();
+
         return view;
     }
 

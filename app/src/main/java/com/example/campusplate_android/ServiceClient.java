@@ -46,7 +46,7 @@ public class ServiceClient {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, path, null, listener, errorListener);
 
-        this.requestQueue.add(request);
+        this.getRequestQueue().add(request);
     }
 
     public void delete(String broker, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
@@ -62,7 +62,7 @@ public class ServiceClient {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, path, object, listener, errorListener);
 
-        this.requestQueue.add(request);
+        this.getRequestQueue().add(request);
     }
 
     public void put(String broker, final String listingString, int id, Response.Listener<String> listener, Response.ErrorListener errorListener) {
@@ -83,7 +83,7 @@ public class ServiceClient {
         };
         //listingString,
 
-        this.requestQueue.add(request);
+        this.getRequestQueue().add(request);
     }
 
     /*public void post(String broker, Listing listing, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
