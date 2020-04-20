@@ -2,6 +2,9 @@ package com.example.campusplate_android;
 
 import android.os.Bundle;
 
+import com.example.campusplate_android.Model.Types.Listing;
+import com.example.campusplate_android.ui.alllistings.AllListingsFragment;
+import com.example.campusplate_android.ui.alllistings.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AllListingsFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,4 +30,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+
+    @Override
+    public void onListFragmentInteraction(Listing listing) {
+
+    }
 }

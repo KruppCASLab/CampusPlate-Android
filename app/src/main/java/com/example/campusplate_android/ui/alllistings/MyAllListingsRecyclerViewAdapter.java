@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.campusplate_android.Model.Types.Listing;
+import com.example.campusplate_android.R;
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
 import com.example.campusplate_android.ui.alllistings.dummy.DummyContent.DummyItem;
 
@@ -19,10 +21,10 @@ import java.util.List;
  */
 public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAllListingsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Listing> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyAllListingsRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyAllListingsRecyclerViewAdapter(List<Listing> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,9 +38,9 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.listing = mValues.get(position);
+        holder.mIdView.setText(mValues.get(position).title);
+        holder.mContentView.setText(mValues.get(position).locationDescription);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +48,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.listing);
                 }
             }
         });
@@ -61,7 +63,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Listing listing;
 
         public ViewHolder(View view) {
             super(view);

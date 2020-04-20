@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.ui.alllistings.dummy.DummyContent;
 import com.example.campusplate_android.ui.alllistings.dummy.DummyContent.DummyItem;
@@ -58,7 +60,7 @@ public class AllListingsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAllListingsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyAllListingsRecyclerViewAdapter(ListingModel.getSharedInstance().getAllListings(), mListener));
         }
         return view;
     }
@@ -93,6 +95,6 @@ public class AllListingsFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Listing listing);
     }
 }
