@@ -1,6 +1,7 @@
 package com.example.campusplate_android;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.progressBar).setVisibility(View.GONE);
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

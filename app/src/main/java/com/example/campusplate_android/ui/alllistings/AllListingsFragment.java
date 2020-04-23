@@ -69,9 +69,12 @@ public class AllListingsFragment extends Fragment {
 
             recyclerView.setAdapter(adapter);
 
+            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+            
             listingModel.getListings(new ListingModel.GetListingsCompletionHandler(){
                 @Override
                 public void receiveListings(List<Listing> listings){
+                    getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
                     adapter.setListings(listings);
                     adapter.notifyDataSetChanged();
                 }
