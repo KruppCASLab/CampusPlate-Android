@@ -9,16 +9,10 @@ import android.widget.TextView;
 
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
-import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
-import com.example.campusplate_android.ui.alllistings.dummy.DummyContent.DummyItem;
 
 import java.util.List;
+import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAllListingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Listing> mValues;
@@ -42,7 +36,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.listing = mValues.get(position);
+        holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).title);
         holder.mContentView.setText(mValues.get(position).locationDescription);
 
@@ -52,10 +46,11 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.listing);
+                    mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
+
     }
 
     @Override
@@ -67,7 +62,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Listing listing;
+        public Listing mItem;
 
         public ViewHolder(View view) {
             super(view);

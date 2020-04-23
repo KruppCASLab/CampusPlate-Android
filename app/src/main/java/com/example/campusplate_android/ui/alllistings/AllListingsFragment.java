@@ -29,6 +29,7 @@ import java.util.List;
  */
 public class AllListingsFragment extends Fragment {
 
+
     public static ListingModel listingModel;
 
     // TODO: Customize parameters
@@ -52,9 +53,8 @@ public class AllListingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
-        View view = inflater.inflate(R.layout.fragment_alllistings2, container, false);
-        final RecyclerView recycler = view.findViewById(R.id.recycler);
-
+        View view = inflater.inflate(R.layout.fragment_alllistings_list, container, false);
+        //RecyclerView recycler = view.findViewById(R.id.recycler);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -65,30 +65,26 @@ public class AllListingsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyAllListingsRecyclerViewAdapter(ListingModel.getSharedInstance(this.getActivity().getApplicationContext()).getAllListings(), mListener));
+            final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+
+            recyclerView.setAdapter(adapter);
+
+            listingModel.getListings(new ListingModel.GetListingsCompletionHandler(){
+                @Override
+                public void receiveListings(List<Listing> listings){
+                    adapter.setListings(listings);
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
 
 
-        final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
-
-        recycler.setAdapter(adapter);
-        listingModel.getListings(new ListingModel.GetListingsCompletionHandler(){
-            @Override
-            public void receiveListings(List<Listing> listings){
-                adapter.setListings(listings);
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        recycler.setAdapter(adapter);
-
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
 
 
-    @Override
+    /*@Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
@@ -97,7 +93,7 @@ public class AllListingsFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
-    }
+    }*/
 
     @Override
     public void onDetach() {
@@ -117,6 +113,6 @@ public class AllListingsFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Listing listing);
+        void onListFragmentInteraction(Listing item);
     }
 }
