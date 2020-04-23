@@ -74,7 +74,12 @@ public class AllListingsFragment extends Fragment {
             listingModel.getListings(new ListingModel.GetListingsCompletionHandler(){
                 @Override
                 public void receiveListings(List<Listing> listings){
-                    getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    try{
+                        getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    }
+                    catch (NullPointerException exception){
+                        //TODO: Do something with exception
+                    }
                     adapter.setListings(listings);
                     adapter.notifyDataSetChanged();
                 }
