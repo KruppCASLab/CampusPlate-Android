@@ -54,40 +54,37 @@ public class AllListingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
-        View view = inflater.inflate(R.layout.fragment_alllistings_list, container, false);
-        //RecyclerView recycler = view.findViewById(R.id.recycler);
+        View view = inflater.inflate(R.layout.fragment_alllistings, container, false);
+        RecyclerView recycler = view.findViewById(R.id.view_recycler);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
-
-            recyclerView.setAdapter(adapter);
-
-            getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-            
-            listingModel.getListings(new ListingModel.GetListingsCompletionHandler(){
-                @Override
-                public void receiveListings(List<Listing> listings){
-                    try{
-                        getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
-                    }
-                    catch (NullPointerException exception){
-                        //TODO: Do something with exception
-                    }
-                    adapter.setListings(listings);
-                    adapter.notifyDataSetChanged();
-                }
-            });
-
-            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        Context context = view.getContext();
+        if (mColumnCount <= 1) {
+            recycler.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+        final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+
+        recycler.setAdapter(adapter);
+
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+
+        listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
+            @Override
+            public void receiveListings(List<Listing> listings) {
+                try {
+                    getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+                } catch (NullPointerException exception) {
+                    //TODO: Do something with exception
+                }
+                adapter.setListings(listings);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
+
         return view;
     }
 
