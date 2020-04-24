@@ -33,7 +33,6 @@ public class ListingModel {
 
     private ListingModel(Context ctx){
         this.context = ctx;
-        this.addListing(new Listing(-1, -1, "test name", "test description", 1, 1, 123, 1));
     }
 
     static synchronized public ListingModel getSharedInstance(Context ctx){
