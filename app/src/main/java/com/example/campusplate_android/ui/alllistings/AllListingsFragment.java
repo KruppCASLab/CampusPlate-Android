@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
-import com.example.campusplate_android.ui.alllistings.dummy.DummyContent;
-import com.example.campusplate_android.ui.alllistings.dummy.DummyContent.DummyItem;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -41,8 +39,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public static ListingModel listingModel;
     private GoogleMap map;
     private OnListFragmentInteractionListener mListener;
-
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
     /**
@@ -62,7 +58,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                              Bundle savedInstanceState) {
         listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_alllistings, container, false);
-        RecyclerView recycler = view.findViewById(R.id.view_recycler);
+        RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
 
         // Set the adapter
         Context context = view.getContext();

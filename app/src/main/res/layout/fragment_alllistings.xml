@@ -7,7 +7,7 @@
     >
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/view_recycler"
+        android:id="@+id/view_recycler_all_listings"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -15,19 +15,6 @@
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_add_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/text_margin"
-        android:layout_marginBottom="@dimen/text_margin"
-        android:clickable="true"
-        android:tint="@android:color/white"
-        app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_item_add" />
 
     <fragment
         android:id="@+id/map"
