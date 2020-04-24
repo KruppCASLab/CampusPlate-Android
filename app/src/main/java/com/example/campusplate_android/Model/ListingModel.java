@@ -30,37 +30,44 @@ public class ListingModel {
         void receiveListings(List<Listing> listings);
     }
 
-    private ListingModel(Context ctx){
+    public interface PostListingCompletionHandler {
+        void postListing();
+    }
+    private ListingModel(Context ctx) {
         this.context = ctx;
     }
 
-    static synchronized public ListingModel getSharedInstance(Context ctx){
-        if (sharedInstance == null){
+    static synchronized public ListingModel getSharedInstance(Context ctx) {
+        if (sharedInstance == null) {
             sharedInstance = new ListingModel(ctx);
         }
         return sharedInstance;
     }
 
-    public Listing getListing(int index){
+    public Listing getListing(int index) {
         return this.listings.get(index);
     }
-    public void addListing(Listing listing){
+
+    public void addListing(Listing listing) {
         this.listings.add(listing);
     }
-    public void removeListing(Listing listing){
+
+    public void removeListing(Listing listing) {
         this.listings.remove(listing);
     }
-    public int getNumberOfListings(){
+
+    public int getNumberOfListings() {
         return this.listings.size();
     }
-    public ArrayList<Listing> getAllListings(){
+
+    public ArrayList<Listing> getAllListings() {
         return this.listings;
     }
 
-    public ArrayList<Listing> getUserListings(int userId){
+    public ArrayList<Listing> getUserListings(int userId) {
         ArrayList<Listing> userListings = new ArrayList<>();
-        for (int i = 0; i < this.listings.size(); i++){
-            if (this.listings.get(i).userId == userId){
+        for (int i = 0; i < this.listings.size(); i++) {
+            if (this.listings.get(i).userId == userId) {
                 userListings.add(this.listings.get(i));
             }
         }
@@ -69,26 +76,29 @@ public class ListingModel {
 
     public synchronized void getListings(final GetListingsCompletionHandler completionHandler) {
         ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
-        client.get("listings", new Response.Listener<JSONObject>(){
+        client.get("listings", new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 String stringResponse = response.toString();
                 Gson gson = new Gson();
-                Type map = new TypeToken<Map<String, Object>>(){}.getType();
-                Map<String,Object> jsonMap = gson.fromJson(stringResponse, map);
+                Type map = new TypeToken<Map<String, Object>>() {
+                }.getType();
+                Map<String, Object> jsonMap = gson.fromJson(stringResponse, map);
 
-                ArrayList data = (ArrayList)jsonMap.get("data");
+                ArrayList data = (ArrayList) jsonMap.get("data");
                 boolean duplicateListing;
-                for(int i = 0; i < data.size(); i++){
-                    Map<String, Object> mapItem = (Map) data.get(i);
-                    duplicateListing = false;
-                    for(int j = 0; j < getNumberOfListings(); j++){
-                        if((double) mapItem.get("listingId") == (getListing(j).listingId)){
-                            duplicateListing = true;
+                if (data != null) {
+                    for (int i = 0; i < data.size(); i++) {
+                        Map<String, Object> mapItem = (Map) data.get(i);
+                        duplicateListing = false;
+                        for (int j = 0; j < getNumberOfListings(); j++) {
+                            if ((double) mapItem.get("listingId") == (getListing(j).listingId)) {
+                                duplicateListing = true;
+                            }
                         }
-                    }
-                    if(!duplicateListing){
-                        addListing(new Listing((double) mapItem.get("listingId"), (double) mapItem.get("userId"), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), (double) mapItem.get("creationTime"), (double) mapItem.get("quantity")));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
+                        if (!duplicateListing) {
+                            addListing(new Listing((double) mapItem.get("listingId"), (double) mapItem.get("userId"), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), (double) mapItem.get("creationTime"), (double) mapItem.get("quantity")));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
+                        }
                     }
                 }
                 completionHandler.receiveListings(listings);
@@ -98,7 +108,24 @@ public class ListingModel {
             public void onErrorResponse(VolleyError error) {
                 //TODO: Show an error
             }
-        } );
+        });
+    }
+
+    public synchronized void postListing(final PostListingCompletionHandler completionHandler, Listing listing) {
+        ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
+        client.post("listings", listing, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                //TODO: Do something with response (confirmation?)
+                completionHandler.postListing(); //TODO: This is empty, change?
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //TODO: Show an error
+            }
+
+        });
     }
 
 }

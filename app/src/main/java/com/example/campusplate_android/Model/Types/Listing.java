@@ -32,4 +32,9 @@ public class Listing {
         this.creationTime = creationTime;
         this.quantity = quantity;
     }
+
+    public Listing(String title, double quantity) {  // For posting
+        this.title = title;
+        this.quantity = quantity;
+    }
 }

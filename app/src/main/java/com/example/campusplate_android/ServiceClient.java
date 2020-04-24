@@ -2,13 +2,13 @@ package com.example.campusplate_android;
 
 import android.content.Context;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.campusplate_android.Model.Types.Listing;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,15 +23,15 @@ public class ServiceClient {
         this.context = ctx;
     }
 
-    synchronized public static ServiceClient getInstance(Context ctx){
-        if(serviceClient == null){
+    synchronized public static ServiceClient getInstance(Context ctx) {
+        if (serviceClient == null) {
             serviceClient = new ServiceClient(ctx);
         }
         return serviceClient;
     }
 
-    synchronized public RequestQueue getRequestQueue(){
-        if(requestQueue == null){
+    synchronized public RequestQueue getRequestQueue() {
+        if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return requestQueue;
@@ -65,29 +65,33 @@ public class ServiceClient {
         this.getRequestQueue().add(request);
     }
 
-    public void put(String broker, final String listingString, int id, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+    public void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {
             path = path + "/" + id;
             method = Request.Method.PUT;
         }
-        //JSONObject convertedObject = new Gson().fromJson(listingString, JSONObject.class);
 
-        //JsonObjectRequest request = new JsonObjectRequest(method, path, convertedObject, listener, errorListener);
-        StringRequest request = new StringRequest(method, path, listener, errorListener){
-            @Override
-            public byte[] getBody() throws AuthFailureError{
-                return listingString.getBytes();
-            }
-        };
-        //listingString,
+        Gson gson = new Gson();
+        String json = gson.toJson(listing);
+        JSONObject object = new JSONObject();
+        try {
+            object = new JSONObject(json.toString());
+            object.remove("listingId"); //TODO: Set this in Listing object not here
+            object.put("locationDescription", "EMACS");
+        } catch (JSONException exception) {
+            //TODO: Something with exception
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
 
         this.getRequestQueue().add(request);
     }
 
-    /*public void post(String broker, Listing listing, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        this.put(broker, data, -1, listener, errorListener);
-    }*/
+    public void post(String broker, Listing listing, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        this.put(broker, listing, -1, listener, errorListener);
+    }
+
 
 }
