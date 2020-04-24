@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 /**
@@ -38,7 +41,9 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
     public static ListingModel listingModel;
     private GoogleMap map;
+    private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
+    MyAllListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
 
     /**
@@ -67,7 +72,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         } else {
             recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+        adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
 
         recycler.setAdapter(adapter);
 
@@ -91,7 +96,33 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
 
+
+        swipeContainer = view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimelineAsync();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         return view;
+    }
+
+    public void fetchTimelineAsync() {
+        listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
+            @Override
+            public void receiveListings(List<Listing> listings) {
+                adapter.setListings(listings);
+                adapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -113,6 +144,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Listing item);
+
     }
 
     @Override
