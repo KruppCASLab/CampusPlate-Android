@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken;
 public class ListingModel {
     private ArrayList<Listing> listings = new ArrayList<>();
     static private ListingModel sharedInstance = null;
-    public Context context;
+    private Context context;
 
     public interface GetListingCompletionHandler {
         void receiveListing(Listing listing);

@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 
 import com.example.campusplate_android.R;
 
-public class AddListing extends Fragment {
+public class AddListingFragment extends Fragment {
 
-    private AddListingViewModel mViewModel;
-
-    public static AddListing newInstance() {
-        return new AddListing();
+    public static AddListingFragment newInstance() {
+        return new AddListingFragment();
     }
 
     @Override

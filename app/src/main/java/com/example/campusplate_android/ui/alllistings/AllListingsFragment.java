@@ -20,14 +20,11 @@ import android.view.ViewGroup;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONArray;
 
 import java.util.List;
 
@@ -39,11 +36,11 @@ import java.util.List;
  */
 public class AllListingsFragment extends Fragment implements OnMapReadyCallback {
 
-    public static ListingModel listingModel;
+    private ListingModel listingModel;
     private GoogleMap map;
     private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
-    MyAllListingsRecyclerViewAdapter adapter;
+    private MyAllListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
 
     /**
@@ -114,7 +111,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
-    public void fetchTimelineAsync() {
+    private void fetchTimelineAsync() {
         listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
             @Override
             public void receiveListings(List<Listing> listings) {

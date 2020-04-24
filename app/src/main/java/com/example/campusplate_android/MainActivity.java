@@ -3,9 +3,6 @@ package com.example.campusplate_android;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.campusplate_android.Model.Types.Listing;
-import com.example.campusplate_android.ui.alllistings.AllListingsFragment;
-import com.example.campusplate_android.ui.alllistings.dummy.DummyContent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

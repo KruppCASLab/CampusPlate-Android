@@ -33,6 +33,7 @@
         android:layout_marginRight="@dimen/text_margin"
         android:layout_marginBottom="@dimen/text_margin"
         android:clickable="true"
+        android:focusable="auto"
         android:tint="@android:color/white"
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"

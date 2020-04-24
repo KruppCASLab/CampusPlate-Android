@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MyListingsFragment extends Fragment {
 
-    public static ListingModel listingModel;
+    private ListingModel listingModel;
     private AllListingsFragment.OnListFragmentInteractionListener mListener;
     private int mColumnCount = 1;
 
