@@ -1,6 +1,8 @@
 package com.example.campusplate_android.ui.alllistings;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,11 @@ import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.ui.alllistings.dummy.DummyContent;
 import com.example.campusplate_android.ui.alllistings.dummy.DummyContent.DummyItem;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -28,15 +35,15 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class AllListingsFragment extends Fragment {
+public class AllListingsFragment extends Fragment implements OnMapReadyCallback {
 
 
     public static ListingModel listingModel;
+    private GoogleMap map;
+    private OnListFragmentInteractionListener mListener;
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
-
-    private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -83,6 +90,9 @@ public class AllListingsFragment extends Fragment {
             }
         });
 
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
 
         return view;
@@ -119,5 +129,41 @@ public class AllListingsFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Listing item);
+    }
+
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        if(getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
+
+        else{
+            map.setMyLocationEnabled(true);
+            for (int i = 0; i < listingModel.getAllListings().size(); i++) {
+                Listing listing = listingModel.getListing(i);
+                map.addMarker(new MarkerOptions().position(new LatLng(listing.lat, listing.lng)).title(listing.title));
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                    return;
+                } else {
+                    this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                }
+                return;
+            }
+        }
     }
 }
