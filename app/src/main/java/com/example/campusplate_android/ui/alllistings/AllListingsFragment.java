@@ -35,7 +35,6 @@ import java.util.List;
  */
 public class AllListingsFragment extends Fragment implements OnMapReadyCallback {
 
-
     public static ListingModel listingModel;
     private GoogleMap map;
     private OnListFragmentInteractionListener mListener;
@@ -94,18 +93,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
-
-    /*@Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }*/
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -126,8 +113,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         // TODO: Update argument type and name
         void onListFragmentInteraction(Listing item);
     }
-
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
