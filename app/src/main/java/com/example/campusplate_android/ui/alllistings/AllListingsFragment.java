@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -117,11 +118,9 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        if(getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-
-        else{
+        } else {
             map.setMyLocationEnabled(true);
             for (int i = 0; i < listingModel.getAllListings().size(); i++) {
                 Listing listing = listingModel.getListing(i);
@@ -133,17 +132,12 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay!
-                    return;
-                } else {
-                    this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                }
-                return;
+        if (requestCode == 0) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted, yay!
+            } else {
+                this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
             }
         }
     }
