@@ -21,5 +21,14 @@
         android:id="@+id/navigation_mylistings"
         android:name="com.example.campusplate_android.ui.mylistings.MyListingsFragment"
         android:label="@string/title_mylistings"
-        tools:layout="@layout/fragment_mylistings" />
+        tools:layout="@layout/fragment_mylistings" >
+        <action
+            android:id="@+id/action_navigation_mylistings_to_addListing"
+            app:destination="@id/addListing" />
+    </fragment>
+    <fragment
+        android:id="@+id/addListing"
+        android:name="com.example.campusplate_android.ui.addlisting.AddListing"
+        android:label="add_listing_fragment"
+        tools:layout="@layout/fragment_add_listing" />
 </navigation>
