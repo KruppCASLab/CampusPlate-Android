@@ -1,6 +1,7 @@
 package com.example.campusplate_android.ui.alllistings;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
@@ -40,6 +42,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     private GoogleMap map;
     private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
+    private Context mActivity;
     private MyAllListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
 
@@ -58,7 +61,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
+        listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_alllistings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
 
@@ -73,13 +76,13 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
         recycler.setAdapter(adapter);
 
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
 
         listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
             @Override
             public void receiveListings(List<Listing> listings) {
                 try {
-                    getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.GONE);
                 } catch (NullPointerException exception) {
                     //TODO: Do something with exception
                 }
@@ -123,6 +126,14 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof Activity){
+            mActivity = context;
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -147,7 +158,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
         else {
@@ -157,7 +168,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 map.addMarker(new MarkerOptions().position(new LatLng(listing.lat, listing.lng)).title(listing.title));
             }
         }
-
     }
 
     @Override

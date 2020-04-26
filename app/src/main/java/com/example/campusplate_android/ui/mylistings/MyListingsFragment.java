@@ -1,5 +1,6 @@
 package com.example.campusplate_android.ui.mylistings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
@@ -26,11 +28,12 @@ public class MyListingsFragment extends Fragment {
 
     private ListingModel listingModel;
     private AllListingsFragment.OnListFragmentInteractionListener mListener;
+    private Context mActivity;
     private int mColumnCount = 1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
+        listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_mylistings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_my_listings);
 
@@ -46,13 +49,13 @@ public class MyListingsFragment extends Fragment {
 
         recycler.setAdapter(adapter);
 
-        getActivity().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
 
         listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
             @Override
             public void receiveListings(List<Listing> listings) {
                 try {
-                    getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.GONE);
                 } catch (NullPointerException exception) {
                     //TODO: Do something with exception
                 }
@@ -72,6 +75,14 @@ public class MyListingsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof Activity){
+            mActivity = context;
+        }
     }
 
     @Override
