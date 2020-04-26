@@ -79,6 +79,7 @@ public class ServiceClient {
         try {
             object = new JSONObject(json);
             object.remove("listingId"); //TODO: Set this in Listing object not here
+            object.put("locationDescription", "EMACS");
             //TODO: Set user id
             //TODO: Get location description from somewhere
         } catch (JSONException exception) {
