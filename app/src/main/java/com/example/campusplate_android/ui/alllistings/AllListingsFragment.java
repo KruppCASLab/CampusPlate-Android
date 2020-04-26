@@ -149,7 +149,8 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         map = googleMap;
         if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        } else {
+        }
+        else {
             map.setMyLocationEnabled(true);
             for (int i = 0; i < listingModel.getAllListings().size(); i++) {
                 Listing listing = listingModel.getListing(i);

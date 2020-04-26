@@ -33,8 +33,10 @@ public class Listing {
         this.quantity = quantity;
     }
 
-    public Listing(String title, double quantity) {  // For posting
+    public Listing(String title, double quantity, double lat, double lng) {  // For posting
         this.title = title;
         this.quantity = quantity;
+        this.lat = lat;
+        this.lng = lng;
     }
 }

@@ -1,8 +1,8 @@
 package com.example.campusplate_android.ui.addlisting;
 
+import android.location.Location;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
@@ -38,7 +38,8 @@ public class AddListingFragment extends Fragment {
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Listing testListing = new Listing(titleView.getText().toString(), Double.parseDouble(quantityView.getText().toString()));
+                Location currentLocation = ((MainActivity) getActivity()).getCurrentLocation();
+                Listing testListing = new Listing(titleView.getText().toString(), Double.parseDouble(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {
