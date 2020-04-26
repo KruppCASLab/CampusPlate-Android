@@ -11,6 +11,8 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
@@ -30,10 +32,13 @@ public class AddListingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_listing, container, false);
         listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
 
+        final EditText titleView = view.findViewById(R.id.editText_title);
+        final EditText quantityView = view.findViewById(R.id.editText_quantity);
+
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Listing testListing = new Listing("bleep bloop", 5);
+                Listing testListing = new Listing(titleView.getText().toString(), Double.parseDouble(quantityView.getText().toString()));
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {
