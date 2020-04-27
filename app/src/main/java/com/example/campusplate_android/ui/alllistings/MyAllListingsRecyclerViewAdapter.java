@@ -1,5 +1,6 @@
 package com.example.campusplate_android.ui.alllistings;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -42,15 +43,17 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (null != mListener) {
+            public void onClick(View view) {
+                //if (null != mListener) {
+                    Navigation.findNavController(view).navigate(R.id.action_navigation_alllistings_to_navigation_viewlisting);
+
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+                    //mListener.onListFragmentInteraction(holder.mItem);
+                //}
+                //TODO: Am not currently using mListener (not using the activity as the callbacks interface). This may change.
             }
         });
-
     }
 
     @Override

@@ -65,7 +65,7 @@ public class ServiceClient {
         this.getRequestQueue().add(request);
     }
 
-    public void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    private void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {

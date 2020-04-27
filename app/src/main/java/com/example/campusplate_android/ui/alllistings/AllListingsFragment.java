@@ -126,7 +126,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if(context instanceof Activity){
             mActivity = context;
@@ -152,7 +152,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Listing item);
-
     }
 
     @Override
