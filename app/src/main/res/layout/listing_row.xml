@@ -12,6 +12,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="4dp"
+        android:text="Item Title"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -24,7 +25,8 @@
         android:layout_marginTop="4dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:textAppearance="?attr/textAppearanceListItem"
+        android:text="Item Location Description"
+        android:textAppearance="?attr/textAppearanceListItemSecondary"
         android:textSize="14sp" />
 
 </LinearLayout>
