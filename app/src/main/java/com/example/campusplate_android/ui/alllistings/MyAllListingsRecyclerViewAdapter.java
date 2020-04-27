@@ -3,6 +3,7 @@ package com.example.campusplate_android.ui.alllistings;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        final int pos = position;
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).title);
         holder.mContentView.setText(mValues.get(position).locationDescription);
@@ -45,7 +47,10 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
             @Override
             public void onClick(View view) {
                 //if (null != mListener) {
-                    Navigation.findNavController(view).navigate(R.id.action_navigation_alllistings_to_navigation_viewlisting);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("index", pos);
+
+                    Navigation.findNavController(view).navigate(R.id.action_navigation_alllistings_to_navigation_viewlisting, bundle);
 
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.

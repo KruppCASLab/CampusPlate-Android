@@ -1,14 +1,14 @@
 package com.example.campusplate_android.Model.Types;
 
 public class Listing {
-    public double listingId;
-    public double userId;
+    public int listingId;
+    public int userId;
     public String title;
     public String locationDescription;
     public double lat;
     public double lng;
-    public double creationTime;
-    public double quantity;
+    public int creationTime;
+    public int quantity;
     //TODO: Add image
 
     public Listing() {
@@ -22,7 +22,7 @@ public class Listing {
         this.quantity = 0;
     }
 
-    public Listing(double listingId, double userId, String title, String locationDescription, double lat, double lng, double creationTime, double quantity) {
+    public Listing(int listingId, int userId, String title, String locationDescription, double lat, double lng, int creationTime, int quantity) {
         this.listingId = listingId;
         this.userId = userId;
         this.title = title;
@@ -33,7 +33,7 @@ public class Listing {
         this.quantity = quantity;
     }
 
-    public Listing(String title, double quantity, double lat, double lng) {  // For posting
+    public Listing(String title, int quantity, double lat, double lng) {  // For posting
         this.title = title;
         this.quantity = quantity;
         this.lat = lat;

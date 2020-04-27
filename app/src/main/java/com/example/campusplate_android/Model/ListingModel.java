@@ -97,7 +97,11 @@ public class ListingModel {
                             }
                         }
                         if (!duplicateListing) {
-                            addListing(new Listing((double) mapItem.get("listingId"), (double) mapItem.get("userId"), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), (double) mapItem.get("creationTime"), (double) mapItem.get("quantity")));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
+                            Double listingId = (double) mapItem.get("listingId");
+                            Double userId = (double) mapItem.get("userId");
+                            Double creationTime = (double) mapItem.get("creationTime");
+                            Double quantity = (double) mapItem.get("quantity");
+                            addListing(new Listing(listingId.intValue(), userId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), creationTime.intValue(), quantity.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
                         }
                     }
                 }

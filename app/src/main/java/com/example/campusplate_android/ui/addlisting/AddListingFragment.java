@@ -43,7 +43,7 @@ public class AddListingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
-                Listing testListing = new Listing(titleView.getText().toString(), Double.parseDouble(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
+                Listing testListing = new Listing(titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {
