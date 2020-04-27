@@ -15,7 +15,7 @@ import com.example.campusplate_android.R;
 import java.util.List;
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
 
-public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAllListingsRecyclerViewAdapter.ViewHolder> {
+public class ListingsRecyclerViewAdapter extends RecyclerView.Adapter<ListingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Listing> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -24,7 +24,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
         mValues = listings;
     }
 
-    public MyAllListingsRecyclerViewAdapter(List<Listing> items, OnListFragmentInteractionListener listener) {
+    public ListingsRecyclerViewAdapter(List<Listing> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -32,7 +32,7 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_alllistings2, parent, false);
+                .inflate(R.layout.listing_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,8 +40,8 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final int pos = position;
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).title);
-        holder.mContentView.setText(mValues.get(position).locationDescription);
+        holder.mTitleView.setText(mValues.get(position).title);
+        holder.mLocationDescriptionView.setText(mValues.get(position).locationDescription);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,20 +68,20 @@ public class MyAllListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyAll
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mTitleView;
+        public final TextView mLocationDescriptionView;
         public Listing mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = view.findViewById(R.id.item_title);
-            mContentView = view.findViewById(R.id.item_location_description);
+            mTitleView = view.findViewById(R.id.item_title);
+            mLocationDescriptionView = view.findViewById(R.id.item_location_description);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mLocationDescriptionView.getText() + "'";
         }
     }
 }

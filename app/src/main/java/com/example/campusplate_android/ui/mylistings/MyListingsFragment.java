@@ -20,7 +20,7 @@ import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment;
-import com.example.campusplate_android.ui.alllistings.MyAllListingsRecyclerViewAdapter;
+import com.example.campusplate_android.ui.alllistings.ListingsRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -30,6 +30,8 @@ public class MyListingsFragment extends Fragment {
     private AllListingsFragment.OnListFragmentInteractionListener mListener;
     private Context mActivity;
     private int mColumnCount = 1;
+    private ListingsRecyclerViewAdapter adapter;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class MyListingsFragment extends Fragment {
         } else {
             recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        final MyAllListingsRecyclerViewAdapter adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getUserListings(-1), mListener);
+        final ListingsRecyclerViewAdapter adapter = new ListingsRecyclerViewAdapter(listingModel.getUserListings(-1), mListener);
         //TODO: Get user's ID and put in there
 
         recycler.setAdapter(adapter);
@@ -65,7 +67,6 @@ public class MyListingsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
 
         view.findViewById(R.id.button_add_item).setOnClickListener(new View.OnClickListener() {

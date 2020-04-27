@@ -43,7 +43,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
     private Context mActivity;
-    private MyAllListingsRecyclerViewAdapter adapter;
+    private ListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
 
     /**
@@ -72,7 +72,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         } else {
             recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        adapter = new MyAllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+        adapter = new ListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
 
         recycler.setAdapter(adapter);
 
@@ -90,12 +90,10 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 adapter.notifyDataSetChanged();
             }
         });
+        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
-
 
         swipeContainer = view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading

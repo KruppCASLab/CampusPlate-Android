@@ -19,7 +19,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class ListingModel {
     private ArrayList<Listing> listings = new ArrayList<>();
-    static private ListingModel sharedInstance = null;
+    private static ListingModel sharedInstance = null;
     private Context context;
 
     public interface GetListingCompletionHandler {
@@ -33,6 +33,7 @@ public class ListingModel {
     public interface PostListingCompletionHandler {
         void postListing();
     }
+
     private ListingModel(Context ctx) {
         this.context = ctx;
     }
