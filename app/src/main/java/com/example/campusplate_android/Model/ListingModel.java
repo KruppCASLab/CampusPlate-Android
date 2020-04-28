@@ -82,6 +82,7 @@ public class ListingModel {
 
     public synchronized void getListings(final GetListingsCompletionHandler completionHandler) {
         ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
+        this.listings.clear();
         client.get("listings", new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -92,23 +93,15 @@ public class ListingModel {
                 Map<String, Object> jsonMap = gson.fromJson(stringResponse, map);
 
                 ArrayList data = (ArrayList) jsonMap.get("data");
-                boolean duplicateListing;
                 if (data != null) {
                     for (int i = 0; i < data.size(); i++) {
                         Map<String, Object> mapItem = (Map) data.get(i);
-                        duplicateListing = false;
-                        for (int j = 0; j < getNumberOfListings(); j++) {
-                            if ((double) mapItem.get("listingId") == (getListing(j).listingId)) {
-                                duplicateListing = true;
-                            }
-                        }
-                        if (!duplicateListing) {
-                            Double listingId = (double) mapItem.get("listingId");
-                            Double userId = (double) mapItem.get("userId");
-                            Double creationTime = (double) mapItem.get("creationTime");
-                            Double quantity = (double) mapItem.get("quantity");
-                            addListing(new Listing(listingId.intValue(), userId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), creationTime.intValue(), quantity.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
-                        }
+
+                        Double listingId = (double) mapItem.get("listingId");
+                        Double userId = (double) mapItem.get("userId");
+                        Double creationTime = (double) mapItem.get("creationTime");
+                        Double quantity = (double) mapItem.get("quantity");
+                        addListing(new Listing(listingId.intValue(), userId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), creationTime.intValue(), quantity.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
                     }
                 }
                 completionHandler.receiveListings(listings);
