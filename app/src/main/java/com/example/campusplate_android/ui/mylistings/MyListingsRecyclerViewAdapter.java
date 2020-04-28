@@ -1,4 +1,4 @@
-package com.example.campusplate_android.ui.alllistings;
+package com.example.campusplate_android.ui.mylistings;
 
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,18 +13,17 @@ import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 
 import java.util.List;
-import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
 
-public class ListingsRecyclerViewAdapter extends RecyclerView.Adapter<ListingsRecyclerViewAdapter.ViewHolder> {
+public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Listing> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final MyListingsFragment.OnListFragmentInteractionListener mListener;
 
     public void setListings(List<Listing> listings){
         mValues = listings;
     }
 
-    public ListingsRecyclerViewAdapter(List<Listing> items, OnListFragmentInteractionListener listener) {
+    public MyListingsRecyclerViewAdapter(List<Listing> items, MyListingsFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -47,14 +46,14 @@ public class ListingsRecyclerViewAdapter extends RecyclerView.Adapter<ListingsRe
             @Override
             public void onClick(View view) {
                 //if (null != mListener) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("index", pos);
+                Bundle bundle = new Bundle();
+                bundle.putInt("index", pos);
 
-                    Navigation.findNavController(view).navigate(R.id.action_navigation_alllistings_to_navigation_viewlisting, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_navigation_mylistings_to_navigation_editlisting, bundle);
 
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.onListFragmentInteraction(holder.mItem);
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                //mListener.onListFragmentInteraction(holder.mItem);
                 //}
                 //TODO: Am not currently using mListener (not using the activity as the callbacks interface). This may change.
             }

@@ -65,7 +65,7 @@ public class ServiceClient {
         this.getRequestQueue().add(request);
     }
 
-    private void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {
@@ -78,15 +78,19 @@ public class ServiceClient {
         JSONObject object = new JSONObject();
         try {
             object = new JSONObject(json);
-            object.remove("listingId"); //TODO: Set this in Listing object not here
-            object.put("locationDescription", "EMACS");
+            if(method == Request.Method.POST){
+                object.remove("listingId"); //TODO: Set this in Listing object not here
+                object.put("locationDescription", "EMACS");
+            }
             //TODO: Set user id
             //TODO: Get location description from somewhere
         } catch (JSONException exception) {
             //TODO: Something with exception
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
+        JsonObjectRequest request = new JsonObjectRequest(method, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener); //TODO: Change this back to Krupp's web services after his PUT works
+
+        ///JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
 
         this.getRequestQueue().add(request);
     }

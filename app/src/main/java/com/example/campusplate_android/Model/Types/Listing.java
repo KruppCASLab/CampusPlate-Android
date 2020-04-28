@@ -39,4 +39,20 @@ public class Listing {
         this.lat = lat;
         this.lng = lng;
     }
+
+    public Listing(String title, int quantity) {  // For editing
+        this.title = title;
+        this.quantity = quantity;
+    }
+
+    public Listing(Listing listingToCopy){ // For editing
+        this.listingId = listingToCopy.listingId;
+        this.userId = listingToCopy.userId;
+        this.title = listingToCopy.title;
+        this.locationDescription = listingToCopy.locationDescription;
+        this.lat = listingToCopy.lat;
+        this.lng = listingToCopy.lng;
+        this.creationTime = listingToCopy.creationTime;
+        this.quantity = listingToCopy.quantity;
+    }
 }

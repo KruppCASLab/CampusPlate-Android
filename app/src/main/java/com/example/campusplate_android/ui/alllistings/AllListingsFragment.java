@@ -43,7 +43,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
     private Context mActivity;
-    private ListingsRecyclerViewAdapter adapter;
+    private AllListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
 
     /**
@@ -72,7 +72,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         } else {
             recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        adapter = new ListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+        adapter = new AllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
 
         recycler.setAdapter(adapter);
 

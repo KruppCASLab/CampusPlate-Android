@@ -19,18 +19,16 @@ import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
-import com.example.campusplate_android.ui.alllistings.AllListingsFragment;
-import com.example.campusplate_android.ui.alllistings.ListingsRecyclerViewAdapter;
 
 import java.util.List;
 
 public class MyListingsFragment extends Fragment {
 
     private ListingModel listingModel;
-    private AllListingsFragment.OnListFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;
     private Context mActivity;
     private int mColumnCount = 1;
-    private ListingsRecyclerViewAdapter adapter;
+    private MyListingsRecyclerViewAdapter adapter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,7 +44,7 @@ public class MyListingsFragment extends Fragment {
         } else {
             recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        final ListingsRecyclerViewAdapter adapter = new ListingsRecyclerViewAdapter(listingModel.getUserListings(-1), mListener);
+        final MyListingsRecyclerViewAdapter adapter = new MyListingsRecyclerViewAdapter(listingModel.getUserListings(-1), mListener);
         //TODO: Get user's ID and put in there
 
         recycler.setAdapter(adapter);
@@ -76,6 +74,11 @@ public class MyListingsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(Listing item);
     }
 
     @Override

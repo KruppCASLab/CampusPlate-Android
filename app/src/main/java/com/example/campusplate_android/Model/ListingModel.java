@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.example.campusplate_android.ui.editlisting.EditListingFragment;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,6 +33,10 @@ public class ListingModel {
 
     public interface PostListingCompletionHandler {
         void postListing();
+    }
+
+    public interface EditListingCompletionHandler {
+        void editListing();
     }
 
     private ListingModel(Context ctx) {
@@ -118,13 +123,13 @@ public class ListingModel {
 
     public synchronized void postListing(final PostListingCompletionHandler completionHandler, Listing listing) {
         ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
-        client.post("listings", listing, new Response.Listener<JSONObject>(){
+        client.post("listings", listing, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //TODO: Do something with response (confirmation?)
                 completionHandler.postListing(); //TODO: This is empty, change?
             }
-        }, new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //TODO: Show an error
@@ -133,4 +138,19 @@ public class ListingModel {
         });
     }
 
+    public synchronized void editListing(final EditListingCompletionHandler completionHandler, Listing listing, int id) {
+        ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
+        client.put("listings", listing, id, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //TODO: Do something with response (confirmation?)
+                completionHandler.editListing(); //TODO: This is empty, change?
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //TODO: Show an error
+            }
+        });
+    }
 }

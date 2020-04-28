@@ -38,6 +38,7 @@ public class AddListingFragment extends Fragment {
 
         final EditText titleView = view.findViewById(R.id.editText_title);
         final EditText quantityView = view.findViewById(R.id.editText_quantity);
+        //TODO: Require not empty
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
