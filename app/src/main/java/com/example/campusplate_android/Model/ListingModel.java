@@ -39,6 +39,10 @@ public class ListingModel {
         void editListing();
     }
 
+    public interface DeleteListingCompletionHandler {
+        void deleteListing();
+    }
+
     private ListingModel(Context ctx) {
         this.context = ctx;
     }
@@ -138,6 +142,22 @@ public class ListingModel {
             public void onResponse(JSONObject response) {
                 //TODO: Do something with response (confirmation?)
                 completionHandler.editListing(); //TODO: This is empty, change?
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //TODO: Show an error
+            }
+        });
+    }
+
+    public synchronized void deleteListing(final DeleteListingCompletionHandler completionHandler, int id) {
+        ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
+        client.delete("listings", id, new Response.Listener<JSONObject>(){
+            @Override
+            public void onResponse(JSONObject response) {
+                //TODO: Do something with response (confirmation?)
+                completionHandler.deleteListing(); //TODO: This is empty, change?
             }
         }, new Response.ErrorListener() {
             @Override

@@ -34,7 +34,7 @@ public class EditListingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.edit_listing_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_editlisting, container, false);
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
 
         final Listing listingToEdit = listingModel.getListing(getArguments().getInt("index"));

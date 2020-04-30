@@ -60,7 +60,9 @@ public class ServiceClient {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, path, object, listener, errorListener);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener);  //TODO: Change this back to Krupp's web services after his DELETE works
+
+        //JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, path, object, listener, errorListener);
 
         this.getRequestQueue().add(request);
     }

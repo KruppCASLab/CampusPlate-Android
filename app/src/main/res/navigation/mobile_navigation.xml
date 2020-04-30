@@ -48,7 +48,7 @@
         android:id="@+id/navigation_viewlisting"
         android:name="com.example.campusplate_android.ui.viewlisting.ViewListingFragment"
         android:label="view_listing_fragment"
-        tools:layout="@layout/view_listing_fragment" >
+        tools:layout="@layout/fragment_viewlisting" >
         <action
             android:id="@+id/action_navigation_viewlisting_pop"
             app:destination="@+id/navigation_alllistings"
@@ -59,7 +59,7 @@
         android:id="@+id/navigation_editlisting"
         android:name="com.example.campusplate_android.ui.editlisting.EditListingFragment"
         android:label="edit_listing_fragment"
-        tools:layout="@layout/edit_listing_fragment" >
+        tools:layout="@layout/fragment_editlisting" >
         <action
             android:id="@+id/action_navigation_editlisting_pop"
             app:destination="@+id/navigation_mylistings"

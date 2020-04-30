@@ -14,6 +14,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Edit Title"
+        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +26,8 @@
         android:layout_marginTop="64dp"
         android:ems="10"
         android:inputType="number"
-        android:text="0"
+        android:text="Edit Quantity"
+        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_editTitle" />
@@ -37,6 +39,7 @@
         android:layout_marginTop="64dp"
         android:text="Update Location? "
         android:textSize="18sp"
+        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_editQuantity" />
@@ -52,5 +55,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch_updateLocation" />
+
+    <TextView
+        android:id="@+id/textView_editTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Title:"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/editText_editTitle"
+        app:layout_constraintStart_toStartOf="@+id/editText_editTitle" />
+
+    <TextView
+        android:id="@+id/textView_editQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Quantity:"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/editText_editQuantity"
+        app:layout_constraintStart_toStartOf="@+id/editText_editQuantity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

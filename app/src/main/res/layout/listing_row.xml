@@ -13,7 +13,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="4dp"
         android:text="Item Title"
-        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -26,7 +26,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:text="Item Location Description"
-        android:textAppearance="?attr/textAppearanceListItemSecondary"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="14sp" />
 
 </LinearLayout>
