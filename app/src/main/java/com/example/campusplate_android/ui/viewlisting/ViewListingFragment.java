@@ -59,36 +59,7 @@ public class ViewListingFragment extends Fragment {
         view.findViewById(R.id.button_pickUpItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View root = view;
-                new AlertDialog.Builder(mActivity)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Pick Up Item")
-                        .setMessage("Are you sure you want to pick up this item?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-
-                                Location currentLocation = ((MainActivity) mActivity).getCurrentLocation(); //TODO: Use this to block pickup if too far away
-                                listingModel.deleteListing(new ListingModel.DeleteListingCompletionHandler() {
-                                    @Override
-                                    public void deleteListing() {
-                                        Toast.makeText(mActivity, "Successfully Picked Up Item!", Toast.LENGTH_SHORT).show();
-                                        Navigation.findNavController(root).navigate(R.id.action_navigation_viewlisting_pop);
-                                    }
-                                }, listing.listingId);
-
-
-
-                            }
-
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-                //TODO: Show a confirmation screen
-                //TODO: Instead of deleting item in database, set its status to picked up/inactive
-
+                clickedPickUpButton(view);
             }
         });
         return view;
@@ -103,6 +74,30 @@ public class ViewListingFragment extends Fragment {
     }
 
     public void clickedPickUpButton(View view){
+        final View root = view;
+        new AlertDialog.Builder(mActivity)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Pick Up Item")
+                .setMessage("Are you sure you want to pick up this item?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
 
+                        Location currentLocation = ((MainActivity) mActivity).getCurrentLocation(); //TODO: Use this to block pickup if too far away
+                        listingModel.deleteListing(new ListingModel.DeleteListingCompletionHandler() {
+                            @Override
+                            public void deleteListing() {
+                                Toast.makeText(mActivity, "Successfully Picked Up Item!", Toast.LENGTH_SHORT).show();
+                                Navigation.findNavController(root).navigate(R.id.action_navigation_viewlisting_pop);
+                            }
+                        }, listing.listingId);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+        //TODO: Show a confirmation screen
+        //TODO: Instead of deleting item in database, set its status to picked up/inactive
     }
 }
