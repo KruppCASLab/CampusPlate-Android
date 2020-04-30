@@ -126,4 +126,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    public void showUpButton() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void hideUpButton() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    }
 }

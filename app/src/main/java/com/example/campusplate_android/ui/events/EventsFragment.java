@@ -36,6 +36,7 @@ public class EventsFragment extends Fragment {
         eventModel = EventModel.getSharedInstance(mActivity.getApplicationContext());
         RecyclerView recycler = view.findViewById(R.id.view_recycler_events);
 
+        ((MainActivity) mActivity).hideUpButton();
         // Set the adapter
         Context context = view.getContext();
         if (mColumnCount <= 1) {

@@ -43,7 +43,6 @@ public class InputCodeFragment extends Fragment {
                 sp.edit().putBoolean("logged", true).apply();
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
