@@ -36,7 +36,7 @@ public class ViewListingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_viewlisting, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_listing, container, false);
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
 
         TextView title = view.findViewById(R.id.textView_displayTitle);

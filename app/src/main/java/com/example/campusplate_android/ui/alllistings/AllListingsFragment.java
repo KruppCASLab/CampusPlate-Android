@@ -62,7 +62,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
-        View view = inflater.inflate(R.layout.fragment_alllistings, container, false);
+        View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
 
         // Set the adapter

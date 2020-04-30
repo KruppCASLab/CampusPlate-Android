@@ -15,7 +15,7 @@
         android:id="@+id/navigation_alllistings"
         android:name="com.example.campusplate_android.ui.alllistings.AllListingsFragment"
         android:label="@string/title_alllistings"
-        tools:layout="@layout/fragment_alllistings" >
+        tools:layout="@layout/fragment_all_listings" >
         <action
             android:id="@+id/action_navigation_alllistings_to_navigation_viewlisting"
             app:destination="@id/navigation_viewlisting" />
@@ -25,7 +25,7 @@
         android:id="@+id/navigation_mylistings"
         android:name="com.example.campusplate_android.ui.mylistings.MyListingsFragment"
         android:label="@string/title_mylistings"
-        tools:layout="@layout/fragment_mylistings" >
+        tools:layout="@layout/fragment_my_listings" >
         <action
             android:id="@+id/action_navigation_mylistings_to_addListing"
             app:destination="@id/navigation_addlisting" />
@@ -48,7 +48,7 @@
         android:id="@+id/navigation_viewlisting"
         android:name="com.example.campusplate_android.ui.viewlisting.ViewListingFragment"
         android:label="view_listing_fragment"
-        tools:layout="@layout/fragment_viewlisting" >
+        tools:layout="@layout/fragment_view_listing" >
         <action
             android:id="@+id/action_navigation_viewlisting_pop"
             app:destination="@+id/navigation_alllistings"
@@ -59,7 +59,7 @@
         android:id="@+id/navigation_editlisting"
         android:name="com.example.campusplate_android.ui.editlisting.EditListingFragment"
         android:label="edit_listing_fragment"
-        tools:layout="@layout/fragment_editlisting" >
+        tools:layout="@layout/fragment_edit_listing" >
         <action
             android:id="@+id/action_navigation_editlisting_pop"
             app:destination="@+id/navigation_mylistings"

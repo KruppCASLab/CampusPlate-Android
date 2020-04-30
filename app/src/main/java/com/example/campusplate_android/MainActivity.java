@@ -110,4 +110,10 @@ public class MainActivity extends AppCompatActivity {
     private void startLocationUpdates() {
         fusedLocationClient.requestLocationUpdates(createLocationRequest(), locationCallback, Looper.getMainLooper());
     }
+
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager().popBackStack();
+        super.onBackPressed();
+    }
 }

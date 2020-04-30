@@ -61,7 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Title:"
-        android:textColor="@color/colorTextPrimary"
         app:layout_constraintBottom_toTopOf="@+id/editText_editTitle"
         app:layout_constraintStart_toStartOf="@+id/editText_editTitle" />
 
@@ -70,7 +69,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Quantity:"
-        android:textColor="@color/colorTextPrimary"
         app:layout_constraintBottom_toTopOf="@+id/editText_editQuantity"
         app:layout_constraintStart_toStartOf="@+id/editText_editQuantity" />
 

@@ -36,8 +36,8 @@ public class AddListingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_listing, container, false);
         listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
 
-        final EditText titleView = view.findViewById(R.id.editText_title);
-        final EditText quantityView = view.findViewById(R.id.editText_quantity);
+        final EditText titleView = view.findViewById(R.id.editText_addTitle);
+        final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         //TODO: Require not empty
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {

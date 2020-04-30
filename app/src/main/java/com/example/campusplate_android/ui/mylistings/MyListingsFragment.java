@@ -34,7 +34,7 @@ public class MyListingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
-        View view = inflater.inflate(R.layout.fragment_mylistings, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_my_listings);
 
         // Set the adapter

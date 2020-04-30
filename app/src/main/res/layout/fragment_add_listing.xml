@@ -8,7 +8,7 @@
 
 
     <EditText
-        android:id="@+id/editText_title"
+        android:id="@+id/editText_addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -20,31 +20,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText_quantity"
-        android:layout_width="88dp"
+        android:id="@+id/editText_addQuantity"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:ems="10"
         android:hint="1"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editText_title"
-        app:layout_constraintTop_toBottomOf="@+id/editText_title" />
+        app:layout_constraintStart_toStartOf="@+id/editText_addTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
 
     <TextView
         android:id="@+id/textView_displayTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Listing Title"
-        app:layout_constraintBottom_toTopOf="@+id/editText_title"
-        app:layout_constraintStart_toStartOf="@+id/editText_title" />
+        app:layout_constraintBottom_toTopOf="@+id/editText_addTitle"
+        app:layout_constraintStart_toStartOf="@+id/editText_addTitle" />
 
     <TextView
         android:id="@+id/textView_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quantity"
-        app:layout_constraintBottom_toTopOf="@+id/editText_quantity"
-        app:layout_constraintStart_toStartOf="@+id/editText_quantity" />
+        app:layout_constraintBottom_toTopOf="@+id/editText_addQuantity"
+        app:layout_constraintStart_toStartOf="@+id/editText_addQuantity" />
 
     <Button
         android:id="@+id/button_post"
@@ -56,6 +56,6 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_quantity" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_addQuantity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
