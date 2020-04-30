@@ -13,14 +13,16 @@ import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 
 import java.util.List;
+
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
 
 public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllListingsRecyclerViewAdapter.ViewHolder> {
 
     private List<Listing> mValues;
     private final OnListFragmentInteractionListener mListener;
+    public boolean isClickable = true;
 
-    public void setListings(List<Listing> listings){
+    public void setListings(List<Listing> listings) {
         mValues = listings;
     }
 
@@ -46,7 +48,8 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (null != mListener) {
+                if (isClickable) {
+                    //if (null != mListener) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("index", pos);
 
@@ -55,8 +58,9 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     //mListener.onListFragmentInteraction(holder.mItem);
-                //}
-                //TODO: Am not currently using mListener (not using the activity as the callbacks interface). This may change.
+                    //}
+                    //TODO: Am not currently using mListener (not using the activity as the callbacks interface). This may change.
+                }
             }
         });
     }

@@ -45,6 +45,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     private Context mActivity;
     private AllListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
+    private boolean isClickable = true;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -77,12 +78,14 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         recycler.setAdapter(adapter);
 
         ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        adapter.isClickable = false;
 
         listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
             @Override
             public void receiveListings(List<Listing> listings) {
                 try {
                     ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    adapter.isClickable = true;
                 } catch (NullPointerException exception) {
                     //TODO: Do something with exception
                 }

@@ -18,8 +18,9 @@ public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListin
 
     private List<Listing> mValues;
     private final MyListingsFragment.OnListFragmentInteractionListener mListener;
+    public boolean isClickable = true;
 
-    public void setListings(List<Listing> listings){
+    public void setListings(List<Listing> listings) {
         mValues = listings;
     }
 
@@ -45,17 +46,19 @@ public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListin
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if (null != mListener) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("index", pos);
+                if (isClickable) {
+                    //if (null != mListener) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("index", pos);
 
-                Navigation.findNavController(view).navigate(R.id.action_navigation_mylistings_to_navigation_editlisting, bundle);
+                    Navigation.findNavController(view).navigate(R.id.action_navigation_mylistings_to_navigation_editlisting, bundle);
 
-                // Notify the active callbacks interface (the activity, if the
-                // fragment is attached to one) that an item has been selected.
-                //mListener.onListFragmentInteraction(holder.mItem);
-                //}
-                //TODO: Am not currently using mListener (not using the activity as the callbacks interface). This may change.
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    //mListener.onListFragmentInteraction(holder.mItem);
+                    //}
+                    //TODO: Am not currently using mListener (not using the activity as the callbacks interface). This may change.
+                }
             }
         });
     }

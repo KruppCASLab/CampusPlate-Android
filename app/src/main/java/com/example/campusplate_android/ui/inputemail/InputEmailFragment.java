@@ -44,7 +44,6 @@ public class InputEmailFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
             }
         });
-
         return view;
     }
 

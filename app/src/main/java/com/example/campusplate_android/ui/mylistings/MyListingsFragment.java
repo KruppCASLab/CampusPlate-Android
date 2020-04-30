@@ -50,12 +50,14 @@ public class MyListingsFragment extends Fragment {
         recycler.setAdapter(adapter);
 
         ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        adapter.isClickable = false;
 
         listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
             @Override
             public void receiveListings(List<Listing> listings) {
                 try {
                     ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    adapter.isClickable = true;
                 } catch (NullPointerException exception) {
                     //TODO: Do something with exception
                 }
