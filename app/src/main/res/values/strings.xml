@@ -6,4 +6,28 @@
     <string name="title_viewlisting">View Listing</string>
     <string name="title_addlisting">Add Listing</string>
     <string name="title_editlisting">Edit Listing</string>
+
+    <string name="view_terms">By creating an account with Campus Plate, you are agreeing to the terms and conditions. Click here to view.</string>
+
+    <string name="terms_of_service">"You are solely responsible for your Contributions to the Site and you expressly agree to exonerate Campus Plate or Baldwin Wallace University from any and all responsibility and to refrain from any legal action against us regarding your Contributions. If you access the Site via a mobile application, then we grant you a revocable, non-exclusive, non-transferable, limited right to install and use the mobile application on wireless electronic devices owned or controlled by you, and to access and use the mobile application on such devices strictly in accordance with the terms and conditions of this mobile application license contained in these Terms and Conditions.\n" +
+                        "\n" +
+                        "You shall not:\n" +
+                        "\n" +
+                        "(1) decompile, reverse engineer, disassemble, attempt to derive the source code of, or decrypt the application;\n" +
+                        "\n" +
+                        "(2) make any modification, adaptation, improvement, enhancement, translation, or derivative work from the application;\n" +
+                        "\n" +
+                        "(3) violate any applicable laws, rules, or regulations in connection with your access or use of the application;\n" +
+                        "\n" +
+                        "(4) remove, alter, or obscure any proprietary notice (including any notice of copyright or trademark) posted by us or the licensors of the application;\n" +
+                        "\n" +
+                        "(5) use the application for any revenue generating endeavor, commercial enterprise, or other purpose for which it is not designed or intended;\n" +
+                        "\n" +
+                        "(6) make the application available over a network or other environment permitting access or use by multiple devices or users at the same time;\n" +
+                        "\n" +
+                        "(7) use the application for creating a product, service, or software that is, directly or indirectly, competitive with or in any way a substitute for the application;\n" +
+                        "\n" +
+                        "(8) use the application to send automated queries to any website or to send any unsolicited commercial e-mail;\n" +
+                        "\n" +
+                        "(9) use any proprietary information or any of our interfaces or our other intellectual property in the design, development, manufacture, licensing, or distribution of any applications, accessories, or devices for use with the application."</string>
 </resources>

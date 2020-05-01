@@ -45,7 +45,7 @@ public class Listing implements Comparable<Listing> {
         this.quantity = quantity;
     }
 
-    public Listing(Listing listingToCopy){ // For editing
+    public Listing(Listing listingToCopy) { // For editing
         this.listingId = listingToCopy.listingId;
         this.userId = listingToCopy.userId;
         this.title = listingToCopy.title;
@@ -57,7 +57,7 @@ public class Listing implements Comparable<Listing> {
     }
 
     @Override
-    public int compareTo(Listing listing){
+    public int compareTo(Listing listing) {
         return Integer.compare(listing.creationTime, this.creationTime);
     }
 }
