@@ -42,6 +42,7 @@ public class AddListingFragment extends Fragment {
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
                 Listing testListing = new Listing(titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
@@ -49,6 +50,7 @@ public class AddListingFragment extends Fragment {
                     @Override
                     public void postListing() {
                         Toast.makeText(mActivity, "Listing Added!", Toast.LENGTH_SHORT).show();
+                        ((MainActivity) mActivity).stopProgressBar();
                         Navigation.findNavController(root).navigate(R.id.action_addListing_pop);
                     }
                 }, testListing);

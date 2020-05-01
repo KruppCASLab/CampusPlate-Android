@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -76,14 +78,14 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
         recycler.setAdapter(adapter);
 
-        ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        ((MainActivity) mActivity).startProgressBar();
         adapter.isClickable = false;
 
         listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
             @Override
             public void receiveListings(List<Listing> listings) {
                 try {
-                    ((MainActivity) mActivity).findViewById(R.id.progressBar).setVisibility(View.GONE);
+                    ((MainActivity) mActivity).stopProgressBar();
                     adapter.isClickable = true;
                 } catch (NullPointerException exception) {
                     //TODO: Do something with exception
@@ -110,6 +112,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
 
         return view;
     }
@@ -161,6 +164,10 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         }
         else {
             map.setMyLocationEnabled(true);
+
+            Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
+
             for (int i = 0; i < listingModel.getAllListings().size(); i++) {
                 Listing listing = listingModel.getListing(i);
                 map.addMarker(new MarkerOptions().position(new LatLng(listing.lat, listing.lng)).title(listing.title));

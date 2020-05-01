@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -70,8 +71,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startProgressBar(){
-        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.bringToFront();
     }
+
     public void stopProgressBar(){
         findViewById(R.id.progressBar).setVisibility(View.GONE);
     }

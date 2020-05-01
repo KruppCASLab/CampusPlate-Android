@@ -83,6 +83,7 @@ public class ViewListingFragment extends Fragment {
     }
 
     private void clickedPickUpButton(View view){
+        ((MainActivity) mActivity).startProgressBar();
         final View root = view;
         new AlertDialog.Builder(mActivity)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -99,12 +100,18 @@ public class ViewListingFragment extends Fragment {
                             @Override
                             public void deleteListing() {
                                 Toast.makeText(mActivity, "Successfully Picked Up Item!", Toast.LENGTH_SHORT).show();
+                                ((MainActivity) mActivity).stopProgressBar();
                                 Navigation.findNavController(root).navigate(R.id.action_navigation_viewlisting_pop);
                             }
                         }, listing.listingId);
                     }
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((MainActivity) mActivity).stopProgressBar();
+                    }
+                })
                 .show();
         //TODO: Instead of deleting item in database, set its status to picked up/inactive
     }

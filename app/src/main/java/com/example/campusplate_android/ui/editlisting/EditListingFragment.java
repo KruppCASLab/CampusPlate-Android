@@ -49,6 +49,7 @@ public class EditListingFragment extends Fragment {
         view.findViewById(R.id.button_submitEdit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
                 Listing listing = new Listing(listingToEdit);
                 listing.title = editTitle.getText().toString();
@@ -63,6 +64,7 @@ public class EditListingFragment extends Fragment {
                     @Override
                     public void editListing() {
                         Toast.makeText(mActivity, "Listing Updated!", Toast.LENGTH_SHORT).show();
+                        ((MainActivity) mActivity).stopProgressBar();
                         Navigation.findNavController(root).navigate(R.id.action_navigation_editlisting_pop);
                     }
                 }, listing, listingToEdit.listingId);
