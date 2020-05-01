@@ -1,6 +1,7 @@
 package com.example.campusplate_android.Model;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -113,7 +114,7 @@ public class ListingModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //TODO: Show an error
+                Toast.makeText(context, "Error. Try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -129,9 +130,8 @@ public class ListingModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //TODO: Show an error
+                Toast.makeText(context, "Error. Try again.", Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 
@@ -146,7 +146,7 @@ public class ListingModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //TODO: Show an error
+                Toast.makeText(context, "Error. Try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -162,7 +162,7 @@ public class ListingModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //TODO: Show an error
+                Toast.makeText(context, "Error. Try again.", Toast.LENGTH_SHORT).show();
             }
         });
     }

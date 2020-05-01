@@ -30,14 +30,14 @@ public class ServiceClient {
         return serviceClient;
     }
 
-    synchronized public RequestQueue getRequestQueue() {
+    synchronized private RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return requestQueue;
     }
 
-    public void addRequest(Request request) {
+    private void addRequest(Request request) {
         this.getRequestQueue().add(request);
     }
 
@@ -46,7 +46,7 @@ public class ServiceClient {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, path, null, listener, errorListener);
 
-        this.getRequestQueue().add(request);
+        addRequest(request);
     }
 
     public void delete(String broker, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
@@ -60,11 +60,11 @@ public class ServiceClient {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener);  //TODO: Change this back to Krupp's web services after his DELETE works
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener);  //TODO: Change this back to Krupp's URL
 
         //JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, path, object, listener, errorListener);
 
-        this.getRequestQueue().add(request);
+        addRequest(request);
     }
 
     public void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
@@ -90,16 +90,14 @@ public class ServiceClient {
             //TODO: Something with exception
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(method, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener); //TODO: Change this back to Krupp's web services after his PUT works
+        JsonObjectRequest request = new JsonObjectRequest(method, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener); //TODO: Change this back to Krupp's URL
 
         ///JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
 
-        this.getRequestQueue().add(request);
+        addRequest(request);
     }
 
     public void post(String broker, Listing listing, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         this.put(broker, listing, -1, listener, errorListener);
     }
-
-
 }

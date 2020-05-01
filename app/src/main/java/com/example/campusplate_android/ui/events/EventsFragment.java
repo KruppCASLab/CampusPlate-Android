@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.EventModel;
@@ -23,12 +24,12 @@ import java.util.List;
 
 public class EventsFragment extends Fragment {
 
-    private EventsViewModel eventsViewModel;
     private EventModel eventModel;
     private Context mActivity;
     private int mColumnCount = 1;
     private EventsRecyclerViewAdapter adapter;
     private EventsFragment.OnListFragmentInteractionListener mListener;
+    private SwipeRefreshLayout swipeContainer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +65,32 @@ public class EventsFragment extends Fragment {
         });
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
 
+        swipeContainer = view.findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimelineAsync();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         return view;
+    }
+
+    private void fetchTimelineAsync() {
+        eventModel.getEvents(new EventModel.GetEventsCompletionHandler() {
+            @Override
+            public void receiveEvents(List<Event> events) {
+                adapter.setEvents(events);
+                adapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
 
     @Override

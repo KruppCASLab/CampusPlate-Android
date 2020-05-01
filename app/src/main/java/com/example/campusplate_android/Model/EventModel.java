@@ -20,7 +20,7 @@ public class EventModel {
     private EventModel(Context ctx) {
         this.context = ctx;
 
-        //fake data
+        //Fake events
         addEvent(new Event("EMACS Tour", "A tour of the new Computer Science building!", "North Campus", 123456789));
         addEvent(new Event("EMACS Tour 2", "A second tour of the new Computer Science building!", "North Campus", 123456789));
         addEvent(new Event("EMACS Tour 3", "A third tour of the new Computer Science building!", "North Campus", 123456789));
@@ -34,7 +34,7 @@ public class EventModel {
         return sharedInstance;
     }
 
-    public void addEvent(Event event){
+    private void addEvent(Event event){
         this.events.add(event);
     }
 

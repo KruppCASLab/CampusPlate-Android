@@ -3,6 +3,11 @@
     <string name="title_events">Events</string>
     <string name="title_alllistings">All Listings</string>
     <string name="title_mylistings">My Listings</string>
+    <string name="title_viewlisting">View Listing</string>
+    <string name="title_addlisting">Add Listing</string>
+    <string name="title_editlisting">Edit Listing</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

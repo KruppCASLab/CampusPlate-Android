@@ -45,7 +45,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     private Context mActivity;
     private AllListingsRecyclerViewAdapter adapter;
     private int mColumnCount = 1;
-    private boolean isClickable = true;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -171,7 +170,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0) {
             // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

@@ -23,6 +23,10 @@ import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class ViewListingFragment extends Fragment {
 
     private Listing listing;
@@ -49,7 +53,12 @@ public class ViewListingFragment extends Fragment {
             title.setText(listing.title);
             locationDescription.setText(listing.locationDescription);
             quantity.setText(Integer.toString(listing.quantity));
-            creationTime.setText(Integer.toString(listing.creationTime));
+
+            long creationTimeLong = (long) listing.creationTime*1000;
+            Date date = new Date(creationTimeLong);
+            String formattedDate = new SimpleDateFormat("MMMM d h:mm a", Locale.ENGLISH).format(date);
+
+            creationTime.setText(formattedDate);
         }
         else{
             Toast.makeText(mActivity, "There was an error.", Toast.LENGTH_SHORT).show();
@@ -73,7 +82,7 @@ public class ViewListingFragment extends Fragment {
         }
     }
 
-    public void clickedPickUpButton(View view){
+    private void clickedPickUpButton(View view){
         final View root = view;
         new AlertDialog.Builder(mActivity)
                 .setIcon(android.R.drawable.ic_dialog_alert)

@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/navigation_addlisting"
         android:name="com.example.campusplate_android.ui.addlisting.AddListingFragment"
-        android:label="add_listing_fragment"
+        android:label="@string/title_addlisting"
         tools:layout="@layout/fragment_add_listing">
         <action
             android:id="@+id/action_addListing_pop"
@@ -47,8 +47,8 @@
     <fragment
         android:id="@+id/navigation_viewlisting"
         android:name="com.example.campusplate_android.ui.viewlisting.ViewListingFragment"
-        android:label="view_listing_fragment"
-        tools:layout="@layout/fragment_view_listing" >
+        android:label="@string/title_viewlisting"
+        tools:layout="@layout/fragment_view_listing">
         <action
             android:id="@+id/action_navigation_viewlisting_pop"
             app:destination="@+id/navigation_alllistings"
@@ -58,8 +58,8 @@
     <fragment
         android:id="@+id/navigation_editlisting"
         android:name="com.example.campusplate_android.ui.editlisting.EditListingFragment"
-        android:label="edit_listing_fragment"
-        tools:layout="@layout/fragment_edit_listing" >
+        android:label="@string/title_editlisting"
+        tools:layout="@layout/fragment_edit_listing">
         <action
             android:id="@+id/action_navigation_editlisting_pop"
             app:destination="@+id/navigation_mylistings"

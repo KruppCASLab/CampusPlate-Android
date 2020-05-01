@@ -24,12 +24,11 @@
         android:id="@+id/textView_displayQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:text="Item Quantity"
         android:textColor="@color/colorTextPrimary"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime"
         app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
 
     <TextView
@@ -40,15 +39,14 @@
         android:text="Item Location Description"
         android:textColor="@color/colorTextPrimary"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayQuantity"
         app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
 
     <TextView
         android:id="@+id/textView_displayCreationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:text="Item Creation Time"
         android:textColor="@color/colorTextPrimary"
         android:textSize="18sp"
@@ -60,31 +58,25 @@
         android:id="@+id/textView_listingLocationDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:text="Location: "
-        app:layout_constraintBottom_toBottomOf="@+id/textView_displayLocationDescription"
-        app:layout_constraintEnd_toStartOf="@+id/textView_displayLocationDescription"
-        app:layout_constraintTop_toTopOf="@+id/textView_displayLocationDescription" />
+        app:layout_constraintBottom_toTopOf="@+id/textView_displayLocationDescription"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayLocationDescription" />
 
     <TextView
         android:id="@+id/textView_listingQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:text="Quantity: "
-        app:layout_constraintBottom_toBottomOf="@+id/textView_displayQuantity"
-        app:layout_constraintEnd_toStartOf="@+id/textView_displayQuantity"
-        app:layout_constraintTop_toTopOf="@+id/textView_displayQuantity" />
+        app:layout_constraintBottom_toTopOf="@+id/textView_displayQuantity"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayQuantity" />
 
     <TextView
         android:id="@+id/textView_listingCreationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:text="Creation Time: "
-        app:layout_constraintBottom_toBottomOf="@+id/textView_displayCreationTime"
-        app:layout_constraintEnd_toStartOf="@+id/textView_displayCreationTime"
-        app:layout_constraintTop_toTopOf="@+id/textView_displayCreationTime" />
+        app:layout_constraintBottom_toTopOf="@+id/textView_displayCreationTime"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime" />
 
     <Button
         android:id="@+id/button_pickUpItem"

@@ -34,7 +34,7 @@ public class AddListingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_listing, container, false);
-        listingModel = ListingModel.getSharedInstance(this.getActivity().getApplicationContext());
+        listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
@@ -64,7 +64,7 @@ public class AddListingFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if(context instanceof Activity){
             mActivity = context;

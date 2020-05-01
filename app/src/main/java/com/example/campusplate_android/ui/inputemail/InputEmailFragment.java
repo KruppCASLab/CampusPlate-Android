@@ -1,7 +1,5 @@
 package com.example.campusplate_android.ui.inputemail;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +46,7 @@ public class InputEmailFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof Activity) {
             mActivity = context;
