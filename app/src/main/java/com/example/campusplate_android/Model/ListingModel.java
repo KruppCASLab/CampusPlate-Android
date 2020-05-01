@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +111,7 @@ public class ListingModel {
                         addListing(new Listing(listingId.intValue(), userId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), creationTime.intValue(), quantity.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
                     }
                 }
+                Collections.sort(listings);
                 completionHandler.receiveListings(listings);
             }
         }, new Response.ErrorListener() {

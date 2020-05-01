@@ -1,6 +1,6 @@
 package com.example.campusplate_android.Model.Types;
 
-public class Listing {
+public class Listing implements Comparable<Listing> {
     public int listingId;
     public int userId;
     public String title;
@@ -54,5 +54,10 @@ public class Listing {
         this.lng = listingToCopy.lng;
         this.creationTime = listingToCopy.creationTime;
         this.quantity = listingToCopy.quantity;
+    }
+
+    @Override
+    public int compareTo(Listing listing){
+        return Integer.compare(listing.creationTime, this.creationTime);
     }
 }
