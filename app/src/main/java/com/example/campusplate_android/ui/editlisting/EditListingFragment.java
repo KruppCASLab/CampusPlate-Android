@@ -39,7 +39,6 @@ public class EditListingFragment extends Fragment {
 
         final Listing listingToEdit = listingModel.getListing(getArguments().getInt("index"));
 
-        //TODO: Require not empty
         final EditText editTitle = view.findViewById(R.id.editText_editTitle);
         final EditText editQuantity = view.findViewById(R.id.editText_editQuantity);
         final Switch updateLocation = view.findViewById(R.id.switch_updateLocation);
@@ -50,6 +49,7 @@ public class EditListingFragment extends Fragment {
         view.findViewById(R.id.button_submitEdit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final View root = view;
                 Listing listing = new Listing(listingToEdit);
                 listing.title = editTitle.getText().toString();
                 listing.quantity = Integer.parseInt(editQuantity.getText().toString());
@@ -63,10 +63,9 @@ public class EditListingFragment extends Fragment {
                     @Override
                     public void editListing() {
                         Toast.makeText(mActivity, "Listing Updated!", Toast.LENGTH_SHORT).show();
-                        //TODO: Pop here instead of after
+                        Navigation.findNavController(root).navigate(R.id.action_navigation_editlisting_pop);
                     }
                 }, listing, listingToEdit.listingId);
-                Navigation.findNavController(view).navigate(R.id.action_navigation_editlisting_pop);
             }
         });
         return view;

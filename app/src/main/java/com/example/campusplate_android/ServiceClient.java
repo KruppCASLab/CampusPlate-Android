@@ -81,8 +81,8 @@ public class ServiceClient {
         try {
             object = new JSONObject(json);
             if(method == Request.Method.POST){
-                object.remove("listingId"); //TODO: Set this in Listing object not here
-                object.put("locationDescription", "EMACS");
+                object.remove("listingId");
+                object.put("locationDescription", "EMACS"); //TODO: Set this in Listing object not here
             }
             //TODO: Set user id
             //TODO: Get location description from somewhere

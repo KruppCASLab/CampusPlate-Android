@@ -38,21 +38,20 @@ public class AddListingFragment extends Fragment {
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
-        //TODO: Require not empty
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final View root = view;
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
                 Listing testListing = new Listing(titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {
                         Toast.makeText(mActivity, "Listing Added!", Toast.LENGTH_SHORT).show();
-                        //TODO: Pop here instead of after
+                        Navigation.findNavController(root).navigate(R.id.action_addListing_pop);
                     }
                 }, testListing);
-                Navigation.findNavController(view).navigate(R.id.action_addListing_pop);
             }
         });
         return view;

@@ -37,8 +37,7 @@ public class InputCodeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO: Show dialogue with terms, accept terms
-                //Move to main activity after accepting terms
-
+                //TODO: Get user ID assigned by the database and put it into sharedPreferences to access in MyListings
                 SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
                 sp.edit().putBoolean("logged", true).apply();
 

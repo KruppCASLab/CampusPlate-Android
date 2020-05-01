@@ -106,7 +106,6 @@ public class ViewListingFragment extends Fragment {
                 })
                 .setNegativeButton("No", null)
                 .show();
-        //TODO: Show a confirmation screen
         //TODO: Instead of deleting item in database, set its status to picked up/inactive
     }
 }
