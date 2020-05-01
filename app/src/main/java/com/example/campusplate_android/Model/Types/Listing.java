@@ -33,7 +33,8 @@ public class Listing implements Comparable<Listing> {
         this.quantity = quantity;
     }
 
-    public Listing(String title, int quantity, double lat, double lng) {  // For posting
+    public Listing(int userId, String title, int quantity, double lat, double lng) {  // For posting
+        this.userId = userId;
         this.title = title;
         this.quantity = quantity;
         this.lat = lat;

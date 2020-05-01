@@ -2,6 +2,7 @@ package com.example.campusplate_android.ui.addlisting;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -45,7 +46,8 @@ public class AddListingFragment extends Fragment {
                 ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
-                Listing testListing = new Listing(titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
+                SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
+                Listing listing = new Listing(sp.getInt("userId", -1), titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {
@@ -53,7 +55,7 @@ public class AddListingFragment extends Fragment {
                         ((MainActivity) mActivity).stopProgressBar();
                         Navigation.findNavController(root).navigate(R.id.action_addListing_pop);
                     }
-                }, testListing);
+                }, listing);
             }
         });
         return view;

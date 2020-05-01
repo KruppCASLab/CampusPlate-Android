@@ -90,9 +90,7 @@ public class ServiceClient {
             //TODO: Something with exception
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(method, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener); //TODO: Change this back to Krupp's URL
-
-        ///JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
+        JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
 
         addRequest(request);
     }

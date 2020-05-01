@@ -52,6 +52,7 @@ public class InputCodeFragment extends Fragment {
                 //TODO: Get user ID assigned by the database and put it into sharedPreferences to access in MyListings
                 SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
                 sp.edit().putBoolean("logged", true).apply();
+                sp.edit().putInt("userId", -1).apply(); //TODO: Replace this
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
