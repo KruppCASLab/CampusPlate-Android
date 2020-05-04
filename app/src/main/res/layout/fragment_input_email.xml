@@ -44,7 +44,7 @@
         android:layout_marginLeft="64dp"
         android:layout_marginTop="64dp"
         android:layout_marginRight="64dp"
-        android:text="Enter your email address. A one-time logon code will be sent to you."
+        android:text="Enter your BW email address. A one-time logon code will be sent to you."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

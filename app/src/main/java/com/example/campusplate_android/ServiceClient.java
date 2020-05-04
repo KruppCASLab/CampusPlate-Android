@@ -71,6 +71,7 @@ public class ServiceClient {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {
+            path = "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing"; //TODO: Get rid of this
             path = path + "/" + id;
             method = Request.Method.PUT;
         }
@@ -80,8 +81,8 @@ public class ServiceClient {
         JSONObject object = new JSONObject();
         try {
             object = new JSONObject(json);
+            object.remove("listingId");
             if(method == Request.Method.POST){
-                object.remove("listingId");
                 object.put("locationDescription", "EMACS"); //TODO: Set this in Listing object not here
             }
             //TODO: Set user id
