@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class ViewListingFragment extends Fragment {
         TextView locationDescription = view.findViewById(R.id.textView_displayLocationDescription);
         TextView quantity = view.findViewById(R.id.textView_displayQuantity);
         TextView creationTime = view.findViewById(R.id.textView_displayCreationTime);
+        final EditText quantityToPickUp = view.findViewById(R.id.editText_quantityToPickUp);
 
         if(getArguments() != null){
             listing = listingModel.getListing(getArguments().getInt("index"));
@@ -68,7 +70,7 @@ public class ViewListingFragment extends Fragment {
         view.findViewById(R.id.button_pickUpItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickedPickUpButton(view);
+                clickedPickUpButton(view, quantityToPickUp);
             }
         });
         return view;
@@ -82,37 +84,57 @@ public class ViewListingFragment extends Fragment {
         }
     }
 
-    private void clickedPickUpButton(View view){
-        ((MainActivity) mActivity).startProgressBar();
-        final View root = view;
-        new AlertDialog.Builder(mActivity)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Pick Up Item")
-                .setMessage("Are you sure you want to pick up this item?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+    private void clickedPickUpButton(View view, EditText quantityToPickUp){
+        final int quantity = Integer.parseInt(quantityToPickUp.getText().toString());
+        if(quantity > listing.quantity){
+            Toast.makeText(mActivity,"Quantity selected is greater than available quantity.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            ((MainActivity) mActivity).startProgressBar();
+            final View root = view;
+            new AlertDialog.Builder(mActivity)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Pick Up Item")
+                    .setMessage("Are you sure you want to pick up this item?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
 
-                        Location currentLocation = ((MainActivity) mActivity).getCurrentLocation(); //TODO: Use this to block pickup if too far away
-                        listingModel.deleteListing(new ListingModel.DeleteListingCompletionHandler() {
-                            @Override
-                            public void deleteListing() {
-                                Toast.makeText(mActivity, "Successfully Picked Up Item!", Toast.LENGTH_SHORT).show();
-                                ((MainActivity) mActivity).stopProgressBar();
-                                Navigation.findNavController(root).navigate(R.id.action_navigation_viewlisting_pop);
+                            Location currentLocation = ((MainActivity) mActivity).getCurrentLocation(); //TODO: Use this to block pickup if too far away
+                            if(quantity == listing.quantity) {
+                                listingModel.deleteListing(new ListingModel.DeleteListingCompletionHandler() {
+                                    @Override
+                                    public void deleteListing() {
+                                        Toast.makeText(mActivity, "Successfully Picked Up Item!", Toast.LENGTH_SHORT).show();
+                                        ((MainActivity) mActivity).stopProgressBar();
+                                        Navigation.findNavController(root).navigate(R.id.action_navigation_viewlisting_pop);
+                                    }
+                                }, listing.listingId);
                             }
-                        }, listing.listingId);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ((MainActivity) mActivity).stopProgressBar();
-                    }
-                })
-                .show();
-        //TODO: Instead of deleting item in database, set its status to picked up/inactive
+                            else{
+                                Listing updatedListing = new Listing(listing);
+                                updatedListing.quantity = updatedListing.quantity - quantity;
+                                listingModel.editListing(new ListingModel.EditListingCompletionHandler() {
+                                    @Override
+                                    public void editListing() {
+                                        Toast.makeText(mActivity, "Successfully Picked Up Item!", Toast.LENGTH_SHORT).show();
+                                        ((MainActivity) mActivity).stopProgressBar();
+                                        Navigation.findNavController(root).navigate(R.id.action_navigation_viewlisting_pop);
+                                    }
+                                }, updatedListing, listing.listingId);
+                                //Edit listing, subtract quantity
+                            }
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ((MainActivity) mActivity).stopProgressBar();
+                        }
+                    })
+                    .show();
+            //TODO: Instead of deleting item in database, set its status to picked up/inactive
+        }
     }
 }
