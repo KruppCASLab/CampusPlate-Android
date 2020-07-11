@@ -14,7 +14,6 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Edit Title"
-        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +26,6 @@
         android:ems="10"
         android:inputType="number"
         android:text="Edit Quantity"
-        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_editTitle" />
@@ -39,7 +37,6 @@
         android:layout_marginTop="64dp"
         android:text="Update Location? "
         android:textSize="18sp"
-        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_editQuantity" />
