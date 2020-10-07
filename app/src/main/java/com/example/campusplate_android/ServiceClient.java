@@ -37,7 +37,7 @@ public class ServiceClient {
         return requestQueue;
     }
 
-    private void addRequest(Request request) {
+    public void addRequest(Request request) {
         this.getRequestQueue().add(request);
     }
 
@@ -71,7 +71,7 @@ public class ServiceClient {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {
-            path = "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing"; //TODO: Get rid of this
+            path = "https://mopsdev.bw.edu/food/rest.php/users"; //TODO: Get rid of this
             path = path + "/" + id;
             method = Request.Method.PUT;
         }

@@ -14,12 +14,22 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.R;
+import com.example.campusplate_android.ServiceClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class InputEmailFragment extends Fragment {
-
     private Context mActivity;
 
     public static InputEmailFragment newInstance() {
@@ -40,6 +50,33 @@ public class InputEmailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
+                TextView inputEmail = view.findViewById(R.id.editText_inputEmail);
+
+                JSONObject emailObject = new JSONObject();
+
+                try {
+                    emailObject.put("userName", inputEmail.getText().toString());
+                }catch (JSONException error){
+                    error.printStackTrace();
+
+                }
+
+                ServiceClient serviceClient = ServiceClient.getInstance(mActivity.getApplicationContext());
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://mopsdev.bw.edu/food/rest.php/users", emailObject, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(mActivity.getApplicationContext(), "Sent", Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(mActivity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                serviceClient.addRequest(request);
+
             }
         });
         return view;
