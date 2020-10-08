@@ -29,6 +29,8 @@ import com.example.campusplate_android.ServiceClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class InputEmailFragment extends Fragment {
     private Context mActivity;
 
@@ -50,7 +52,7 @@ public class InputEmailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
-                TextView inputEmail = view.findViewById(R.id.editText_inputEmail);
+                TextView inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
 
                 JSONObject emailObject = new JSONObject();
 
@@ -61,7 +63,7 @@ public class InputEmailFragment extends Fragment {
 
                 }
 
-                ServiceClient serviceClient = ServiceClient.getInstance(mActivity.getApplicationContext());
+                ServiceClient serviceClient = ServiceClient.getInstance(requireActivity().getApplicationContext());
                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://mopsdev.bw.edu/food/rest.php/users", emailObject, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
