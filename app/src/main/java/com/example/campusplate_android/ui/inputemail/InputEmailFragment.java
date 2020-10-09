@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.campusplate_android.MainActivity;
+import com.example.campusplate_android.Model.Types.User;
+import com.example.campusplate_android.Model.UserModel;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.ServiceClient;
 
@@ -33,7 +35,7 @@ import java.util.Objects;
 
 public class InputEmailFragment extends Fragment {
     private Context mActivity;
-
+    private UserModel userModel;
     public static InputEmailFragment newInstance() {
         return new InputEmailFragment();
     }
@@ -41,7 +43,11 @@ public class InputEmailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
+        userModel = UserModel.getSharedInstance(mActivity.getApplicationContext());
+
+
         if (sp.getBoolean("logged",false)){
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
             startActivity(intent);
@@ -51,33 +57,22 @@ public class InputEmailFragment extends Fragment {
         view.findViewById(R.id.button_sendCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
+
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
-                TextView inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
-
-                JSONObject emailObject = new JSONObject();
-
-                try {
-                    emailObject.put("userName", inputEmail.getText().toString());
-                }catch (JSONException error){
-                    error.printStackTrace();
-
-                }
-
-                ServiceClient serviceClient = ServiceClient.getInstance(requireActivity().getApplicationContext());
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://mopsdev.bw.edu/food/rest.php/users", emailObject, new Response.Listener<JSONObject>() {
+                User user = new User(inputEmail.getText().toString());
+                userModel.addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(mActivity.getApplicationContext(), "Sent", Toast.LENGTH_SHORT).show();
-
+                    public void success() {
+                        Toast.makeText(mActivity.getApplicationContext(), "Created", Toast.LENGTH_SHORT).show();
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(mActivity.getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
 
+                    @Override
+                    public void error(int errorCode) {
+                        Toast.makeText(mActivity.getApplicationContext(), "Error:" + errorCode, Toast.LENGTH_SHORT).show();
                     }
                 });
-                serviceClient.addRequest(request);
+
 
             }
         });

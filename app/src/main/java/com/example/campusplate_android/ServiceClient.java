@@ -23,9 +23,15 @@ public class ServiceClient {
         this.context = ctx;
     }
 
+    synchronized public static ServiceClient getInstance() {
+        if (serviceClient == null) {
+            throw new RuntimeException("Service Client Uninitialized");
+        }
+        return serviceClient;
+    }
     synchronized public static ServiceClient getInstance(Context ctx) {
         if (serviceClient == null) {
-            serviceClient = new ServiceClient(ctx);
+            throw new RuntimeException("Service Client Uninitialized");
         }
         return serviceClient;
     }
@@ -60,24 +66,23 @@ public class ServiceClient {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~etimko16/WebServiceAssignment/rest.php/Listing/" + id, object, listener, errorListener);  //TODO: Change this back to Krupp's URL
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/food/rest.php/users/" + id, object, listener, errorListener);  //TODO: Change this back to Krupp's URL
 
         //JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, path, object, listener, errorListener);
 
         addRequest(request);
     }
 
-    public void put(String broker, Listing listing, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void put(String broker, Object obj, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {
-            path = "https://mopsdev.bw.edu/food/rest.php/users"; //TODO: Get rid of this
-            path = path + "/" + id;
+            path = "https://mopsdev.bw.edu/food/rest.php/users/" + id;
             method = Request.Method.PUT;
         }
 
         Gson gson = new Gson();
-        String json = gson.toJson(listing);
+        String json = gson.toJson(obj);
         JSONObject object = new JSONObject();
         try {
             object = new JSONObject(json);
@@ -96,7 +101,7 @@ public class ServiceClient {
         addRequest(request);
     }
 
-    public void post(String broker, Listing listing, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        this.put(broker, listing, -1, listener, errorListener);
+    public void post(String broker, Object obj, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        this.put(broker, obj, -1, listener, errorListener);
     }
 }
