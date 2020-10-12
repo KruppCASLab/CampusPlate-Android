@@ -10,4 +10,8 @@ public class User {
         this.userName = userName;
         this.pin = pin;
     }
+
+    public String getUserName() {
+        return userName;
+    }
 }

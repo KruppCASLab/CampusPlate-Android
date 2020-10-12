@@ -75,23 +75,19 @@ public class ServiceClient {
         addRequest(request);
     }
 
-    public void put(String broker, Object putObject, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void patch(String broker, Object putObject, String id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
-        int method = Request.Method.POST;
-        if (id != -1) {
+        int method = Request.Method.PATCH;
+
             path = "https://mopsdev.bw.edu/food/rest.php/users/" + id;
-            method = Request.Method.PUT;
-        }
+
+
 
         Gson gson = new Gson();
         String json = gson.toJson(putObject);
         JSONObject object = new JSONObject();
         try {
             object = new JSONObject(json);
-            object.remove("listingId");
-            if(method == Request.Method.POST){
-                object.put("locationDescription", "EMACS"); //TODO: Set this in Listing object not here
-            }
             //TODO: Set user id
             //TODO: Get location description from somewhere
         } catch (JSONException exception) {
@@ -104,6 +100,26 @@ public class ServiceClient {
     }
 
     public void post(String broker, Object postObject, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        this.put(broker, postObject, -1, listener, errorListener);
+        String path = url + broker.toLowerCase();
+        int method = Request.Method.PATCH;
+
+        path = "https://mopsdev.bw.edu/food/rest.php/users/";
+
+
+
+        Gson gson = new Gson();
+        String json = gson.toJson(postObject);
+        JSONObject object = new JSONObject();
+        try {
+            object = new JSONObject(json);
+            //TODO: Set user id
+            //TODO: Get location description from somewhere
+        } catch (JSONException exception) {
+            //TODO: Something with exception
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
+
+        addRequest(request);
     }
 }
