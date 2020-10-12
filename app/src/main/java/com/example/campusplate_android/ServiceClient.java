@@ -31,10 +31,12 @@ public class ServiceClient {
     }
     synchronized public static ServiceClient getInstance(Context ctx) {
         if (serviceClient == null) {
-            throw new RuntimeException("Service Client Uninitialized");
+            serviceClient = new ServiceClient(ctx);
         }
         return serviceClient;
     }
+
+
 
     synchronized private RequestQueue getRequestQueue() {
         if (requestQueue == null) {
@@ -43,7 +45,7 @@ public class ServiceClient {
         return requestQueue;
     }
 
-    public void addRequest(Request request) {
+    private void addRequest(Request request) {
         this.getRequestQueue().add(request);
     }
 
@@ -73,7 +75,7 @@ public class ServiceClient {
         addRequest(request);
     }
 
-    public void put(String broker, Object obj, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void put(String broker, Object putObject, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
         int method = Request.Method.POST;
         if (id != -1) {
@@ -82,7 +84,7 @@ public class ServiceClient {
         }
 
         Gson gson = new Gson();
-        String json = gson.toJson(obj);
+        String json = gson.toJson(putObject);
         JSONObject object = new JSONObject();
         try {
             object = new JSONObject(json);
@@ -101,7 +103,7 @@ public class ServiceClient {
         addRequest(request);
     }
 
-    public void post(String broker, Object obj, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        this.put(broker, obj, -1, listener, errorListener);
+    public void post(String broker, Object postObject, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        this.put(broker, postObject, -1, listener, errorListener);
     }
 }

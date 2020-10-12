@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ServiceClient.getInstance(this.getApplicationContext());
+
         setContentView(R.layout.activity_main);
         stopProgressBar();
         BottomNavigationView navView = findViewById(R.id.nav_view);
