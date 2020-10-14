@@ -16,18 +16,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.Types.User;
+import com.example.campusplate_android.Model.UserModel;
 import com.example.campusplate_android.R;
 
 public class InputCodeFragment extends Fragment {
 
     private Context mActivity;
+    private UserModel userModel;
 
     public static InputCodeFragment newInstance() {
         return new InputCodeFragment();
@@ -56,6 +61,22 @@ public class InputCodeFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
+
+                User user = new User("djohnson18@bw.edu",Integer.parseInt(inputCode.getText().toString()));
+                userModel.updateUser(user, new UserModel.UpdateUserCompletionHandler() {
+                    @Override
+                    public void success(String token) {
+                        Toast.makeText(mActivity.getApplicationContext(), "Created", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void error(int errorCode) {
+                        Toast.makeText(mActivity.getApplicationContext(), "Error:" + errorCode, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
             }
         });
         return view;

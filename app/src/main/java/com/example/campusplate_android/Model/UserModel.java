@@ -2,7 +2,7 @@ package com.example.campusplate_android.Model;
 
 import android.content.Context;
 import android.media.session.MediaSession;
-
+//import java.util.UUID;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.Model.Types.User;
@@ -52,7 +52,7 @@ public class UserModel {
     }
 
     public void updateUser(User user, final UpdateUserCompletionHandler completionHandler){
-        ServiceClient serviceClient = ServiceClient.getInstance();
+        final ServiceClient serviceClient = ServiceClient.getInstance();
         serviceClient.patch("Users", user, user.getUserName(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
