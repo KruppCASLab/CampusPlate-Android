@@ -76,7 +76,7 @@ public class ServiceClient {
     }
 
     public void patch(String broker, Object putObject, String id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        String path = url + broker.toLowerCase();
+        String path;
         int method = Request.Method.PATCH;
 
             path = "https://mopsdev.bw.edu/food/rest.php/users/" + id;
