@@ -56,6 +56,7 @@ public class InputCodeFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+
             }
         });
         return view;
