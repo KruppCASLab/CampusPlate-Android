@@ -138,7 +138,7 @@ public class ListingModel {
 
     public synchronized void editListing(final EditListingCompletionHandler completionHandler, Listing listing, int id) {
         ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
-        client.put("listings", listing, id, new Response.Listener<JSONObject>() {
+        client.patch("listings", listing, Integer.toString(id), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //TODO: Do something with response (confirmation?)

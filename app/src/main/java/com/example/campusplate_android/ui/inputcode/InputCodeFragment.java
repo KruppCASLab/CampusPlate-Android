@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.campusplate_android.Credential;
+import com.example.campusplate_android.CredentialManager;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.User;
@@ -62,12 +64,13 @@ public class InputCodeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
+                Credential cred = CredentialManager.shared().getCredential();
 
-                User user = new User("djohnson18@bw.edu",Integer.parseInt(inputCode.getText().toString()));
+                User user = new User(cred.getUserName(),Integer.parseInt(inputCode.getText().toString()));
                 userModel.updateUser(user, new UserModel.UpdateUserCompletionHandler() {
                     @Override
                     public void success(String token) {
-                        Toast.makeText(mActivity.getApplicationContext(), "Created", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void error(int errorCode) {
