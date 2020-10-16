@@ -22,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.campusplate_android.Credential;
+import com.example.campusplate_android.CredentialManager;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.Types.User;
 import com.example.campusplate_android.Model.UserModel;
@@ -36,6 +38,7 @@ import java.util.Objects;
 public class InputEmailFragment extends Fragment {
     private Context mActivity;
     private UserModel userModel;
+
     public static InputEmailFragment newInstance() {
         return new InputEmailFragment();
     }
@@ -58,7 +61,8 @@ public class InputEmailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
-
+                Credential credential = new Credential(inputEmail.getText().toString());
+                CredentialManager credentialManager = CredentialManager.shared().saveCredential(credential);
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
                 User user = new User(inputEmail.getText().toString());
                 userModel.addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
