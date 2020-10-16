@@ -101,7 +101,7 @@ public class ServiceClient {
 
     public void post(String broker, Object postObject, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         //String path = url + broker.toLowerCase();
-        int method = Request.Method.PATCH;
+        int method = Request.Method.POST;
 
        String  path = "https://mopsdev.bw.edu/food/rest.php/users/";
 
