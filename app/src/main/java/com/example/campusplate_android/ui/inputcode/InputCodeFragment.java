@@ -64,12 +64,15 @@ public class InputCodeFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
-                Credential cred = CredentialManager.shared().getCredential();
+                final CredentialManager credentialManager = CredentialManager.shared();
+                final Credential cred = credentialManager.getCredential();
 
                 User user = new User(cred.getUserName(),Integer.parseInt(inputCode.getText().toString()));
                 userModel.updateUser(user, new UserModel.UpdateUserCompletionHandler() {
                     @Override
                     public void success(String token) {
+                        Credential account = new Credential(cred.getUserName(), token);
+                        credentialManager.saveCredential(account);
                         Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
                     @Override
