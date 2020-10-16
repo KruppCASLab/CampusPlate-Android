@@ -2,12 +2,13 @@ package com.example.campusplate_android.Model;
 
 import android.content.Context;
 import android.media.session.MediaSession;
-//import java.util.UUID;
+import java.util.UUID;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.Model.Types.User;
 import com.example.campusplate_android.ServiceClient;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserModel {
@@ -51,12 +52,22 @@ public class UserModel {
         });
     }
 
-    public void updateUser(User user, final UpdateUserCompletionHandler completionHandler){
+    public void updateUser(final User user, final UpdateUserCompletionHandler completionHandler){
         final ServiceClient serviceClient = ServiceClient.getInstance();
         serviceClient.patch("Users", user, user.getUserName(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
         // figure out how to get token on the completionHandler success
+                try {
+                   // JSONObject getStatus = response.getJSONObject("Status");
+
+                    JSONObject getGuid = response.getJSONObject("data");
+                    String guid = getGuid.getString("GUID");
+                    completionHandler.success(guid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         }, new Response.ErrorListener() {
