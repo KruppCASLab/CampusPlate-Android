@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 public class UserModel {
     private static UserModel sharedInstance;
-    private Context context;
 
     public interface AddUpdateUserCompletionHandler {
         void success();
@@ -25,13 +24,12 @@ public class UserModel {
         void error(int errorCode);
     }
 
-    private UserModel(Context ctx) {
-        this.context = ctx;
+    private UserModel() {
     }
 
-    static synchronized public UserModel getSharedInstance(Context ctx) {
+    static synchronized public UserModel getSharedInstance() {
         if (sharedInstance == null) {
-            sharedInstance = new UserModel(ctx);
+            sharedInstance = new UserModel();
         }
         return sharedInstance;
     }

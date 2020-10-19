@@ -37,7 +37,6 @@ import java.util.Objects;
 
 public class InputEmailFragment extends Fragment {
     private Context mActivity;
-    private UserModel userModel;
 
     public static InputEmailFragment newInstance() {
         return new InputEmailFragment();
@@ -48,12 +47,10 @@ public class InputEmailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
-        userModel = UserModel.getSharedInstance(mActivity.getApplicationContext());
-
 
         if (sp.getBoolean("logged",false)){
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+//            startActivity(intent);
         }
         View view = inflater.inflate(R.layout.fragment_input_email, container, false);
 
@@ -65,7 +62,7 @@ public class InputEmailFragment extends Fragment {
                 CredentialManager credentialManager = CredentialManager.shared().saveCredential(credential);
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
                 User user = new User(inputEmail.getText().toString());
-                userModel.addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
+                UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
                     public void success() {
                         Toast.makeText(mActivity.getApplicationContext(), "Created", Toast.LENGTH_SHORT).show();

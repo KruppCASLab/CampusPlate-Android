@@ -34,7 +34,6 @@ import com.example.campusplate_android.R;
 public class InputCodeFragment extends Fragment {
 
     private Context mActivity;
-    private UserModel userModel;
 
     public static InputCodeFragment newInstance() {
         return new InputCodeFragment();
@@ -55,20 +54,12 @@ public class InputCodeFragment extends Fragment {
         view.findViewById(R.id.button_submitCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Show dialogue with terms, accept terms
-                //TODO: Get user ID assigned by the database and put it into sharedPreferences to access in MyListings
-                SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
-                sp.edit().putBoolean("logged", true).apply();
-                sp.edit().putInt("userId", -1).apply(); //TODO: Replace this
-
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
                 final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
                 final CredentialManager credentialManager = CredentialManager.shared();
                 final Credential cred = credentialManager.getCredential();
 
                 User user = new User(cred.getUserName(),Integer.parseInt(inputCode.getText().toString()));
-                userModel.updateUser(user, new UserModel.UpdateUserCompletionHandler() {
+                UserModel.getSharedInstance().updateUser(user, new UserModel.UpdateUserCompletionHandler() {
                     @Override
                     public void success(String token) {
                         Credential account = new Credential(cred.getUserName(), token);
