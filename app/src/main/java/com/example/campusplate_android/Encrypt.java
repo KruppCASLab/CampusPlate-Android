@@ -34,18 +34,18 @@ public class Encrypt {
     private KeyStore keyStore;
     int KEY_SIZE = 256;
 
-    public byte[] encryptText(final String alias, final String textToEncrypt)
+    public byte[] encryptText(final String alias, Credential credential)
             throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IOException,
             InvalidAlgorithmParameterException, SignatureException, BadPaddingException,
             IllegalBlockSizeException, CertificateException {
-
+        String cred = credential.getUserName() + "," + credential.getPassWord();
         final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, createKey(alias));
 
         iv = cipher.getIV();
 
-        return (encryption = cipher.doFinal(textToEncrypt.getBytes(StandardCharsets.UTF_8)));
+        return (encryption = cipher.doFinal(cred.getBytes(StandardCharsets.UTF_8)));
     }
 
     private SecretKey createKey(String alias) throws NoSuchProviderException,
