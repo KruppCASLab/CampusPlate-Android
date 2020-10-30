@@ -30,6 +30,7 @@ import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.User;
 import com.example.campusplate_android.Model.UserModel;
 import com.example.campusplate_android.R;
+import com.example.campusplate_android.SharedPreferencesManager;
 
 public class InputCodeFragment extends Fragment {
 
@@ -64,6 +65,9 @@ public class InputCodeFragment extends Fragment {
                     public void success(String token) {
                         Credential account = new Credential(cred.getUserName(), token);
                         credentialManager.saveCredential(account);
+                        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(requireActivity().getSharedPreferences("Tready", Context.MODE_PRIVATE));
+                        CredentialManager credentialService = new CredentialManager(sharedPreferencesManager, requireActivity());
+                        int j = 5;
                         Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
                     @Override
