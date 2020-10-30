@@ -59,12 +59,17 @@ public class InputEmailFragment extends Fragment {
             public void onClick(View view) {
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
                 Credential credential = new Credential(inputEmail.getText().toString());
-                CredentialManager credentialManager = CredentialManager.shared().saveCredential(credential);
+                final CredentialManager credentialManager = CredentialManager.shared();
+                credentialManager.saveCredential(credential);
+                credentialManager.removeAllKeyStorePairs();
                 Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
                 User user = new User(inputEmail.getText().toString());
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
                     public void success() {
+
+//                        credentialManager.createNewKeys(inputEmail.getText().toString());
+                        credentialManager.createNewKeys("terrell");
                         Toast.makeText(mActivity.getApplicationContext(), "Created", Toast.LENGTH_SHORT).show();
                     }
 

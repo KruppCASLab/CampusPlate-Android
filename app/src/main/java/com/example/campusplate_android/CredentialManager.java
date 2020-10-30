@@ -79,10 +79,15 @@ public class CredentialManager {
             if (!mKeyStore.containsAlias(publicKey)) {
 
 
+                Calendar start = Calendar.getInstance();
+                Calendar end = Calendar.getInstance();
+                end.add(Calendar.YEAR, 1);
                 KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(publicKey,
                         KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                        .setCertificateSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
+                        .setCertificateSerialNumber(BigInteger.ONE)
+                        .setCertificateNotBefore(start.getTime())
+                        .setCertificateNotAfter(end.getTime())
                         .build();
                 KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", KEYSTORE_NAME);
                 generator.initialize(spec);

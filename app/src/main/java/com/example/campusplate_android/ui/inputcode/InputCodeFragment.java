@@ -59,13 +59,13 @@ public class InputCodeFragment extends Fragment {
                 final CredentialManager credentialManager = CredentialManager.shared();
                 final Credential cred = credentialManager.getCredential();
 
-                User user = new User(cred.getUserName(),Integer.parseInt(inputCode.getText().toString()));
+                final User user = new User(cred.getUserName(),Integer.parseInt(inputCode.getText().toString()));
                 UserModel.getSharedInstance().updateUser(user, new UserModel.UpdateUserCompletionHandler() {
                     @Override
                     public void success(String token) {
                         Credential account = new Credential(cred.getUserName(), token);
-                        credentialManager.saveCredential(account);
-                        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(requireActivity().getSharedPreferences("Tready", Context.MODE_PRIVATE));
+                        credentialManager.storeUserCredentials(cred.getUserName(), token);
+                        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(requireActivity().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
                         CredentialManager credentialService = new CredentialManager(sharedPreferencesManager, requireActivity());
                         int j = 5;
                         Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
