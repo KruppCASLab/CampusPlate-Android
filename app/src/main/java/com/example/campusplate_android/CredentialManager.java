@@ -29,7 +29,6 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.security.auth.x500.X500Principal;
 public class CredentialManager {
-
     private static CredentialManager credentialManager;
     private static SharedPreferencesManager mSharedPrefManager;
     private static Context mContext;
@@ -38,31 +37,19 @@ public class CredentialManager {
 
     private Credential credential;
 
-    private static final String TAG = CredentialManager.class.getSimpleName();
-    Encrypt encryptor = new Encrypt();
-
-    Decrypt decryptor;
 
     public CredentialManager(SharedPreferencesManager mSharedPrefManager, Context mContext){
         CredentialManager.mSharedPrefManager = mSharedPrefManager;
         CredentialManager.mContext = mContext;
     }
 
-
-    synchronized public static CredentialManager shared()  {
-        if(credentialManager == null){
-            credentialManager = new CredentialManager(mSharedPrefManager, mContext);
-        }
-        return credentialManager;
-    }
-
-    public CredentialManager saveCredential(Credential credential) {
+    public void saveCredential(Credential credential) {
+        this.createNewKeys(credential.userName);
         this.credential = credential;
 
         if(credential.getPassWord() != null) {
             encryptString(credential.getPassWord(), credential.getUserName());
         }
-        return null;
     }
 
     public Credential getCredential(){
@@ -81,7 +68,7 @@ public class CredentialManager {
 
                 Calendar start = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
-                end.add(Calendar.YEAR, 1);
+                end.add(Calendar.YEAR, 4);
                 KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(publicKey,
                         KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                         .setCertificateSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
