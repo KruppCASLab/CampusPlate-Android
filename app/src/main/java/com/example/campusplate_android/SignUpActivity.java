@@ -25,6 +25,5 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ServiceClient.getInstance(this.getApplicationContext());
         setContentView(R.layout.activity_sign_up);
-
     }
 }

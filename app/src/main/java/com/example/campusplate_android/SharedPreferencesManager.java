@@ -26,6 +26,7 @@ public class SharedPreferencesManager {
 
     /**
      * Deletes keys passed as args.
+     *
      * @param keys list of keys to delete
      */
     public void remove(Key... keys) {

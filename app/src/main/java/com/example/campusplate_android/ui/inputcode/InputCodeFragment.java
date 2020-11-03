@@ -35,6 +35,7 @@ import com.example.campusplate_android.SharedPreferencesManager;
 public class InputCodeFragment extends Fragment {
 
     private Context mActivity;
+    private String username;
 
     public static InputCodeFragment newInstance() {
         return new InputCodeFragment();
@@ -45,7 +46,7 @@ public class InputCodeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_input_code, container, false);
 
-
+        username = getArguments().getString("username");
 
         view.findViewById(R.id.textView_terms).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,20 +61,18 @@ public class InputCodeFragment extends Fragment {
                 final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
 
                 SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
-                final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager, getActivity().getApplicationContext());
-
-                final String username = credentialManager.getUsername();
+                final CredentialManager credentialManager = new CredentialManager(getActivity().getApplicationContext(), sharedPreferencesManager);
 
                 final User user = new User(username,Integer.parseInt(inputCode.getText().toString()));
                     UserModel.getSharedInstance().updateUser(user, new UserModel.UpdateUserCompletionHandler() {
                     @Override
-                    public void success(String token) {
+                    public void success(final String token) {
                         Credential account = new Credential(username, token);
-                       credentialManager.storeUserCredentials(username, token);
+                        credentialManager.createNewKeys(username);
+                        credentialManager.storeUserCredentials(username, token);
 
                         String credentials = credentialManager.getUsername() + credentialManager.getUserPassword();
 
-                        int j = 5;
                         Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
                     @Override
@@ -81,13 +80,6 @@ public class InputCodeFragment extends Fragment {
                         Toast.makeText(mActivity.getApplicationContext(), "Error:" + errorCode, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-
-
-
-
-                
             }
         });
         return view;

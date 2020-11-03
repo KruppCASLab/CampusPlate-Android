@@ -1,24 +1,19 @@
 package com.example.campusplate_android;
 
 import android.content.Context;
-import android.security.keystore.KeyGenParameterSpec;
-import android.security.keystore.KeyProperties;
-import android.util.Base64;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-
 import android.security.KeyPairGeneratorSpec;
+import android.util.Base64;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,34 +24,22 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.security.auth.x500.X500Principal;
 public class CredentialManager {
-    private static CredentialManager credentialManager;
-    private static SharedPreferencesManager mSharedPrefManager;
-    private static Context mContext;
+
+    private final SharedPreferencesManager mSharedPrefManager;
     private static final String KEYSTORE_NAME = "AndroidKeyStore";
     private KeyStore mKeyStore;
+    private final Context mContext;
 
-    private Credential credential;
 
-
-    public CredentialManager(SharedPreferencesManager mSharedPrefManager, Context mContext){
-        CredentialManager.mSharedPrefManager = mSharedPrefManager;
-        CredentialManager.mContext = mContext;
+    public CredentialManager(Context context, SharedPreferencesManager sharedPreferencesManager) {
+        this.mContext = context;
+        mSharedPrefManager = sharedPreferencesManager;
     }
 
-    public void saveCredential(Credential credential) {
-        this.createNewKeys(credential.userName);
-        this.credential = credential;
-
-        if(credential.getPassWord() != null) {
-            encryptString(credential.getPassWord(), credential.getUserName());
-        }
-    }
-
-    public Credential getCredential(){
-        return credential;
-    }
-
-
+    /**
+     * Creates new pair of public - private keys
+     * @param publicKey user's username
+     */
     public void createNewKeys(String publicKey) {
         try {
             mKeyStore = KeyStore.getInstance(KEYSTORE_NAME);
@@ -64,17 +47,16 @@ public class CredentialManager {
 
             // Create new key if needed
             if (!mKeyStore.containsAlias(publicKey)) {
-
-
                 Calendar start = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
-                end.add(Calendar.YEAR, 4);
-                KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(publicKey,
-                        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                        .setCertificateSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
-                        .setCertificateSerialNumber(BigInteger.ONE)
-                        .setCertificateNotBefore(start.getTime())
-                        .setCertificateNotAfter(end.getTime())
+                end.add(Calendar.YEAR, 1);
+
+                KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
+                        .setAlias(publicKey)
+                        .setSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
+                        .setSerialNumber(BigInteger.ONE)
+                        .setStartDate(start.getTime())
+                        .setEndDate(end.getTime())
                         .build();
                 KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", KEYSTORE_NAME);
                 generator.initialize(spec);
@@ -108,7 +90,7 @@ public class CredentialManager {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             CipherOutputStream cipherOutputStream = new CipherOutputStream(
                     outputStream, inCipher);
-            cipherOutputStream.write(clearText.getBytes(StandardCharsets.UTF_8));
+            cipherOutputStream.write(clearText.getBytes("UTF-8"));
             cipherOutputStream.close();
 
             byte[] vals = outputStream.toByteArray();
@@ -147,7 +129,7 @@ public class CredentialManager {
                 bytes[i] = values.get(i);
             }
 
-            return new String(bytes, 0, bytes.length, StandardCharsets.UTF_8);
+            return new String(bytes, 0, bytes.length, "UTF-8");
 
         } catch (Exception e) {
             return null;

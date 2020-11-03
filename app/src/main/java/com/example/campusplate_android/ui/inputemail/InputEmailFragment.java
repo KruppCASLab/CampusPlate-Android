@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,14 @@ public class InputEmailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
+        final CredentialManager credentialManager = new CredentialManager(getActivity().getApplicationContext(), sharedPreferencesManager);
+
+        // TODO: Remove the below 3 lines, just verifies that username and password are saved after creation
+        String username = credentialManager.getUsername();
+        String password = credentialManager.getUserPassword();
+        System.out.println(username + password);
+
         SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
         if (sp.getBoolean("logged",false)){
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
@@ -58,21 +67,19 @@ public class InputEmailFragment extends Fragment {
             @Override
             public void onClick(final View view) {
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
-                String email = inputEmail.getText().toString();
+                final String email = inputEmail.getText().toString();
                 final Credential credential = new Credential(email);
-                SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
-                final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager, getActivity().getApplicationContext());
+
+                credentialManager.removeAllKeyStorePairs();
                 credentialManager.removeUserCredentials();
-
-
 
                 User user = new User(inputEmail.getText().toString());
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
                     public void success() {
-                        credentialManager.saveCredential(credential);
-                        Toast.makeText(mActivity.getApplicationContext(), "Created", Toast.LENGTH_SHORT).show();
-                        Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username", email);
+                        Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment, bundle);
                     }
 
                     @Override
