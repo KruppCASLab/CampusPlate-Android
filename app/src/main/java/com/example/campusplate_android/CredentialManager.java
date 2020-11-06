@@ -2,6 +2,8 @@ package com.example.campusplate_android;
 
 import android.content.Context;
 import android.security.KeyPairGeneratorSpec;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 import android.util.Base64;
 import android.widget.Toast;
 
@@ -47,16 +49,17 @@ public class CredentialManager {
 
             // Create new key if needed
             if (!mKeyStore.containsAlias(publicKey)) {
+
+
                 Calendar start = Calendar.getInstance();
                 Calendar end = Calendar.getInstance();
-                end.add(Calendar.YEAR, 1);
-
-                KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
-                        .setAlias(publicKey)
-                        .setSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
-                        .setSerialNumber(BigInteger.ONE)
-                        .setStartDate(start.getTime())
-                        .setEndDate(end.getTime())
+                end.add(Calendar.YEAR, 4);
+                KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(publicKey,
+                        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                        .setCertificateSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
+                        .setCertificateSerialNumber(BigInteger.ONE)
+                        .setCertificateNotBefore(start.getTime())
+                        .setCertificateNotAfter(end.getTime())
                         .build();
                 KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", KEYSTORE_NAME);
                 generator.initialize(spec);
