@@ -61,14 +61,13 @@ public class InputCodeFragment extends Fragment {
                 final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
 
                 SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
-                final CredentialManager credentialManager = new CredentialManager(getActivity().getApplicationContext(), sharedPreferencesManager);
+                final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager);
 
                 final User user = new User(username,Integer.parseInt(inputCode.getText().toString()));
                     UserModel.getSharedInstance().updateUser(user, new UserModel.UpdateUserCompletionHandler() {
                     @Override
                     public void success(final String token) {
                         Credential account = new Credential(username, token);
-                        credentialManager.createNewKeys(username);
                         credentialManager.storeUserCredentials(username, token);
 
                         String credentials = credentialManager.getUsername() + credentialManager.getUserPassword();

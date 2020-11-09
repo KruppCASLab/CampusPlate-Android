@@ -1,188 +1,172 @@
 package com.example.campusplate_android;
 
 import android.content.Context;
-import android.security.KeyPairGeneratorSpec;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyProperties;
 import android.util.Base64;
-import android.widget.Toast;
+import android.util.Log;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Enumeration;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.security.auth.x500.X500Principal;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+
 public class CredentialManager {
-
-    private final SharedPreferencesManager mSharedPrefManager;
+    private final SharedPreferencesManager sharedPreferencesManager;
     private static final String KEYSTORE_NAME = "AndroidKeyStore";
-    private KeyStore mKeyStore;
-    private final Context mContext;
+    private KeyStore keyStore;
 
-
-    public CredentialManager(Context context, SharedPreferencesManager sharedPreferencesManager) {
-        this.mContext = context;
-        mSharedPrefManager = sharedPreferencesManager;
-    }
-
-    /**
-     * Creates new pair of public - private keys
-     * @param publicKey user's username
-     */
-    public void createNewKeys(String publicKey) {
+    public CredentialManager(SharedPreferencesManager sharedPreferencesManager) {
+        this.sharedPreferencesManager = sharedPreferencesManager;
         try {
-            mKeyStore = KeyStore.getInstance(KEYSTORE_NAME);
-            mKeyStore.load(null);
-
-            // Create new key if needed
-            if (!mKeyStore.containsAlias(publicKey)) {
-                Calendar start = Calendar.getInstance();
-                Calendar end = Calendar.getInstance();
-                end.add(Calendar.YEAR, 1);
-
-                KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
-                        .setAlias(publicKey)
-                        .setSubject(new X500Principal("CN=Sample Name, O=Android Authority"))
-                        .setSerialNumber(BigInteger.ONE)
-                        .setStartDate(start.getTime())
-                        .setEndDate(end.getTime())
-                        .build();
-                KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", KEYSTORE_NAME);
-                generator.initialize(spec);
-
-                generator.generateKeyPair();
-                storePublicKey(publicKey);
-            }
-        } catch (Exception e) {
-            Toast.makeText(mContext, "Exception " + e.getMessage() + " occured", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * Encrypt clear text with private key
-     *
-     * @param clearText string to encrypt
-     * @param alias     KeyStore public key for this pair
-     * @return cipher text string
-     */
-    private String encryptString(String clearText, String alias) {
-        try {
-            mKeyStore = KeyStore.getInstance(KEYSTORE_NAME);
-            mKeyStore.load(null);
-
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) mKeyStore.getEntry(alias, null);
-            RSAPublicKey publicKey = (RSAPublicKey) privateKeyEntry.getCertificate().getPublicKey();
-
-            Cipher inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
-            inCipher.init(Cipher.ENCRYPT_MODE, publicKey);
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(
-                    outputStream, inCipher);
-            cipherOutputStream.write(clearText.getBytes("UTF-8"));
-            cipherOutputStream.close();
-
-            byte[] vals = outputStream.toByteArray();
-            return Base64.encodeToString(vals, Base64.DEFAULT);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * Decrypts unreadable cipher text using the private key
-     *
-     * @param cipherText string to decrypt
-     * @param alias      KeyStore public key for this pair
-     * @return clear text String
-     */
-    private String decryptString(String cipherText, String alias) {
-        try {
-            mKeyStore = KeyStore.getInstance(KEYSTORE_NAME);
-            mKeyStore.load(null);
-            KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) mKeyStore.getEntry(alias, null);
-
-            Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-            output.init(Cipher.DECRYPT_MODE, privateKeyEntry.getPrivateKey());
-
-            CipherInputStream cipherInputStream = new CipherInputStream(
-                    new ByteArrayInputStream(Base64.decode(cipherText, Base64.DEFAULT)), output);
-            ArrayList<Byte> values = new ArrayList<>();
-            int nextByte;
-            while ((nextByte = cipherInputStream.read()) != -1) {
-                values.add((byte) nextByte);
-            }
-
-            byte[] bytes = new byte[values.size()];
-            for (int i = 0; i < bytes.length; i++) {
-                bytes[i] = values.get(i);
-            }
-
-            return new String(bytes, 0, bytes.length, "UTF-8");
-
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public void storeUserCredentials(String user, String pass) {
-        String encryptedPass = encryptString(pass, user);
-        mSharedPrefManager.put(SharedPreferencesManager.Key.USERNAME_STR, user);
-        mSharedPrefManager.put(SharedPreferencesManager.Key.PASSWORD_STR, encryptedPass);
-    }
-
-    private void storePublicKey(String publicKey) {
-        mSharedPrefManager.put(SharedPreferencesManager.Key.USERKEY_STR, publicKey);
-    }
-
-    public void removeUserCredentials() {
-        mSharedPrefManager.remove(SharedPreferencesManager.Key.USERKEY_STR,
-                SharedPreferencesManager.Key.USERNAME_STR,
-                SharedPreferencesManager.Key.PASSWORD_STR);
-    }
-
-    private static void removeKeyStorePairWithPublicKey(String key) {
-        try {
-            KeyStore keyStore = KeyStore.getInstance(KEYSTORE_NAME);
+            keyStore = KeyStore.getInstance(KEYSTORE_NAME);
             keyStore.load(null);
-            keyStore.deleteEntry(key);
-        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
         }
-    }
-
-    public void removeAllKeyStorePairs() {
-        try {
-            mKeyStore = KeyStore.getInstance(KEYSTORE_NAME);
-            mKeyStore.load(null);
-            final Enumeration<String> entries = mKeyStore.aliases();
-
-            while (entries.hasMoreElements()) {
-                final String alias = entries.nextElement();
-                mKeyStore.deleteEntry(alias);
-            }
-        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
+        catch(Exception e) {
+            Log.e("Keystore", "Unable to initialize keystore");
         }
     }
 
     public String getUsername() {
-        return mSharedPrefManager.getString(SharedPreferencesManager.Key.USERNAME_STR);
+        return sharedPreferencesManager.getString(SharedPreferencesManager.Key.USERNAME_STR);
     }
 
     public String getUserPassword() {
-        String password = mSharedPrefManager.getString(SharedPreferencesManager.Key.PASSWORD_STR);
-        return decryptString(password, getUsername());
+        String password = sharedPreferencesManager.getString(SharedPreferencesManager.Key.PASSWORD_STR);
+        CipherEntry entry = CipherEntry.fromString(password);
+        return decryptString(entry, getUsername());
+    }
+
+    public void storeUserCredentials(String user, String pass) {
+        createNewKeys(user);
+        CipherEntry entry = encryptString(pass, user);
+        sharedPreferencesManager.put(SharedPreferencesManager.Key.USERNAME_STR, user);
+        sharedPreferencesManager.put(SharedPreferencesManager.Key.PASSWORD_STR, entry.toString());
+    }
+
+    public void removeUserCredentials() {
+        removeAllKeyStorePairs();
+        sharedPreferencesManager.remove(SharedPreferencesManager.Key.USERKEY_STR,
+                SharedPreferencesManager.Key.USERNAME_STR,
+                SharedPreferencesManager.Key.PASSWORD_STR);
+
+    }
+
+    private void createNewKeys(String alias) {
+        try {
+            if (!keyStore.containsAlias(alias)) {
+                KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_DECRYPT | KeyProperties.PURPOSE_ENCRYPT)
+                        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                        .setRandomizedEncryptionRequired(true)
+                        .build();
+                KeyGenerator generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, KEYSTORE_NAME);
+                generator.init(spec);
+
+                generator.generateKey();
+                storeUserAlias(alias);
+            }
+        } catch (Exception e) {
+            Log.e("Keystore", "Unable to generate key");
+        }
+    }
+
+    private CipherEntry encryptString(String clearText, String alias) {
+        try {
+            KeyStore.SecretKeyEntry entry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
+            SecretKey key = entry.getSecretKey();
+
+            Cipher inCipher = Cipher.getInstance("AES/GCM/NoPadding");
+            inCipher.init(Cipher.ENCRYPT_MODE, key);
+
+            byte [] iv = inCipher.getIV();
+
+            byte [] encrypted = inCipher.doFinal(clearText.getBytes());
+            String encryptedText =  Base64.encodeToString(encrypted, Base64.DEFAULT);
+
+            return new CipherEntry(iv, encryptedText);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private String decryptString(CipherEntry cipherEntry, String alias) {
+        try {
+            KeyStore.SecretKeyEntry entry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
+            SecretKey key = entry.getSecretKey();
+
+            Cipher inCipher = Cipher.getInstance("AES/GCM/NoPadding");
+            GCMParameterSpec spec = new GCMParameterSpec(128, cipherEntry.iv);
+            inCipher.init(Cipher.DECRYPT_MODE, key, spec);
+
+            byte [] decrypted = inCipher.doFinal(Base64.decode(cipherEntry.encryptedString.getBytes(), Base64.DEFAULT));
+            String text = new String(decrypted);
+
+            return text;
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void storeUserAlias(String alias) {
+        sharedPreferencesManager.put(SharedPreferencesManager.Key.USERKEY_STR, alias);
+    }
+
+    private void removeKeyStorePairWithPublicKey(String key) {
+        try {
+            keyStore.deleteEntry(key);
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeAllKeyStorePairs() {
+        try {
+            keyStore = KeyStore.getInstance(KEYSTORE_NAME);
+            keyStore.load(null);
+            final Enumeration<String> entries = keyStore.aliases();
+
+            while (entries.hasMoreElements()) {
+                final String alias = entries.nextElement();
+                keyStore.deleteEntry(alias);
+            }
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static public class CipherEntry {
+        public byte [] iv;
+        public String encryptedString;
+
+        public CipherEntry(byte[] iv, String encryptedString) {
+            this.iv = iv;
+            this.encryptedString = encryptedString;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            Gson gson = new Gson();
+            return Base64.encodeToString(gson.toJson(this).getBytes(), Base64.DEFAULT);
+        }
+
+        static public CipherEntry fromString(String string) {
+            Gson gson = new Gson();
+
+            return gson.fromJson(new String(Base64.decode(string.getBytes(), Base64.DEFAULT)), CredentialManager.CipherEntry.class);
+        }
     }
 }

@@ -49,12 +49,7 @@ public class InputEmailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
-        final CredentialManager credentialManager = new CredentialManager(getActivity().getApplicationContext(), sharedPreferencesManager);
-
-        // TODO: Remove the below 3 lines, just verifies that username and password are saved after creation
-        String username = credentialManager.getUsername();
-        String password = credentialManager.getUserPassword();
-        System.out.println(username + password);
+        final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager);
 
         SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
         if (sp.getBoolean("logged",false)){
@@ -70,7 +65,6 @@ public class InputEmailFragment extends Fragment {
                 final String email = inputEmail.getText().toString();
                 final Credential credential = new Credential(email);
 
-                credentialManager.removeAllKeyStorePairs();
                 credentialManager.removeUserCredentials();
 
                 User user = new User(inputEmail.getText().toString());
