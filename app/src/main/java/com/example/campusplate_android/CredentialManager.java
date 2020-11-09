@@ -48,6 +48,18 @@ public class CredentialManager {
         return decryptString(entry, getUsername());
     }
 
+    public boolean credentialExists(){
+        String username = getUsername();
+        String password = getUserPassword();
+
+        if(username != null && password !=null){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public void storeUserCredentials(String user, String pass) {
         createNewKeys(user);
         CipherEntry entry = encryptString(pass, user);
