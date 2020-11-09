@@ -52,9 +52,9 @@ public class InputEmailFragment extends Fragment {
         final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager);
 
         SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
-        if (sp.getBoolean("logged",false)){
+        if (credentialManager.getUsername() != null){
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
+            startActivity(intent);
         }
         View view = inflater.inflate(R.layout.fragment_input_email, container, false);
 
