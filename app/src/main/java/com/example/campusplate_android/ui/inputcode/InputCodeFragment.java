@@ -70,8 +70,8 @@ public class InputCodeFragment extends Fragment {
                         Credential account = new Credential(username, token);
                         credentialManager.storeUserCredentials(username, token);
 
-                        String credentials = credentialManager.getUsername() + credentialManager.getUserPassword();
-
+                        Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                         Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     }
                     @Override

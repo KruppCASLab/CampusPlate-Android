@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.campusplate_android.Model.Types.Listing;
@@ -49,15 +50,25 @@ public class ServiceClient {
         this.getRequestQueue().add(request);
     }
 
-    public void get(String broker, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void get(String broker, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, path, null, listener, errorListener);
-
+        BaseRequest baseRequest = new BaseRequest(url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                    listener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorListener.onErrorResponse(error);
+            }
+        });
         addRequest(request);
     }
 
-    public void delete(String broker, int id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void delete(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
         String path = url + broker.toLowerCase();
 
         JSONObject object = new JSONObject();
@@ -69,13 +80,23 @@ public class ServiceClient {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/food/rest.php/users/" + id, object, listener, errorListener);  //TODO: Change this back to Krupp's URL
-
+        BaseRequest baseRequest = new BaseRequest(url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                listener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorListener.onErrorResponse(error);
+            }
+        });
         //JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, path, object, listener, errorListener);
 
         addRequest(request);
     }
 
-    public void patch(String broker, Object putObject, String id, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public void patch(String broker, Object putObject, String id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
         String path;
         int method = Request.Method.PATCH;
 
@@ -95,7 +116,17 @@ public class ServiceClient {
         }
 
         JsonObjectRequest request = new JsonObjectRequest(method, path, object, listener, errorListener);
-
+        BaseRequest baseRequest = new BaseRequest(url, object, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                listener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorListener.onErrorResponse(error);
+            }
+        });
         addRequest(request);
     }
 

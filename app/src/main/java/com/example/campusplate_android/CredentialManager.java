@@ -39,13 +39,21 @@ public class CredentialManager {
     }
 
     public String getUsername() {
-        return sharedPreferencesManager.getString(SharedPreferencesManager.Key.USERNAME_STR);
+        String userName = sharedPreferencesManager.getString(SharedPreferencesManager.Key.USERNAME_STR);
+        if(userName != null) {
+            return userName;
+        }
+        return null;
     }
 
     public String getUserPassword() {
+
         String password = sharedPreferencesManager.getString(SharedPreferencesManager.Key.PASSWORD_STR);
-        CipherEntry entry = CipherEntry.fromString(password);
-        return decryptString(entry, getUsername());
+        if(password != null ) {
+            CipherEntry entry = CipherEntry.fromString(password);
+            return decryptString(entry, getUsername());
+        }
+        return null;
     }
 
     public boolean credentialExists(){

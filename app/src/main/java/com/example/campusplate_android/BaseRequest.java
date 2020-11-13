@@ -1,6 +1,7 @@
 package com.example.campusplate_android;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.JsonReader;
 
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -25,7 +27,15 @@ public class BaseRequest extends JsonObjectRequest {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return super.getHeaders();
+        Credential credential = Session.getInstance().getCredential();
+        String cred = credential.getUserName() + ":" + credential.getPassWord();
+        String basicAuthString = "Basic " + Base64.encodeToString(cred.getBytes(),0);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", basicAuthString);
+
+        return headers;
+
     }
 
 
