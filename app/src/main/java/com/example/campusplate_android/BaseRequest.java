@@ -21,18 +21,25 @@ import java.util.Map;
 public class BaseRequest extends JsonObjectRequest {
     private Context context;
 
-    public BaseRequest(String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
-        super(url, jsonRequest, listener, errorListener);
+
+
+    public BaseRequest(int method, String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
+        super(method, url, jsonRequest, listener, errorListener);
     }
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        Credential credential = Session.getInstance().getCredential();
-        String cred = credential.getUserName() + ":" + credential.getPassWord();
-        String basicAuthString = "Basic " + Base64.encodeToString(cred.getBytes(),0);
 
+
+        Credential credential = Session.getInstance().getCredential();
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", basicAuthString);
+        if(credential != null) {
+            String cred = credential.getUserName() + ":" + credential.getPassWord();
+            String basicAuthString = "Basic " + Base64.encodeToString(cred.getBytes(), 0);
+            headers.put("Authorization", basicAuthString);
+        }
+
+
 
         return headers;
 

@@ -51,10 +51,11 @@ public class InputEmailFragment extends Fragment {
 
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
         final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager);
-        credentialManager.removeUserCredentials();
         SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
+
         if (credentialManager.credentialExists()){
             Session.getInstance().setCredential(new Credential(credentialManager.getUsername(), credentialManager.getUserPassword()));
+
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }

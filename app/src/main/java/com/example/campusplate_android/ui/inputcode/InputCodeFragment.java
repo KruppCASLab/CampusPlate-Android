@@ -30,6 +30,7 @@ import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.User;
 import com.example.campusplate_android.Model.UserModel;
 import com.example.campusplate_android.R;
+import com.example.campusplate_android.Session;
 import com.example.campusplate_android.SharedPreferencesManager;
 
 public class InputCodeFragment extends Fragment {
@@ -69,6 +70,7 @@ public class InputCodeFragment extends Fragment {
                     public void success(final String token) {
                         Credential account = new Credential(username, token);
                         credentialManager.storeUserCredentials(username, token);
+                        Session.getInstance().setCredential(account);
 
                         Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
                         startActivity(intent);
