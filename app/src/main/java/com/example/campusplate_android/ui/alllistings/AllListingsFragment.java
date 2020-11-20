@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -167,10 +168,13 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
             Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
-
+           listingModel.getAllListings();
             for (int i = 0; i < listingModel.getAllListings().size(); i++) {
                 Listing listing = listingModel.getListing(i);
-                map.addMarker(new MarkerOptions().position(new LatLng(listing.lat, listing.lng)).title(listing.title));
+//                map.addMarker(new MarkerOptions()
+//                        .position(new LatLng(listing.lat, listing.lng))
+//                        .title(listing.title));
+
             }
         }
     }

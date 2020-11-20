@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.campusplate_android.Credential;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
+import com.example.campusplate_android.Session;
 
 public class AddListingFragment extends Fragment {
 
@@ -39,6 +41,7 @@ public class AddListingFragment extends Fragment {
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
+        Credential credential = Session.getInstance().getCredential();
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +50,7 @@ public class AddListingFragment extends Fragment {
                 final View root = view;
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
                 SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
-                Listing listing = new Listing(sp.getInt("userId", -1), titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), currentLocation.getLatitude(), currentLocation.getLongitude());
+                Listing listing = new Listing(sp.getInt("userId", -1), titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), -1 );
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {

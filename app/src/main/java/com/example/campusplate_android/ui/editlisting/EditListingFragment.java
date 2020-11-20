@@ -57,8 +57,8 @@ public class EditListingFragment extends Fragment {
 
                 if(updateLocation.isChecked()){
                     Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
-                    listing.lat = currentLocation.getLatitude();
-                    listing.lng = currentLocation.getLongitude();
+//                    listing.lat = currentLocation.getLatitude();
+//                    listing.lng = currentLocation.getLongitude();
                 }
                 listingModel.editListing(new ListingModel.EditListingCompletionHandler() {
                     @Override

@@ -69,7 +69,7 @@ public class InputCodeFragment extends Fragment {
                     @Override
                     public void success(final String token) {
                         Credential account = new Credential(username, token);
-                        credentialManager.storeUserCredentials(username, token);
+                        credentialManager.storeUserCredentials(account);
                         Session.getInstance().setCredential(account);
 
                         Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);

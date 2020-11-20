@@ -53,7 +53,7 @@ public class ViewListingFragment extends Fragment {
         if(getArguments() != null){
             listing = listingModel.getListing(getArguments().getInt("index"));
             title.setText(listing.title);
-            locationDescription.setText(listing.locationDescription);
+            locationDescription.setText(listing.description);
             quantity.setText(Integer.toString(listing.quantity));
 
             long creationTimeLong = (long) listing.creationTime*1000;

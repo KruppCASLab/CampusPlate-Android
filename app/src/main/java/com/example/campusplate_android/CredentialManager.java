@@ -68,10 +68,10 @@ public class CredentialManager {
         }
     }
 
-    public void storeUserCredentials(String user, String pass) {
-        createNewKeys(user);
-        CipherEntry entry = encryptString(pass, user);
-        sharedPreferencesManager.put(SharedPreferencesManager.Key.USERNAME_STR, user);
+    public void storeUserCredentials(Credential credential) {
+        createNewKeys(credential.getUserName());
+        CipherEntry entry = encryptString(credential.getPassWord(), credential.getUserName());
+        sharedPreferencesManager.put(SharedPreferencesManager.Key.USERNAME_STR, credential.getUserName());
         sharedPreferencesManager.put(SharedPreferencesManager.Key.PASSWORD_STR, entry.toString());
     }
 

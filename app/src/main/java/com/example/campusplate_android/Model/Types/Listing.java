@@ -4,9 +4,8 @@ public class Listing implements Comparable<Listing> {
     public int listingId;
     public int userId;
     public String title;
-    public String locationDescription;
-    public double lat;
-    public double lng;
+    public String description;
+    public int foodStopId;
     public int creationTime;
     public int quantity;
     //TODO: Add image
@@ -15,30 +14,27 @@ public class Listing implements Comparable<Listing> {
         this.listingId = -1;
         this.userId = -1;
         this.title = null;
-        this.locationDescription = null;
-        this.lat = 0;
-        this.lng = 0;
+        this.description = null;
+        this.foodStopId = -1;
         this.creationTime = 0;
         this.quantity = 0;
     }
 
-    public Listing(int listingId, int userId, String title, String locationDescription, double lat, double lng, int creationTime, int quantity) {
+    public Listing(int listingId, int userId, int foodStopId, String title, String locationDescription, int creationTime, int quantity) {
         this.listingId = listingId;
         this.userId = userId;
         this.title = title;
-        this.locationDescription = locationDescription;
-        this.lat = lat;
-        this.lng = lng;
+        this.description = locationDescription;
+        this.foodStopId = foodStopId;
         this.creationTime = creationTime;
         this.quantity = quantity;
     }
 
-    public Listing(int userId, String title, int quantity, double lat, double lng) {  // For posting
+    public Listing(int userId, String title, int quantity, int foodStopId) {  // For posting
         this.userId = userId;
         this.title = title;
         this.quantity = quantity;
-        this.lat = lat;
-        this.lng = lng;
+        this.foodStopId = foodStopId;
     }
 
     public Listing(String title, int quantity) {  // For editing
@@ -50,9 +46,8 @@ public class Listing implements Comparable<Listing> {
         this.listingId = listingToCopy.listingId;
         this.userId = listingToCopy.userId;
         this.title = listingToCopy.title;
-        this.locationDescription = listingToCopy.locationDescription;
-        this.lat = listingToCopy.lat;
-        this.lng = listingToCopy.lng;
+        this.description = listingToCopy.description;
+        this.foodStopId = listingToCopy.foodStopId;
         this.creationTime = listingToCopy.creationTime;
         this.quantity = listingToCopy.quantity;
     }

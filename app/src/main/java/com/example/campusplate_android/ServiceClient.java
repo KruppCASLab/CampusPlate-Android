@@ -50,7 +50,7 @@ public class ServiceClient {
     }
 
     public void get(String broker, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
-        String path = baseUrl + broker.toLowerCase();
+        String path = baseUrl + broker;
 
         BaseRequest baseRequest = new BaseRequest(Request.Method.GET, path, null, new Response.Listener<JSONObject>() {
             @Override
@@ -65,6 +65,7 @@ public class ServiceClient {
         });
         addRequest(baseRequest);
     }
+
 
     public void delete(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
         String path = baseUrl + broker.toLowerCase();

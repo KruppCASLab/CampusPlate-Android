@@ -88,7 +88,7 @@ public class ListingModel {
     public synchronized void getListings(final GetListingsCompletionHandler completionHandler) {
         ServiceClient client = ServiceClient.getInstance(context.getApplicationContext());
         this.listings.clear();
-        client.get("listings", new Response.Listener<JSONObject>() {
+        client.get("Listings", new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 String stringResponse = response.toString();
@@ -104,9 +104,10 @@ public class ListingModel {
 
                         Double listingId = (double) mapItem.get("listingId");
                         Double userId = (double) mapItem.get("userId");
+                        Double foodStopId = (double) mapItem.get("foodStopId");
                         Double creationTime = (double) mapItem.get("creationTime");
                         Double quantity = (double) mapItem.get("quantity");
-                        addListing(new Listing(listingId.intValue(), userId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("locationDescription"), (double) mapItem.get("lat"), (double) mapItem.get("lng"), creationTime.intValue(), quantity.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
+                        addListing(new Listing(listingId.intValue(), userId.intValue(), foodStopId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("Description"), creationTime.intValue(), quantity.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
                     }
                 }
                 Collections.sort(listings);
@@ -115,7 +116,7 @@ public class ListingModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error. Try again.", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

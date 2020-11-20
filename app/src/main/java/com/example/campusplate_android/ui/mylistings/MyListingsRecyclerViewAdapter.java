@@ -41,7 +41,7 @@ public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListin
         final int pos = position;
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(mValues.get(position).title);
-        holder.mLocationDescriptionView.setText(mValues.get(position).locationDescription);
+        holder.mLocationDescriptionView.setText(mValues.get(position).description);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
