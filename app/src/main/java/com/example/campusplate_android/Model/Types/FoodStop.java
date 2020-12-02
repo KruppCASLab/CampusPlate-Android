@@ -1,12 +1,12 @@
 package com.example.campusplate_android.Model.Types;
 
-public class FoodStops {
+public class FoodStop {
     public int foodStopId;
     public String name;
     public String description;
     public double lat, lng;
 
-    public FoodStops() {
+    public FoodStop() {
         this.foodStopId = -1;
         this.name = null;
         this.description = null;
@@ -14,7 +14,7 @@ public class FoodStops {
         this.lng = 0;
     }
 
-    public FoodStops(int foodStopId, String name, String description, double lat, double lng) {
+    public FoodStop(int foodStopId, String name, String description, double lat, double lng) {
         this.foodStopId = foodStopId;
         this.name = name;
         this.description = description;

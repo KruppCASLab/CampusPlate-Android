@@ -19,8 +19,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.VolleyError;
 import com.example.campusplate_android.MainActivity;
+import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,6 +45,7 @@ import java.util.List;
 public class AllListingsFragment extends Fragment implements OnMapReadyCallback {
 
     private ListingModel listingModel;
+    private FoodStopsModel foodStopsModel;
     private GoogleMap map;
     private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
@@ -64,6 +68,8 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        foodStopsModel = FoodStopsModel.getSharedInstance();
+
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
@@ -167,15 +173,27 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             map.setMyLocationEnabled(true);
 
             Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
-           listingModel.getAllListings();
-            for (int i = 0; i < listingModel.getAllListings().size(); i++) {
-                Listing listing = listingModel.getListing(i);
-//                map.addMarker(new MarkerOptions()
-//                        .position(new LatLng(listing.lat, listing.lng))
-//                        .title(listing.title));
+            LatLng latLng = new LatLng(41.3711, -81.8478);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5f));
 
-            }
+           foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
+               @Override
+               public void success(List<FoodStop> foodStops) {
+                   for (int i = 0; i <foodStops.size(); i++) {
+                       FoodStop foodStop = foodStops.get(i);
+                map.addMarker(new MarkerOptions()
+                        .position(new LatLng(foodStop.lat, foodStop.lng))
+                        .title(foodStop.name));
+
+                   }
+               }
+
+               @Override
+               public void error(VolleyError error) {
+
+               }
+           });
+
         }
     }
 
