@@ -12,7 +12,11 @@ import android.widget.TextView;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment.OnListFragmentInteractionListener;
 
@@ -38,12 +42,24 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         return new ViewHolder(view);
     }
 
+
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final int pos = position;
+        Date date = new Date(mValues.get(position).creationTime *1000L);
+
+        long diff = Math.abs(System.currentTimeMillis() - mValues.get(position).creationTime *1000L);
+        long time = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+
+
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(mValues.get(position).title);
-        holder.mLocationDescriptionView.setText(mValues.get(position).description);
+        //TODO:Update to value once determined
+        holder.mLocationDescriptionView.setText(String.format("%s", time));
+
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +96,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
             super(view);
             mView = view;
             mTitleView = view.findViewById(R.id.item_title);
-            mLocationDescriptionView = view.findViewById(R.id.item_location_description);
+            mLocationDescriptionView = view.findViewById(R.id.item_date);
         }
 
         @Override

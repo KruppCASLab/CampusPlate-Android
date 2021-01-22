@@ -101,7 +101,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 adapter.notifyDataSetChanged();
             }
         });
-        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), DividerItemDecoration.VERTICAL));
+        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), 0));
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -166,6 +166,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.getUiSettings().setMyLocationButtonEnabled(false);
         if (mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
