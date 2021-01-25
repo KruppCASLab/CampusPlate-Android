@@ -49,6 +49,8 @@ public class InputCodeFragment extends Fragment {
 
         username = getArguments().getString("username");
 
+        // added id 1/23/2021
+
         view.findViewById(R.id.textView_terms).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

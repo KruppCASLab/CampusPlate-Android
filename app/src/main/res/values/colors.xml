@@ -5,4 +5,5 @@
     <color name="colorTextPrimary">#373737</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorDarkBackground">#243447</color>
+    <drawable name="colorImage"></drawable>
 </resources>
