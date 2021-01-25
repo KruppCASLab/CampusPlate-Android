@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#6CBF00</color>
     <color name="colorTextPrimary">#373737</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorGray">#E6E6E6</color>
+    <color name="colorBlack">#000000</color>
+    <color name="buttonBlue">#0883E4</color>
     <color name="colorDarkBackground">#243447</color>
     <drawable name="colorImage"></drawable>
 </resources>

@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.viewlisting.ViewListingFragment">
 
+    <View
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
 
     <TextView
         android:id="@+id/textView_displayTitle"
@@ -20,16 +28,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_displayQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Item Quantity"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
-
-    <TextView
         android:id="@+id/textView_displayLocationDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,16 +37,15 @@
         app:layout_constraintStart_toStartOf="@+id/textView_displayQuantity"
         app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
 
-    <TextView
-        android:id="@+id/textView_displayCreationTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Item Creation Time"
-        android:textSize="18sp"
+    <View
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayQuantity" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
 
     <TextView
         android:id="@+id/textView_listingLocationDescription"
@@ -67,9 +64,32 @@
         app:layout_constraintStart_toStartOf="@+id/textView_displayQuantity" />
 
     <TextView
+        android:id="@+id/textView_displayQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="Item Quantity"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
+
+    <TextView
+        android:id="@+id/textView_displayCreationTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Item Creation Time"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayQuantity" />
+
+    <TextView
         android:id="@+id/textView_listingCreationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="Creation Time: "
         app:layout_constraintBottom_toTopOf="@+id/textView_displayCreationTime"
         app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime" />

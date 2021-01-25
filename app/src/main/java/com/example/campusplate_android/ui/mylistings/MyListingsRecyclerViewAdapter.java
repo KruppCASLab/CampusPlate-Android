@@ -78,7 +78,7 @@ public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListin
             super(view);
             mView = view;
             mTitleView = view.findViewById(R.id.item_title);
-            mLocationDescriptionView = view.findViewById(R.id.item_location_description);
+            mLocationDescriptionView = view.findViewById(R.id.item_date);
         }
 
         @Override
