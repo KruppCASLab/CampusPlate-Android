@@ -23,9 +23,6 @@
         <action
             android:id="@+id/action_navigation_mylistings_to_addListing"
             app:destination="@id/navigation_addlisting" />
-        <action
-            android:id="@+id/action_navigation_mylistings_to_navigation_editlisting"
-            app:destination="@id/navigation_editlisting" />
     </fragment>
     <fragment
         android:id="@+id/navigation_addlisting"
@@ -47,17 +44,6 @@
             android:id="@+id/action_navigation_viewlisting_pop"
             app:destination="@+id/navigation_alllistings"
             app:popUpTo="@+id/navigation_viewlisting"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/navigation_editlisting"
-        android:name="com.example.campusplate_android.ui.editlisting.EditListingFragment"
-        android:label="@string/title_editlisting"
-        tools:layout="@layout/fragment_edit_listing">
-        <action
-            android:id="@+id/action_navigation_editlisting_pop"
-            app:destination="@+id/navigation_mylistings"
-            app:popUpTo="@id/navigation_editlisting"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

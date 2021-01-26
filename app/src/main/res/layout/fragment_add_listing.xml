@@ -4,45 +4,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.addlisting.AddListingFragment">
+    tools:context=".ui.addlisting.AddListingFragment"
+    android:background="@color/colorPrimary"
+    >
 
 
     <EditText
-        android:id="@+id/editText_addTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="300dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="92dp"
+        android:background="@color/colorWhite"
         android:ems="10"
-        android:hint="Banana"
+        android:hint="@string/description"
         android:inputType="textPersonName"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="@+id/editText_addTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
+
+    <TextView
+        android:layout_width="399dp"
+        android:layout_height="78dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp"
+        android:text="Create Listing"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+
+        />
+
+    <!--    <TextView-->
+<!--        android:id="@+id/textView_displayTitle"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Listing Title"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/editText_addTitle"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/editText_addTitle" />-->
+
+    <EditText
+        android:id="@+id/editText_addTitle"
+        android:layout_width="288dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="108dp"
+        android:background="@color/colorWhite"
+        android:ems="10"
+        android:hint="@string/food_item"
+        android:inputType="textPersonName"
+        android:paddingTop="0dp"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText_addQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_width="53dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="88dp"
+        android:background="@color/colorWhite"
         android:ems="10"
-        android:hint="1"
+        android:hint="0"
+
         android:inputType="number"
         app:layout_constraintStart_toStartOf="@+id/editText_addTitle"
-        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
-
-    <TextView
-        android:id="@+id/textView_displayTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Listing Title"
-        app:layout_constraintBottom_toTopOf="@+id/editText_addTitle"
-        app:layout_constraintStart_toStartOf="@+id/editText_addTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
     <TextView
         android:id="@+id/textView_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quantity"
+        android:text="Units"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@+id/editText_addQuantity"
         app:layout_constraintStart_toStartOf="@+id/editText_addQuantity" />
 
@@ -50,12 +90,14 @@
         android:id="@+id/button_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginBottom="96dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Post"
-        android:textColor="@android:color/white"
+        android:backgroundTintMode="@color/colorWhite"
+        android:text="Create"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_addQuantity" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

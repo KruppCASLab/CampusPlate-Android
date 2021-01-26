@@ -41,6 +41,7 @@ public class AddListingFragment extends Fragment {
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
+        final EditText descriptionView = view.findViewById(R.id.editTextTextPersonName);
         Credential credential = Session.getInstance().getCredential();
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
@@ -49,8 +50,9 @@ public class AddListingFragment extends Fragment {
                 ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
-                SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
-                Listing listing = new Listing(sp.getInt("userId", -1), titleView.getText().toString(), Integer.parseInt(quantityView.getText().toString()), -1 );
+
+                Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(),1, Integer.parseInt(quantityView.getText().toString()));
+
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override
                     public void postListing() {
