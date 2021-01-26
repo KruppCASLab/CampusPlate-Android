@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textView_terms"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".ui.inputcode.InputCodeFragment">
 
     <Button
@@ -12,8 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Submit"
-        android:textColor="@android:color/white"
+        android:backgroundTintMode="@color/colorWhite"
+        android:text="Continue"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_inputCode" />
@@ -23,43 +26,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
+        android:background="@color/colorWhite"
         android:ems="10"
         android:inputType="number"
+        android:maxLength="6"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_codeInfo" />
 
-    <TextView
-        android:id="@+id/textView_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Code:"
-        app:layout_constraintBottom_toTopOf="@+id/editText_inputCode"
-        app:layout_constraintStart_toStartOf="@+id/editText_inputCode" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView_code"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="Code:"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/editText_inputCode"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/editText_inputCode"-->
+    <!--        android:background="@color/colorWhite"-->
+    <!--        android:textColor="@color/colorPrimary"-->
+    <!--        />-->
 
     <TextView
         android:id="@+id/textView_codeInfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="374dp"
+        android:layout_height="124dp"
         android:layout_marginLeft="64dp"
         android:layout_marginTop="64dp"
         android:layout_marginRight="64dp"
-        android:text="You should receive a logon code in your email soon. Enter that code here."
+        android:background="@drawable/header_image_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_terms"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="64dp"
-        android:text="@string/view_terms"
-        android:textSize="12sp"
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView_terms"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="64dp"-->
+    <!--        android:layout_marginTop="32dp"-->
+    <!--        android:layout_marginEnd="64dp"-->
+    <!--        android:textSize="12sp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/button_submitCode" />-->
+
+    <FrameLayout
+        android:layout_width="410dp"
+        android:layout_height="728dp"
+        android:background="@drawable/background_texture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_submitCode" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

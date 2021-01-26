@@ -10,6 +10,7 @@
         android:name="com.example.campusplate_android.ui.inputemail.InputEmailFragment"
         android:label="fragment_input_email"
         tools:layout="@layout/fragment_input_email" >
+
         <action
             android:id="@+id/action_inputEmailFragment_to_inputCodeFragment"
             app:destination="@id/inputCodeFragment" />
