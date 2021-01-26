@@ -4,46 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/listingPrimary"
     tools:context=".ui.viewlisting.ViewListingFragment">
 
-    <View
-        android:layout_width="375dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorBlack"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="277dp"
+        android:layout_height="219dp"
+        android:layout_marginTop="12dp"
+        android:src="@android:drawable/sym_def_app_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-    <TextView
-        android:id="@+id/textView_displayTitle"
+    <Button
+        android:id="@+id/button_pickUpItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Item Title"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/buttonColorPrimary"
+        android:text="Pick Up"
+        android:textColor="@color/buttonColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView_displayLocationDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Item Location Description"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView_displayQuantity"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="375dp"
         android:layout_height="1dp"
         android:layout_marginTop="24dp"
-        android:background="@color/colorBlack"
+        android:background="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
 
@@ -51,70 +44,69 @@
         android:id="@+id/textView_listingLocationDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/colorTextPrimary"
         android:text="Location: "
         app:layout_constraintBottom_toTopOf="@+id/textView_displayLocationDescription"
-        app:layout_constraintStart_toStartOf="@+id/textView_displayLocationDescription" />
+        app:layout_constraintStart_toStartOf="@+id/textView_displayLocationDescription"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        android:id="@+id/textView_listingQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quantity: "
-        app:layout_constraintBottom_toTopOf="@+id/textView_displayQuantity"
-        app:layout_constraintStart_toStartOf="@+id/textView_displayQuantity" />
-
-    <TextView
-        android:id="@+id/textView_displayQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:text="Item Quantity"
+        android:id="@+id/textView_displayLocationDescription"
+        android:layout_width="199dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="56dp"
+        android:text="Item Location Description"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
-
-    <TextView
-        android:id="@+id/textView_displayCreationTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="Item Creation Time"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayQuantity" />
-
-    <TextView
-        android:id="@+id/textView_listingCreationTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="Creation Time: "
-        app:layout_constraintBottom_toTopOf="@+id/textView_displayCreationTime"
-        app:layout_constraintStart_toStartOf="@+id/textView_displayCreationTime" />
-
-    <Button
-        android:id="@+id/button_pickUpItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:text="Pick Up"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayCreationTime" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <EditText
-        android:id="@+id/editText_quantityToPickUp"
-        android:layout_width="0dp"
+    <View
+        android:id="@+id/view"
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_left" />
+
+    <TextView
+        android:id="@+id/textView_displayTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:text="1"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/button_pickUpItem"
-        app:layout_constraintEnd_toEndOf="@+id/button_pickUpItem"
-        app:layout_constraintStart_toStartOf="@+id/button_pickUpItem" />
+        android:textColor="@color/colorTextPrimary"
+        android:layout_marginTop="88dp"
+        android:text="Item Title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/date_posted"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/date_posted"
+        android:textColor="@color/colorTextPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/time_left"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
+
+    <TextView
+        android:id="@+id/time_left"
+        android:layout_width="62dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_posted" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

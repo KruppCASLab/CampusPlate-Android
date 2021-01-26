@@ -19,19 +19,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.campusplate_android.MainActivity;
+import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ViewListingFragment extends Fragment {
 
     private Listing listing;
     private ListingModel listingModel;
+    private FoodStopsModel foodStopsModel;
     private Context mActivity;
 
     public static ViewListingFragment newInstance() {
@@ -43,24 +51,51 @@ public class ViewListingFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_listing, container, false);
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
+        foodStopsModel = FoodStopsModel.getSharedInstance();
 
         TextView title = view.findViewById(R.id.textView_displayTitle);
-        TextView locationDescription = view.findViewById(R.id.textView_displayLocationDescription);
-        TextView quantity = view.findViewById(R.id.textView_displayQuantity);
-        TextView creationTime = view.findViewById(R.id.textView_displayCreationTime);
-        final EditText quantityToPickUp = view.findViewById(R.id.editText_quantityToPickUp);
+        final TextView locationDescription = view.findViewById(R.id.textView_displayLocationDescription);
+        TextView datePosted = view.findViewById(R.id.date_posted);
+        TextView timeLeft = view.findViewById(R.id.time_left);
+
+
+
+
 
         if(getArguments() != null){
             listing = listingModel.getListing(getArguments().getInt("index"));
             title.setText(listing.title);
-            locationDescription.setText(listing.description);
-            quantity.setText(Integer.toString(listing.quantity));
 
-            long creationTimeLong = (long) listing.creationTime*1000;
-            Date date = new Date(creationTimeLong);
-            String formattedDate = new SimpleDateFormat("MMMM d h:mm a", Locale.ENGLISH).format(date);
 
-            creationTime.setText(formattedDate);
+            foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
+                @Override
+                public void success(List<FoodStop> foodStops) {
+                    for (int i = 0; i <foodStops.size(); i++) {
+                        FoodStop foodStop = foodStops.get(i);
+                        if(listing.foodStopId == foodStop.foodStopId){
+                            locationDescription.setText(foodStop.name);
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void error(VolleyError error) {
+
+                }
+            });
+
+
+            Date date = new Date(listing.creationTime*1000L);
+
+            long diff = Math.abs(System.currentTimeMillis() - listing.creationTime*1000L);
+            long time = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            datePosted.setText(String.format("Posted %d days ago", time));
+            timeLeft.setText("\u26A0 Discarded in 3 days");
+
+
+
         }
         else{
             Toast.makeText(mActivity, "There was an error.", Toast.LENGTH_SHORT).show();
@@ -70,7 +105,6 @@ public class ViewListingFragment extends Fragment {
         view.findViewById(R.id.button_pickUpItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickedPickUpButton(view, quantityToPickUp);
             }
         });
         return view;
