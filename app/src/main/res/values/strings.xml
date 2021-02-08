@@ -7,6 +7,7 @@
     <string name="title_addlisting">Add Listing</string>
     <string name="title_editlisting">Edit Listing</string>
 
+
     <string name="view_terms">By creating an account with Campus Plate, you are agreeing to the terms and conditions. Click here to view.</string>
 
     <string name="terms_of_service">"You are solely responsible for your Contributions to the Site and you expressly agree to exonerate Campus Plate or Baldwin Wallace University from any and all responsibility and to refrain from any legal action against us regarding your Contributions. If you access the Site via a mobile application, then we grant you a revocable, non-exclusive, non-transferable, limited right to install and use the mobile application on wireless electronic devices owned or controlled by you, and to access and use the mobile application on such devices strictly in accordance with the terms and conditions of this mobile application license contained in these Terms and Conditions.\n" +
@@ -30,4 +31,6 @@
                         "(8) use the application to send automated queries to any website or to send any unsolicited commercial e-mail;\n" +
                         "\n" +
                         "(9) use any proprietary information or any of our interfaces or our other intellectual property in the design, development, manufacture, licensing, or distribution of any applications, accessories, or devices for use with the application."</string>
+    <string name="food_item">Food Item</string>
+    <string name="description">Description</string>
 </resources>

@@ -23,9 +23,6 @@
         <action
             android:id="@+id/action_navigation_mylistings_to_addListing"
             app:destination="@id/navigation_addlisting" />
-        <action
-            android:id="@+id/action_navigation_mylistings_to_navigation_editlisting"
-            app:destination="@id/navigation_editlisting" />
     </fragment>
     <fragment
         android:id="@+id/navigation_addlisting"
