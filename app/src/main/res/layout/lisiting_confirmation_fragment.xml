@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.listingconfirmation.LisitingConfirmationFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/confirmation_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/indicator_circle"
+            android:layout_width="372dp"
+            android:layout_height="438dp"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_circle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/indicator_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="1"
+            android:textSize="200pt"
+            tools:layout_editor_absoluteX="-42dp"
+            tools:layout_editor_absoluteY="247dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

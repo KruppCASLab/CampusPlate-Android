@@ -3,8 +3,8 @@
     <color name="colorPrimary">#1D1D1E</color>
     <color name="buttonColorPrimary">#6CBF00</color>
     <color name="buttonColorSecondary">#FFFFFF</color>
-    <color name="listingPrimary">#1D1D1E</color>
-    <color name="colorSecondary">#605E5E</color>
+    <color name="listingPrimary">#212121</color>
+    <color name="colorSecondary">#3C3C3C</color>
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorWhite">#ffffff</color>
     <color name="indicatorBlue">#00ACEB</color>

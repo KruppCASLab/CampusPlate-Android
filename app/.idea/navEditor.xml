@@ -34,8 +34,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="500" />
-                            <option name="y" value="12" />
+                            <option name="x" value="638" />
+                            <option name="y" value="-257" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -71,7 +71,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_events">
+                  <entry key="navigation_lisitingConfirmation">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
@@ -121,6 +121,11 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_navigation_viewlisting_pop">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigation_viewlisting_to_lisitingConfirmationFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

@@ -105,6 +105,29 @@ public class ViewListingFragment extends Fragment {
         view.findViewById(R.id.button_pickUpItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((MainActivity) mActivity).startProgressBar();
+                final View root = view;
+                new AlertDialog.Builder(mActivity)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Pick Up Item")
+                        .setMessage("Are you sure you want to pick up this item?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                                Navigation.findNavController(root).navigate(R.id.navigation_lisitingConfirmation);
+
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ((MainActivity) mActivity).stopProgressBar();
+                            }
+                        })
+                        .show();
             }
         });
         return view;
