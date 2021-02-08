@@ -19,18 +19,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.campusplate_android.Credential;
 import com.example.campusplate_android.MainActivity;
+import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.Session;
+import com.example.campusplate_android.ui.Select;
 
+import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AddListingFragment extends Fragment {
 
     private ListingModel listingModel;
+    private FoodStopsModel foodStopsModel;
     private Context mActivity;
     String[] listItems;
     boolean[]checkedItems;
@@ -51,13 +59,41 @@ public class AddListingFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_add_listing, container, false);
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
 
+
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.editTextTextPersonName);
         final Button allergy = view.findViewById(R.id.allergyButton);
         Credential credential = Session.getInstance().getCredential();
+        final Fragment fragment = this;
+        view.findViewById(R.id.allergyButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] allergens = {"shell fish", "peanuts", "dairy"};
 
+                Select select = new Select("Select Allergens", allergens, true, new Select.SelectComplete() {
+                    @Override
+                    public void didSelectItems(String[] items) {
 
+                    }
+                });
+                select.show(fragment.getContext());
+            }
+        });
+
+        view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] locations = {"Knowlton", "Ritter", "Macs"};
+                Select select = new Select("Select Location", locations, false, new Select.SelectComplete() {
+                    @Override
+                    public void didSelectItems(String[] items) {
+                        
+                    }
+                });
+                select.show(fragment.getContext());
+            }
+        });
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override

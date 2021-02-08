@@ -9,21 +9,6 @@
     >
 
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="300dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="64dp"
-        android:background="@color/colorWhite"
-        android:ems="10"
-        android:hint="@string/description"
-        android:inputType="textPersonName"
-        android:textColorHint="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
-
     <!--    <TextView-->
 <!--        android:id="@+id/textView_displayTitle"-->
 <!--        android:layout_width="wrap_content"-->
@@ -31,6 +16,35 @@
 <!--        android:text="Listing Title"-->
 <!--        app:layout_constraintBottom_toTopOf="@+id/editText_addTitle"-->
 <!--        app:layout_constraintStart_toStartOf="@+id/editText_addTitle" />-->
+
+    <Button
+        android:id="@+id/button_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="264dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTintMode="@color/colorWhite"
+        android:text="Create"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="300dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorWhite"
+        android:ems="10"
+        android:hint="@string/description"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.297"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
 
     <TextView
         android:id="@+id/textView"
@@ -55,7 +69,7 @@
         android:id="@+id/editText_addTitle"
         android:layout_width="288dp"
         android:layout_height="60dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="52dp"
         android:background="@color/colorWhite"
         android:ems="10"
         android:hint="@string/food_item"
@@ -63,7 +77,7 @@
         android:paddingTop="0dp"
         android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.268"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -71,7 +85,7 @@
         android:id="@+id/editText_addQuantity"
         android:layout_width="53dp"
         android:layout_height="48dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="48dp"
 
         android:background="@color/colorWhite"
         android:ems="10"
@@ -95,27 +109,23 @@
         app:layout_constraintStart_toStartOf="@+id/editText_addQuantity" />
 
     <Button
-        android:id="@+id/button_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:backgroundTintMode="@color/colorWhite"
-        android:text="Create"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
-    <Button
         android:id="@+id/allergyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="20dp"
         android:text="Allergies"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location" />
+
+    <Button
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:text="Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
