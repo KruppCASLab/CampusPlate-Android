@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,7 +72,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         foodStopsModel = FoodStopsModel.getSharedInstance();
 
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
-        View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
+      final  View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
 
         // Set the adapter
@@ -119,6 +120,14 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        view.findViewById(R.id.addListingButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final View root = view;
+                Navigation.findNavController(root).navigate(R.id.action_navigation_alllistings_to_navigation_addlisting);
+            }
+        });
 
 
         return view;

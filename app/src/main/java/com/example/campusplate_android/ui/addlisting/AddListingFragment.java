@@ -1,6 +1,7 @@
 package com.example.campusplate_android.ui.addlisting;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -14,6 +15,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,31 +26,46 @@ import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.Session;
 
+import java.util.ArrayList;
+
 public class AddListingFragment extends Fragment {
 
     private ListingModel listingModel;
     private Context mActivity;
+    String[] listItems;
+    boolean[]checkedItems;
+    ArrayList<Integer> selectedItems = new ArrayList<>();
 
     public static AddListingFragment newInstance() {
         return new AddListingFragment();
     }
 
+
+
+
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_listing, container, false);
+        final View view = inflater.inflate(R.layout.fragment_add_listing, container, false);
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.editTextTextPersonName);
+        final Button allergy = view.findViewById(R.id.allergyButton);
         Credential credential = Session.getInstance().getCredential();
+
+
 
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
+
+
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
 
                 Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(),1, Integer.parseInt(quantityView.getText().toString()));
@@ -58,7 +75,7 @@ public class AddListingFragment extends Fragment {
                     public void postListing() {
                         Toast.makeText(mActivity, "Listing Added!", Toast.LENGTH_SHORT).show();
                         ((MainActivity) mActivity).stopProgressBar();
-                        Navigation.findNavController(root).navigate(R.id.action_addListing_pop);
+                        Navigation.findNavController(root).navigate(R.id.navigation_alllistings);
                     }
                 }, listing);
             }
