@@ -10,7 +10,15 @@ public class Listing implements Comparable<Listing> {
     public int quantity;
     //TODO: Add image
 
-
+    public Listing(Listing listing){
+        this.listingId = listing.listingId;
+        this.userId = listing.userId;
+        this.title= listing.title;
+        this.description = listing.description;
+        this.foodStopId = listing.foodStopId;
+        this.creationTime = listing.creationTime;
+        this.quantity = listing.quantity;
+    }
     public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity) {
         this.listingId = listingId;
         this.userId = userId;
