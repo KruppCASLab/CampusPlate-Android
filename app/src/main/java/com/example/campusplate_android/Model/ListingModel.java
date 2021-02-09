@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.campusplate_android.ListingCompletionHandler;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.ServiceClient;
 
@@ -44,6 +45,10 @@ public class ListingModel {
         void deleteListing();
     }
 
+    public interface GetListingImageCompletionHandler extends ListingCompletionHandler {
+        void success(byte[] imageData);
+
+    }
     private ListingModel(Context ctx) {
         this.context = ctx;
     }
@@ -112,6 +117,23 @@ public class ListingModel {
                 }
                 Collections.sort(listings);
                 completionHandler.receiveListings(listings);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }
+
+    public synchronized void getListingImages(int id, GetListingImageCompletionHandler completionHandler){
+        ServiceClient serviceClient = ServiceClient.getInstance();
+        serviceClient.get("Listings", id, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+
+
             }
         }, new Response.ErrorListener() {
             @Override

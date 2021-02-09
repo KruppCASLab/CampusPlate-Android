@@ -2,6 +2,8 @@ package com.example.campusplate_android.ui.listingconfirmation;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,10 +13,24 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.example.campusplate_android.Model.FoodStopsModel;
+import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.Types.FoodStop;
+import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 
+import java.util.List;
+
 public class LisitingConfirmationFragment extends Fragment {
+
+    private Listing listing;
+    private ListingModel listingModel;
+    private FoodStopsModel foodStopsModel;
+    private Context mActivity;
 
     private LisitingConfirmationViewModel mViewModel;
 
@@ -25,7 +41,41 @@ public class LisitingConfirmationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.lisiting_confirmation_fragment, container, false);
+        View view = inflater.inflate(R.layout.lisiting_confirmation_fragment, container, false);
+
+        foodStopsModel = FoodStopsModel.getSharedInstance();
+
+        final ImageView circle = view.findViewById(R.id.indicator_circle);
+        final TextView number = view.findViewById(R.id.indicator_number);
+        final TextView location = view.findViewById(R.id.foodStopName);
+        final TextView address = view.findViewById(R.id.foodStopAddress);
+
+        if(getArguments() != null){
+            final int foodStopId = getArguments().getInt("foodStopId");
+            foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
+                @Override
+                public void success(List<FoodStop> foodStops) {
+                    for(int i = 0; i < foodStops.size(); i++){
+                        FoodStop foodStop = foodStops.get(i);
+                        if (foodStopId == foodStop.foodStopId){
+                            String hexColor = "#" + foodStop.hexColor;
+                            circle.setColorFilter(Color.parseColor(hexColor));
+                            number.setTextColor(Color.parseColor(hexColor));
+                            location.setText(foodStop.name);
+                            address.setText(foodStop.streetAddress);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void error(VolleyError error) {
+
+                }
+            });
+        }
+
+        return view;
     }
 
     @Override

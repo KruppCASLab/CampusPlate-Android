@@ -51,7 +51,7 @@ public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListin
                     Bundle bundle = new Bundle();
                     bundle.putInt("index", pos);
 
-                    Navigation.findNavController(view).navigate(R.id.action_navigation_mylistings_to_navigation_editlisting, bundle);
+//                    Navigation.findNavController(view).navigate(R.id.action_navigation_mylistings_to_navigation_editlisting, bundle);
 
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.

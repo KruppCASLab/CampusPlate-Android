@@ -65,6 +65,12 @@ public class ServiceClient {
         });
         addRequest(baseRequest);
     }
+    public void get(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
+        String imageRoute = String.format("/%d/image", id);
+        String path = baseUrl + broker + imageRoute;
+
+
+    }
 
 
     public void delete(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {

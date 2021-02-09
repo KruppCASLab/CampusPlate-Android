@@ -34,7 +34,7 @@ public class FoodStopsModel {
     }
 
     public void getFoodStops(final getCompletionHandler completionHandler){
-        ServiceClient serviceClient =ServiceClient.getInstance();
+        ServiceClient serviceClient = ServiceClient.getInstance();
         this.foodStops.clear();
         serviceClient.get("FoodStops", new Response.Listener<JSONObject>() {
             @Override
@@ -52,8 +52,9 @@ public class FoodStopsModel {
                         Double foodStopId = (double) mapItem.get("foodStopId");
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
+                        Double foodStopNumber = (double) mapItem.get("foodStopNumber");
                         addFoodStop(new FoodStop(foodStopId.intValue(), (String) mapItem.get("name"),
-                                (String) mapItem.get("description"), lat, lng));
+                                (String) mapItem.get("description"), lat, lng, foodStopNumber.intValue(), (String) mapItem.get("hexColor"), (String) mapItem.get("streetAddress")));
                     }
                     completionHandler.success(foodStops);
                 }
