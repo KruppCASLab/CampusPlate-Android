@@ -1,6 +1,9 @@
 package com.example.campusplate_android.Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -9,6 +12,7 @@ import com.example.campusplate_android.ListingCompletionHandler;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.ServiceClient;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -46,7 +50,7 @@ public class ListingModel {
     }
 
     public interface GetListingImageCompletionHandler extends ListingCompletionHandler {
-        void success(byte[] imageData);
+        void success(Bitmap imageData);
 
     }
     private ListingModel(Context ctx) {
@@ -126,12 +130,22 @@ public class ListingModel {
         });
     }
 
-    public synchronized void getListingImages(int id, GetListingImageCompletionHandler completionHandler){
+    public synchronized void getListingImages(int id, final GetListingImageCompletionHandler completionHandler){
         ServiceClient serviceClient = ServiceClient.getInstance();
         serviceClient.get("Listings", id, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                try {
+                    String data = response.getString("data");
+                    byte [] imagebytes = Base64.decode(data, Base64.DEFAULT);
+                    Bitmap bmp = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.length);
 
+
+                    completionHandler.success(bmp);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
             }

@@ -8,7 +8,7 @@
     tools:context=".ui.viewlisting.ViewListingFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/listingImage"
         android:layout_width="277dp"
         android:layout_height="219dp"
         android:layout_marginTop="12dp"
@@ -21,14 +21,14 @@
         android:id="@+id/button_pickUpItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="96dp"
         android:backgroundTint="@color/buttonColorPrimary"
         android:text="Pick Up"
         android:textColor="@color/buttonColorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/listingImage" />
 
     <View
         android:id="@+id/view2"

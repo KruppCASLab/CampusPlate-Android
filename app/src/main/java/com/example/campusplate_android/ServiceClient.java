@@ -1,11 +1,13 @@
 package com.example.campusplate_android;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -69,8 +71,21 @@ public class ServiceClient {
         String imageRoute = String.format("/%d/image", id);
         String path = baseUrl + broker + imageRoute;
 
-
+        BaseRequest baseRequest = new BaseRequest(Request.Method.GET, path, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                listener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorListener.onErrorResponse(error);
+            }
+        });
+        addRequest(baseRequest);
     }
+
+
 
 
     public void delete(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
