@@ -61,8 +61,10 @@ public class LisitingConfirmationFragment extends Fragment {
                             String hexColor = "#" + foodStop.hexColor;
                             circle.setColorFilter(Color.parseColor(hexColor));
                             number.setTextColor(Color.parseColor(hexColor));
+                            number.setText(String.format("%d", foodStop.foodStopNumber));
                             location.setText(foodStop.name);
                             address.setText(foodStop.streetAddress);
+
                         }
 
                     }

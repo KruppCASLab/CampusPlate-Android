@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +51,7 @@ public class ViewListingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_listing, container, false);
+        final View view = inflater.inflate(R.layout.fragment_view_listing, container, false);
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         foodStopsModel = FoodStopsModel.getSharedInstance();
 
@@ -59,6 +61,8 @@ public class ViewListingFragment extends Fragment {
         final TextView locationDescription = view.findViewById(R.id.textView_displayLocationDescription);
         TextView datePosted = view.findViewById(R.id.date_posted);
         TextView timeLeft = view.findViewById(R.id.time_left);
+        final ImageView image = view.findViewById(R.id.listingImage);
+
 
 
 
@@ -97,6 +101,18 @@ public class ViewListingFragment extends Fragment {
             datePosted.setText(String.format("Posted %d days ago", time));
             timeLeft.setText("\u26A0 Discarded in 3 days");
 
+
+            listingModel.getListingImages(listing.listingId, new ListingModel.GetListingImageCompletionHandler() {
+                @Override
+                public void success(Bitmap imageData) {
+                    image.setImageBitmap(imageData);
+                }
+
+                @Override
+                public void error(int errorCode) {
+
+                }
+            });
 
 
         }

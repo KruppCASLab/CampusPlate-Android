@@ -9,7 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/confirmation_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/listingPrimary">
 
         <ImageView
             android:id="@+id/indicator_circle"
@@ -25,22 +26,24 @@
             android:id="@+id/indicator_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="238dp"
-            android:layout_marginEnd="208dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="monospace"
+            android:translationX="-80dp"
+            android:translationY="130dp"
             android:text="1"
             android:textSize="200pt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/indicator_circle" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/foodStopName"
-            android:layout_width="250dp"
-            android:layout_height="64dp"
+            android:layout_width="221dp"
+            android:layout_height="34dp"
             android:layout_marginTop="144dp"
+            android:maxLines="2"
+
             android:text="TextView"
             android:textColor="@color/colorWhite"
-            android:textSize="20pt"
+            android:textSize="12pt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/foodStopAddress"
@@ -51,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="0dp"
             android:text="TextView"
             android:textSize="5pt"
             android:textColor="@color/colorWhite"
@@ -59,5 +62,7 @@
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="@+id/indicator_circle"
             app:layout_constraintTop_toBottomOf="@+id/foodStopName" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
