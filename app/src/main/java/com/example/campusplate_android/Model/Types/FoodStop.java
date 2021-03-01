@@ -30,4 +30,6 @@ public class FoodStop {
         this.streetAddress = streetAddress;
     }
 
+
+
 }

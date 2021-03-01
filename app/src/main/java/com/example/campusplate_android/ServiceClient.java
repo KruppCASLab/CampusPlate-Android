@@ -65,11 +65,27 @@ public class ServiceClient {
         });
         addRequest(baseRequest);
     }
+    public void get(String broker,String param, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
+        String path = baseUrl + broker + "/" + param;
+
+        BaseRequest baseRequest = new BaseRequest(Request.Method.GET, path, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                listener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorListener.onErrorResponse(error);
+            }
+        });
+        addRequest(baseRequest);
+    }
+
+
     public void get(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
         String imageRoute = String.format("/%d/image", id);
         String path = baseUrl + broker + imageRoute;
-
-
     }
 
 
