@@ -80,8 +80,6 @@ public class ViewListingFragment extends Fragment {
                         FoodStop foodStop = foodStops.get(i);
                         if(listing.foodStopId == foodStop.foodStopId){
                             locationDescription.setText(foodStop.name);
-
-
                         }
 
                     }
