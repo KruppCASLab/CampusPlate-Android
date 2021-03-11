@@ -1,10 +1,15 @@
 package com.example.campusplate_android.Model.Types;
 
-public class FoodStop {
-    public int foodStopId, foodStopNumber;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FoodStop implements Parcelable {
+    public int foodStopId;
+    public int foodStopNumber;
     public String name;
     public String description;
-    public double lat, lng;
+    public double lat;
+    public double lng;
     public String hexColor;
     public String streetAddress;
 
@@ -30,4 +35,47 @@ public class FoodStop {
         this.streetAddress = streetAddress;
     }
 
+    protected FoodStop(Parcel in) {
+        foodStopId = in.readInt();
+        foodStopNumber = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        lat = in.readDouble();
+        lng = in.readDouble();
+        hexColor = in.readString();
+        streetAddress = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(foodStopId);
+        dest.writeInt(foodStopNumber);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeDouble(lat);
+        dest.writeDouble(lng);
+        dest.writeString(hexColor);
+        dest.writeString(streetAddress);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<FoodStop> CREATOR = new Creator<FoodStop>() {
+        @Override
+        public FoodStop createFromParcel(Parcel in) {
+            return new FoodStop(in);
+        }
+
+        @Override
+        public FoodStop[] newArray(int size) {
+            return new FoodStop[size];
+        }
+    };
 }
+
+
+
+

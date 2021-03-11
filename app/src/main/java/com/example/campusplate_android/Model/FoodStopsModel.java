@@ -22,9 +22,7 @@ public class FoodStopsModel {
         void error(VolleyError error);
     }
 
-    public void addFoodStop(FoodStop foodStop){
-        this.foodStops.add(foodStop);
-    }
+    private FoodStopsModel(){}
 
     static synchronized public FoodStopsModel getSharedInstance() {
         if (sharedInstance == null) {
@@ -32,6 +30,17 @@ public class FoodStopsModel {
         }
         return sharedInstance;
     }
+
+    public void addFoodStop(FoodStop foodStop){
+        this.foodStops.add(foodStop);
+    }
+
+
+    public ArrayList<FoodStop> getCachedFoodStops() {
+        return foodStops;
+    }
+
+
 
     public void getFoodStops(final getCompletionHandler completionHandler){
         ServiceClient serviceClient = ServiceClient.getInstance();
