@@ -21,13 +21,15 @@
         android:id="@+id/button_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="264dp"
+        android:layout_marginTop="244dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/colorPrimary"
         android:backgroundTintMode="@color/colorWhite"
+        android:enabled="false"
         android:text="Create"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
@@ -35,14 +37,14 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="300dp"
         android:layout_height="85dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/colorWhite"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textPersonName"
         android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.297"
+        app:layout_constraintHorizontal_bias="0.144"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
 
@@ -50,7 +52,7 @@
         android:id="@+id/textView"
         android:layout_width="399dp"
         android:layout_height="78dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:text="Create Listing"
@@ -62,6 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
 
 
+        app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,15 +72,15 @@
         android:id="@+id/editText_addTitle"
         android:layout_width="288dp"
         android:layout_height="60dp"
-        android:layout_marginTop="52dp"
-        android:background="@color/colorWhite"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="@string/food_item"
         android:inputType="textPersonName"
         android:paddingTop="0dp"
         android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.268"
+        app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -85,14 +88,14 @@
         android:id="@+id/editText_addQuantity"
         android:layout_width="53dp"
         android:layout_height="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="52dp"
 
-        android:background="@color/colorWhite"
+        android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="0"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
@@ -112,8 +115,10 @@
         android:id="@+id/allergyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:text="Allergies"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/rounded_corners"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location" />
@@ -122,11 +127,51 @@
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="84dp"
+        android:background="@drawable/rounded_corners"
         android:text="Location"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addImage"
+        android:layout_width="43dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:foreground="@drawable/ic_add_sign"
+        android:src="@drawable/ic_add_sign"
+        app:layout_constraintEnd_toStartOf="@+id/location"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/foodImage"
+        android:layout_width="106dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/allergyButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addImage"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:text="Add Image "
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toStartOf="@+id/location"
+        app:layout_constraintHorizontal_bias="0.035"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_addQuantity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

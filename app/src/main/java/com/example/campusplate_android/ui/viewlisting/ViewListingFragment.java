@@ -84,6 +84,7 @@ public class ViewListingFragment extends Fragment {
             FoodStop foodStop = getFoodStopViewListing(listing, foodStops);
 
 
+
                 title.setText(listing.title);
                 foodStopBundle.putInt("foodStopId", listing.foodStopId);
 

@@ -111,7 +111,6 @@ public class ListingModel {
                 if (data != null) {
                     for (int i = 0; i < data.size(); i++) {
                         Map<String, Object> mapItem = (Map) data.get(i);
-
                         Double listingId = (double) mapItem.get("listingId");
                         Double userId = (double) mapItem.get("userId");
                         Double foodStopId = (double) mapItem.get("foodStopId");

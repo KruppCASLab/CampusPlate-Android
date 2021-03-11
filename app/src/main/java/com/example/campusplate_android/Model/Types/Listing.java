@@ -1,5 +1,7 @@
 package com.example.campusplate_android.Model.Types;
 
+import android.widget.ImageView;
+
 public class Listing implements Comparable<Listing> {
     public int listingId;
     public int userId;
@@ -8,6 +10,10 @@ public class Listing implements Comparable<Listing> {
     public int foodStopId;
     public int creationTime;
     public int quantity;
+
+    public String foodImage;
+    //TODO: Add image
+
 
     public Listing(Listing listing){
         this.listingId = listing.listingId;
@@ -29,11 +35,12 @@ public class Listing implements Comparable<Listing> {
     }
 
     // omitting userId
-    public Listing( String title, String description, int foodStopId,  int quantity) {
+    public Listing(String title, String description, int foodStopId, int quantity, String foodImage) {
         this.title = title;
         this.description = description;
         this.foodStopId = foodStopId;
         this.quantity = quantity;
+        this.foodImage = foodImage;
     }
 
     @Override

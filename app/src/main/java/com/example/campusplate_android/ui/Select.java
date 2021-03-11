@@ -12,6 +12,7 @@ import com.example.campusplate_android.R;
 import com.example.campusplate_android.ui.addlisting.AddListingFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Select {
     private String[] listItems;
@@ -20,10 +21,11 @@ public class Select {
     private String title;
     private ArrayList<Integer> selectedItems = new ArrayList<>();
 
+
     private SelectComplete delegate;
 
     public interface SelectComplete{
-       void didSelectItems(String[] items);
+       void didSelectItems(List<Integer> selectedItems);
     }
 
     public Select(String title, String[] listItems, boolean isMultiSelector, SelectComplete delegate) {
@@ -58,6 +60,7 @@ public class Select {
               public void onClick(DialogInterface dialog, int which) {
                   selectedItems.clear();
                   selectedItems.add(which);
+                  delegate.didSelectItems(selectedItems);
               }
           });
         }
@@ -65,15 +68,7 @@ public class Select {
         mBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String item = "";
-                for (int i = 0; i < selectedItems.size(); i++) {
-                    item = item + listItems[selectedItems.get(i)];
-                    if (i != selectedItems.size() - 1) {// cheks for last item in list if not add a comma =)
-                        item = item + ", ";
-                    }
-
-                }
-                select.delegate.didSelectItems(listItems);
+                select.delegate.didSelectItems(selectedItems);
             }
         });
         mBuilder.setNegativeButton("dismiss", new DialogInterface.OnClickListener() {
