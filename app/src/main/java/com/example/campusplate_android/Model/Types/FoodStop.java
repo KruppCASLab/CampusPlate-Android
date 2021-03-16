@@ -1,10 +1,15 @@
 package com.example.campusplate_android.Model.Types;
 
-public class FoodStop {
-    public int foodStopId, foodStopNumber;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FoodStop  {
+    public int foodStopId;
+    public int foodStopNumber;
     public String name;
     public String description;
-    public double lat, lng;
+    public double lat;
+    public double lng;
     public String hexColor;
     public String streetAddress;
 
@@ -31,5 +36,8 @@ public class FoodStop {
     }
 
 
-
 }
+
+
+
+

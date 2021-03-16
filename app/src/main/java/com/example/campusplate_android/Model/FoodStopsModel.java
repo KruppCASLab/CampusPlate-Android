@@ -26,6 +26,8 @@ public class FoodStopsModel {
         void error(VolleyError error);
     }
 
+    private FoodStopsModel(){}
+
     public void addFoodStop(FoodStop foodStop) {
         this.foodStops.add(foodStop);
     }
@@ -36,6 +38,12 @@ public class FoodStopsModel {
         }
         return sharedInstance;
     }
+
+
+
+
+    public ArrayList<FoodStop> getCachedFoodStops() {
+        return foodStops;
 
     public void setFoodStopId(FoodStop foodStop) {
 
@@ -76,7 +84,6 @@ public class FoodStopsModel {
             }
         });
     }
-
 
 
 

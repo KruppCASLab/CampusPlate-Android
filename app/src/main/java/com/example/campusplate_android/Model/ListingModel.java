@@ -81,6 +81,7 @@ public class ListingModel {
     }
 
     public ArrayList<Listing> getAllListings() {
+
         return this.listings;
     }
 
@@ -129,7 +130,7 @@ public class ListingModel {
         });
     }
 
-    public synchronized void getListingImages(int id, final GetListingImageCompletionHandler completionHandler){
+    public synchronized void getListingImage(int id, final GetListingImageCompletionHandler completionHandler){
         ServiceClient serviceClient = ServiceClient.getInstance();
         serviceClient.get("Listings", id, new Response.Listener<JSONObject>() {
             @Override

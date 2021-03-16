@@ -10,8 +10,10 @@ public class Listing implements Comparable<Listing> {
     public int foodStopId;
     public int creationTime;
     public int quantity;
+
     public String foodImage;
     //TODO: Add image
+
 
     public Listing(Listing listing){
         this.listingId = listing.listingId;

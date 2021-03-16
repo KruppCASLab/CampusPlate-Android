@@ -49,9 +49,12 @@ public class LisitingConfirmationFragment extends Fragment {
         final TextView number = view.findViewById(R.id.indicator_number);
         final TextView location = view.findViewById(R.id.foodStopName);
         final TextView address = view.findViewById(R.id.foodStopAddress);
+        final TextView confCode = view.findViewById(R.id.confCode);
 
         if(getArguments() != null){
             final int foodStopId = getArguments().getInt("foodStopId");
+            int code = getArguments().getInt("code");
+            confCode.setText(String.format("%d", code));
             foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
                 @Override
                 public void success(List<FoodStop> foodStops) {

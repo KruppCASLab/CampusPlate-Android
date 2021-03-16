@@ -109,4 +109,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date_posted" />
 
+
+    <EditText
+        android:id="@+id/editText_quantityToPickUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/button_pickUpItem"
+        app:layout_constraintEnd_toEndOf="@+id/button_pickUpItem"
+        app:layout_constraintStart_toStartOf="@+id/button_pickUpItem" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

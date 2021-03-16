@@ -86,8 +86,13 @@ public class ServiceClient {
 
 
     public void get(String broker, int id, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
-        String imageRoute = String.format("/%d/image", id);
-        String path = baseUrl + broker + imageRoute;
+        String path ="";
+        if(broker.equals("Listings")){
+            String imageRoute = String.format("/%d/image", id);
+             path = baseUrl + broker + imageRoute;}
+        else{
+             path = baseUrl + broker;
+        }
 
         BaseRequest baseRequest = new BaseRequest(Request.Method.GET, path, null, new Response.Listener<JSONObject>() {
             @Override
@@ -182,6 +187,7 @@ public class ServiceClient {
             //TODO: Set user id
             //TODO: Get location description from somewhere
         } catch (JSONException exception) {
+            int j = 5;
             //TODO: Something with exception
         }
 

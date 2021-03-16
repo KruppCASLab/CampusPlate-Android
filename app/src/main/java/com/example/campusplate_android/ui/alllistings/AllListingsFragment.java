@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -16,9 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.MainActivity;
@@ -35,6 +39,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +65,10 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+    public interface CompletionHandler{
+        void success(List<FoodStop> foodStops, List<Listing> listings);
+        void error(VolleyError volleyError);
+    }
     public AllListingsFragment() {
     }
 
@@ -69,10 +80,11 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         foodStopsModel = FoodStopsModel.getSharedInstance();
 
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
-      final  View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
+        final  View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
 
         // Set the adapter
@@ -82,16 +94,25 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         } else {
             recycler.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
-        adapter = new AllListingsRecyclerViewAdapter(listingModel.getAllListings(), mListener);
+        adapter = new AllListingsRecyclerViewAdapter(listingModel.getAllListings(), foodStopsModel.getCachedFoodStops(), mListener);
 
         recycler.setAdapter(adapter);
 
         ((MainActivity) mActivity).startProgressBar();
         adapter.isClickable = false;
 
-        listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
+
+        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), 0));
+
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
+        fetchTimelineAsync(new CompletionHandler() {
             @Override
-            public void receiveListings(List<Listing> listings) {
+
+            public void success(List<FoodStop> foodStops, List<Listing> listings) {
+
                 try {
                     ((MainActivity) mActivity).stopProgressBar();
                     adapter.isClickable = true;
@@ -99,22 +120,43 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                     //TODO: Do something with exception
                 }
                 adapter.setListings(listings);
+                adapter.setFoodstops(foodStops);
                 adapter.notifyDataSetChanged();
+
+
+
+
+
+            }
+
+
+            @Override
+            public void error(VolleyError volleyError) {
+
             }
         });
-        recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), 0));
-
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
         swipeContainer = view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchTimelineAsync();
+                fetchTimelineAsync(new CompletionHandler() {
+                    @Override
+                    public void success(List<FoodStop> foodStops, List<Listing> listings) {
+                        adapter.setListings(listings);
+                        adapter.notifyDataSetChanged();
+                        swipeContainer.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void error(VolleyError volleyError) {
+
+                    }
+                });
             }
         });
+
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_light,
@@ -133,16 +175,34 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
-    private void fetchTimelineAsync() {
-        listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
+    private void fetchTimelineAsync(final CompletionHandler completionHandler) {
+
+        foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
             @Override
-            public void receiveListings(List<Listing> listings) {
-                adapter.setListings(listings);
-                adapter.notifyDataSetChanged();
-                swipeContainer.setRefreshing(false);
+            public void success(final List<FoodStop> foodStops) {
+                listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
+                    @Override
+                    public void receiveListings(List<Listing> listings) {
+
+                        if(map != null){
+                            drawMap(map, foodStops);
+                            completionHandler.success(foodStops, listings);
+                        }
+
+
+                    }
+
+                });
+            }
+
+            @Override
+            public void error(VolleyError error) {
+
             }
         });
     }
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -172,6 +232,20 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         void onListFragmentInteraction(Listing item);
     }
 
+    public void drawMap(GoogleMap map, List<FoodStop> foodStops){
+
+        Bundle foodStopsAndListingBundle = new Bundle();
+        for (int i = 0; i <foodStops.size(); i++) {
+            FoodStop foodStop = foodStops.get(i);
+
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(foodStop.lat, foodStop.lng))
+                    .title(foodStop.name));
+
+        }
+
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -186,23 +260,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             LatLng latLng = new LatLng(41.3711, -81.8478);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5f));
 
-           foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
-               @Override
-               public void success(List<FoodStop> foodStops) {
-                   for (int i = 0; i <foodStops.size(); i++) {
-                       FoodStop foodStop = foodStops.get(i);
-                map.addMarker(new MarkerOptions()
-                        .position(new LatLng(foodStop.lat, foodStop.lng))
-                        .title(foodStop.name));
 
-                   }
-               }
-
-               @Override
-               public void error(VolleyError error) {
-
-               }
-           });
 
         }
     }
