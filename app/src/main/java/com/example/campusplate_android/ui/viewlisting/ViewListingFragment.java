@@ -64,10 +64,6 @@ public class ViewListingFragment extends Fragment {
         final ImageView image = view.findViewById(R.id.listingImage);
 
 
-
-
-
-
         if(getArguments() != null){
             listing = listingModel.getListing(getArguments().getInt("index"));
             title.setText(listing.title);
@@ -111,8 +107,6 @@ public class ViewListingFragment extends Fragment {
 
                 }
             });
-
-
         }
         else{
             Toast.makeText(mActivity, "There was an error.", Toast.LENGTH_SHORT).show();
@@ -156,7 +150,6 @@ public class ViewListingFragment extends Fragment {
         if(context instanceof Activity){
             mActivity = context;
         }
-    }
-
+      }
     }
 
