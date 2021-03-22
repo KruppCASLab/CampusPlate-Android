@@ -11,17 +11,17 @@
         android:id="@+id/listingImage"
         android:layout_width="277dp"
         android:layout_height="219dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:src="@android:drawable/sym_def_app_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
 
     <Button
         android:id="@+id/button_pickUpItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/buttonColorPrimary"
         android:text="Pick Up"
         android:textColor="@color/buttonColorSecondary"
@@ -34,93 +34,161 @@
         android:id="@+id/view2"
         android:layout_width="375dp"
         android:layout_height="1dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:background="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewItemDescription" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quantityToPickUp" />
 
     <TextView
         android:id="@+id/textView_listingLocationDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:textColor="@color/colorTextPrimary"
         android:text="Location: "
+        android:textColor="@color/colorTextPrimary"
         app:layout_constraintBottom_toTopOf="@+id/textView_displayLocationDescription"
         app:layout_constraintStart_toStartOf="@+id/textView_displayLocationDescription"
         app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.666" />
 
     <TextView
         android:id="@+id/textView_displayLocationDescription"
         android:layout_width="199dp"
         android:layout_height="27dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="40dp"
         android:text="Item Location Description"
-        android:textSize="18sp"
         android:textColor="@color/colorTextPrimary"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
+
 
     <View
         android:id="@+id/view"
         android:layout_width="375dp"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:background="@color/colorTextPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_left" />
+        app:layout_constraintTop_toBottomOf="@+id/date_posted" />
+
+    <TextView
+        android:id="@+id/date_posted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
 
     <TextView
         android:id="@+id/textView_displayTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorTextPrimary"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="28dp"
         android:text="Item Title"
+        android:textColor="@color/colorTextPrimary"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/date_posted"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/date_posted"
-        android:textColor="@color/colorTextPrimary"
+        android:id="@+id/descriptionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/time_left"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayTitle" />
+        android:layout_marginTop="16dp"
+        android:text="Description"
+        app:layout_constraintStart_toStartOf="@+id/viewItemDescription"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <TextView
-        android:id="@+id/time_left"
-        android:layout_width="62dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="4dp"
-        android:text="TextView"
-        android:textColor="@color/colorTextPrimary"
+        android:id="@+id/viewItemDescription"
+        android:layout_width="284dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="48dp"
+        android:gravity="left"
+        android:lines="4"
+        android:maxLines="4"
+
+        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        android:textSize="6pt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_posted" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-
-    <EditText
-        android:id="@+id/editText_quantityToPickUp"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/quantityToPickUp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:text="1"
-        android:textAlignment="center"
-        android:textColor="@color/colorTextPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/button_pickUpItem"
-        app:layout_constraintEnd_toEndOf="@+id/button_pickUpItem"
-        app:layout_constraintStart_toStartOf="@+id/button_pickUpItem" />
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <Button
+        android:id="@+id/increase"
+        android:layout_width="62dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:text="+"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintStart_toEndOf="@+id/decrease"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <Button
+        android:id="@+id/decrease"
+        android:layout_width="62dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="-"
+        app:layout_constraintStart_toEndOf="@+id/quantityToPickUp"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/quantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Quantity"
+        app:layout_constraintStart_toStartOf="@+id/quantityToPickUp"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

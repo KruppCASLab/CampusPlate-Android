@@ -28,8 +28,10 @@ import com.android.volley.VolleyError;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
+import com.example.campusplate_android.Model.ReservationModel;
 import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
+import com.example.campusplate_android.Model.Types.Reservation;
 import com.example.campusplate_android.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,6 +56,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
     private ListingModel listingModel;
     private FoodStopsModel foodStopsModel;
+    private ReservationModel reservationModel;
     private GoogleMap map;
     private SwipeRefreshLayout swipeContainer;
     private OnListFragmentInteractionListener mListener;
@@ -66,7 +69,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
      * fragment (e.g. upon screen orientation changes).
      */
     public interface CompletionHandler{
-        void success(List<FoodStop> foodStops, List<Listing> listings);
+        void success(List<FoodStop> foodStops, List<Listing> listings, List<Reservation> reservations);
         void error(VolleyError volleyError);
     }
     public AllListingsFragment() {
@@ -82,7 +85,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                              Bundle savedInstanceState) {
 
         foodStopsModel = FoodStopsModel.getSharedInstance();
-
+        reservationModel = ReservationModel.getSharedInstance();
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         final  View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
@@ -111,7 +114,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         fetchTimelineAsync(new CompletionHandler() {
             @Override
 
-            public void success(List<FoodStop> foodStops, List<Listing> listings) {
+            public void success(List<FoodStop> foodStops, List<Listing> listings, List<Reservation> reservations) {
 
                 try {
                     ((MainActivity) mActivity).stopProgressBar();
@@ -143,7 +146,8 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             public void onRefresh() {
                 fetchTimelineAsync(new CompletionHandler() {
                     @Override
-                    public void success(List<FoodStop> foodStops, List<Listing> listings) {
+                    public void success(List<FoodStop> foodStops, List<Listing> listings, List<Reservation> reservations) {
+
                         adapter.setListings(listings);
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
@@ -182,12 +186,23 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             public void success(final List<FoodStop> foodStops) {
                 listingModel.getListings(new ListingModel.GetListingsCompletionHandler() {
                     @Override
-                    public void receiveListings(List<Listing> listings) {
+                    public void receiveListings(final List<Listing> listings) {
+                        reservationModel.getReservations(new ReservationModel.getCompletionHandler() {
+                            @Override
+                            public void success(List<Reservation> reservations) {
+                                if(map != null){
+                                    drawMap(map, foodStops);
 
-                        if(map != null){
-                            drawMap(map, foodStops);
-                            completionHandler.success(foodStops, listings);
-                        }
+                                }
+                                completionHandler.success(foodStops, listings, reservations);
+                            }
+
+                            @Override
+                            public void error(VolleyError error) {
+
+                            }
+                        });
+
 
 
                     }
