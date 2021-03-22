@@ -142,9 +142,7 @@ public class ServiceClient {
         String path;
         int method = Request.Method.PATCH;
 
-            path = "https://mopsdev.bw.edu/food/rest.php/users/" + id;
-
-
+        path = baseUrl +  broker + "/" + id;
 
         Gson gson = new Gson();
         String json = gson.toJson(putObject);
@@ -155,6 +153,7 @@ public class ServiceClient {
             //TODO: Get location description from somewhere
         } catch (JSONException exception) {
             //TODO: Something with exception
+            System.out.println(exception);
         }
 
         BaseRequest baseRequest = new BaseRequest(method, path, object, new Response.Listener<JSONObject>() {
