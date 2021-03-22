@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class ViewListingFragment extends Fragment {
     private ReservationModel reservationModel;
     private Context mActivity;
     private Reservation reservation;
+    private int quantityNumber = 0;
 
     public static ViewListingFragment newInstance() {
         return new ViewListingFragment();
@@ -64,9 +66,11 @@ public class ViewListingFragment extends Fragment {
         TextView title = view.findViewById(R.id.textView_displayTitle);
         final TextView locationDescription = view.findViewById(R.id.textView_displayLocationDescription);
         TextView datePosted = view.findViewById(R.id.date_posted);
-        TextView timeLeft = view.findViewById(R.id.time_left);
         final ImageView image = view.findViewById(R.id.listingImage);
-        final EditText quantity = view.findViewById(R.id.editText_quantityToPickUp);
+        TextView viewItemDescription = view.findViewById(R.id.viewItemDescription);
+        final TextView quantityToPickUp = view.findViewById(R.id.quantityToPickUp);
+        Button increase = view.findViewById(R.id.increase);
+        Button decrease = view.findViewById(R.id.decrease);
 
 
 
@@ -86,7 +90,27 @@ public class ViewListingFragment extends Fragment {
 
 
                 title.setText(listing.title);
-                foodStopBundle.putInt("foodStopId", listing.foodStopId);
+                quantityToPickUp.setText(calculateQuantity(0, listing.quantity));
+
+            foodStopBundle.putInt("foodStopId", listing.foodStopId);
+
+            increase.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantityToPickUp.setText(calculateQuantity(1, listing.quantity));
+
+                }
+            });
+            decrease.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantityToPickUp.setText(calculateQuantity(-1, listing.quantity));
+
+
+                }
+            });
+
+
 
 
             Date date = new Date(listing.creationTime*1000L);
@@ -94,8 +118,8 @@ public class ViewListingFragment extends Fragment {
             long diff = Math.abs(System.currentTimeMillis() - listing.creationTime*1000L);
             long time = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
             datePosted.setText(String.format("Posted %d days ago", time));
-            timeLeft.setText("\u26A0 Discarded in 3 days");
             locationDescription.setText(foodStop.name);
+            viewItemDescription.setText(listing.description);
 
             listingModel.getListingImage(listing.listingId, new ListingModel.GetListingImageCompletionHandler() {
                 @Override
@@ -129,13 +153,14 @@ public class ViewListingFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
-                                String value = quantity.getText().toString();
+                                String value = String.valueOf(quantityNumber);
                                 reservation = new Reservation(listing.listingId, Integer.parseInt(value));
                                 reservationModel.addReservation(reservation, new ReservationModel.postCompletionHandler() {
                                     @Override
                                     public void success(int code, int status) {
                                         if(status == 0) {
                                             Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                            quantityNumber = 0;
                                             foodStopBundle.putInt("code", code);
                                             Navigation.findNavController(root).navigate(R.id.navigation_lisitingConfirmation, foodStopBundle);
                                         }
@@ -170,6 +195,18 @@ public class ViewListingFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private String calculateQuantity(int number, int totalQuantity){
+        if(quantityNumber+number >= 0 && quantityNumber+number <= totalQuantity){
+            this.quantityNumber += number;
+        }
+        if(totalQuantity == 0){
+            return "0/0";
+        }
+
+        return String.format("%d/%d", quantityNumber, totalQuantity);
+
     }
 
     private FoodStop getFoodStopViewListing(Listing listing, List<FoodStop> foodStops){
