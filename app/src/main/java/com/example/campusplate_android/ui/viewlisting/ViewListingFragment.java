@@ -73,10 +73,6 @@ public class ViewListingFragment extends Fragment {
         Button decrease = view.findViewById(R.id.decrease);
 
 
-
-
-
-
         if(getArguments() != null){
             int listingId = getArguments().getInt("listingId");
             int foodStopId = getArguments().getInt("foodStopId");
@@ -132,6 +128,9 @@ public class ViewListingFragment extends Fragment {
 
                 }
             });
+
+
+
 
         }
         else{
@@ -239,7 +238,6 @@ public class ViewListingFragment extends Fragment {
         if(context instanceof Activity){
             mActivity = context;
         }
-    }
-
+      }
     }
 

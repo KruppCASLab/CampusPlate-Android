@@ -45,6 +45,7 @@ public class FoodStopsModel {
     public ArrayList<FoodStop> getCachedFoodStops() {
         return foodStops;
     }
+
     public void setFoodStopId(FoodStop foodStop) {
 
     }

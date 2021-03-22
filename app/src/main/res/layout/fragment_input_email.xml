@@ -21,16 +21,15 @@
 
     <EditText
         android:id="@+id/editText_inputEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="205dp"
+        android:layout_height="39dp"
         android:layout_marginTop="64dp"
+        android:background="@drawable/rounded_corners"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_emailInfo"
-        android:background="@color/colorWhite"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView_emailInfo" />
 
     <TextView
         android:id="@+id/textView_email"
@@ -46,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:backgroundTint="@color/colorWhite"
+       android:background="@drawable/rounded_corners"
         android:text="Continue"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
