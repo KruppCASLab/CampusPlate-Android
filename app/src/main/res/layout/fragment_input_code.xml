@@ -9,6 +9,7 @@
     tools:context=".ui.inputcode.InputCodeFragment">
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="410dp"
         android:layout_height="728dp"
         android:background="@drawable/background_texture"
@@ -23,8 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:backgroundTintMode="@color/colorWhite"
+        android:background="@drawable/rounded_corners"
         android:text="Continue"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
         android:layout_width="201dp"
         android:layout_height="42dp"
         android:layout_marginTop="64dp"
-        android:background="@color/colorWhite"
+        android:background="@drawable/rounded_corners"
         android:ems="10"
         android:inputType="number"
         android:maxLength="6"
