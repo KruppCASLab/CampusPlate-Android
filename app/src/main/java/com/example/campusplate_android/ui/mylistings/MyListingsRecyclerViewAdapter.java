@@ -1,6 +1,5 @@
 package com.example.campusplate_android.ui.mylistings;
 
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -79,7 +78,7 @@ public class MyListingsRecyclerViewAdapter extends RecyclerView.Adapter<MyListin
             super(view);
             mView = view;
             mTitleView = view.findViewById(R.id.item_title);
-            mLocationDescriptionView = view.findViewById(R.id.item_date);
+            mLocationDescriptionView = view.findViewById(R.id.foodStop);
         }
 
         @Override

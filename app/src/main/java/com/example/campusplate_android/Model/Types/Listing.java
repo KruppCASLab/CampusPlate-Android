@@ -10,6 +10,7 @@ public class Listing implements Comparable<Listing> {
     public int foodStopId;
     public int creationTime;
     public int quantity;
+    public int weight;
 
     public String foodImage;
     //TODO: Add image
@@ -24,7 +25,7 @@ public class Listing implements Comparable<Listing> {
         this.creationTime = listing.creationTime;
         this.quantity = listing.quantity;
     }
-    public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity) {
+    public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity, int weight) {
         this.listingId = listingId;
         this.userId = userId;
         this.title = title;
@@ -32,15 +33,17 @@ public class Listing implements Comparable<Listing> {
         this.foodStopId = foodStopId;
         this.creationTime = creationTime;
         this.quantity = quantity;
+        this.weight = weight;
     }
 
     // omitting userId
-    public Listing(String title, String description, int foodStopId, int quantity, String foodImage) {
+    public Listing(String title, String description, int foodStopId, int quantity, String foodImage,int weight) {
         this.title = title;
         this.description = description;
         this.foodStopId = foodStopId;
         this.quantity = quantity;
         this.foodImage = foodImage;
+        this.weight = weight;
     }
 
     @Override

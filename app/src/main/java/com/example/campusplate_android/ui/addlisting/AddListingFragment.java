@@ -150,7 +150,7 @@ public class AddListingFragment extends Fragment {
                 Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
                 int foodStopId = selectedFoodStop.foodStopId;
 
-                Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage);
+                Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,0);
 
                 listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                     @Override

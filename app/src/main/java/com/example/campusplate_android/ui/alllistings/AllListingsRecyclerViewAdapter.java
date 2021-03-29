@@ -15,8 +15,6 @@ import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -27,6 +25,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
     private List<Listing> mValues;
     private List<FoodStop> mStops;
+
 
     private final OnListFragmentInteractionListener mListener;
     public boolean isClickable = true;
@@ -42,6 +41,9 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         mListener = listener;
         mStops = foodStops;
     }
+
+
+
 
 
     @Override
@@ -64,13 +66,19 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
         holder.mItem = mValues.get(position);
 
+
+
+        int test = mValues.get(pos).quantity;
         holder.mTitleView.setText(mValues.get(position).title);
         //TODO:Update to value once determined
-        holder.mLocationDescriptionView.setText(String.format("%s", time));
+        holder.mQuantityView.setText(Integer.toString(mValues.get(position).quantity));
         for(int i = 0; i < mStops.size(); i++){
             String hexColor = "#" + mStops.get(i).hexColor;
             if(mValues.get(position).foodStopId == mStops.get(i).foodStopId){
                 holder.mline.setColorFilter(Color.parseColor(hexColor));
+                holder.mLocationDescriptionView.setText(mStops.get(i).name);
+
+
             }
         }
 
@@ -107,6 +115,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mTitleView;
+        public final TextView mQuantityView;
         public final TextView mLocationDescriptionView;
         public Listing mItem;
         public FoodStop mStop;
@@ -115,7 +124,8 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
             super(view);
             mView = view;
             mTitleView = view.findViewById(R.id.item_title);
-            mLocationDescriptionView = view.findViewById(R.id.item_date);
+            mLocationDescriptionView = view.findViewById(R.id.foodStop);
+            mQuantityView = view.findViewById(R.id.quantityView);
             mline = view.findViewById(R.id.indicator_line);
         }
 

@@ -16,8 +16,8 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="383dp"
-        android:layout_height="88dp"
+        android:layout_width="377dp"
+        android:layout_height="136dp"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         tools:ignore="ExtraText"
@@ -54,13 +54,13 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/item_date"
+            android:id="@+id/foodStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="11dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Item Date Posted"
+            android:hint="Food Stop"
             android:textColor="@color/colorTextPrimary"
             android:textSize="5pt"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,6 +69,15 @@
             app:layout_constraintStart_toEndOf="@+id/indicator_line"
             app:layout_constraintTop_toBottomOf="@+id/item_title"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/quantityView"
+            android:layout_width="94dp"
+            android:layout_height="22dp"
+            android:layout_marginBottom="28dp"
+           android:hint="Quantity Remaining"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/foodStop" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
