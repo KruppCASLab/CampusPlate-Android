@@ -117,7 +117,8 @@ public class ListingModel {
                         Double creationTime = (double) mapItem.get("creationTime");
                         Double quantity = (double) mapItem.get("quantity");
                         Double weight = (double) mapItem.get("weightOunces");
-                        addListing(new Listing(listingId.intValue(), userId.intValue(), foodStopId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("description"), creationTime.intValue(), quantity.intValue(), weight.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
+                        Double quantityRemaining = (double) mapItem.get("quantityRemaining");
+                        addListing(new Listing(listingId.intValue(), userId.intValue(), foodStopId.intValue(), (String) mapItem.get("title"), (String) mapItem.get("description"), creationTime.intValue(), quantity.intValue(), weight.intValue(), quantityRemaining.intValue()));//new Date((int) (double) mapItem.get("creationTime")), listingModel.createNewLocation((double) mapItem.get("lat"), (double) mapItem.get("lng")),-1));
                     }
                 }
                 Collections.sort(listings);

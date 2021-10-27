@@ -2,7 +2,10 @@ package com.example.campusplate_android.ui.alllistings;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -25,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.example.campusplate_android.CredentialManager;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
@@ -33,6 +37,8 @@ import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.Model.Types.Reservation;
 import com.example.campusplate_android.R;
+import com.example.campusplate_android.SharedPreferencesManager;
+import com.example.campusplate_android.SignUpActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -86,7 +92,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
         foodStopsModel = FoodStopsModel.getSharedInstance();
         reservationModel = ReservationModel.getSharedInstance();
-        listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
+        listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());    // why does this get shared instance differ
         final  View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
 
@@ -126,15 +132,36 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 adapter.setFoodstops(foodStops);
                 adapter.notifyDataSetChanged();
 
-
-
-
-
             }
 
 
             @Override
             public void error(VolleyError volleyError) {
+
+                //TODO: allow alert dialog to send user back to sign up screen & check for 401- network response
+                if(volleyError.networkResponse.statusCode == 401){
+                    //TODO: Make alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.dialogue_message)
+                    .setTitle(R.string.alert_title);
+
+                    builder.setPositiveButton(R.string.positive_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK button
+                            Intent intent = new Intent(mActivity.getApplicationContext(), SignUpActivity.class);
+                            SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
+                            final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager);
+                            credentialManager.removeUserCredentials();
+                            startActivity(intent);
+
+                        }
+
+                    });
+                    AlertDialog dialog = builder.create();
+                        dialog.show();
+                }
+
+
 
             }
         });
@@ -147,8 +174,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 fetchTimelineAsync(new CompletionHandler() {
                     @Override
                     public void success(List<FoodStop> foodStops, List<Listing> listings, List<Reservation> reservations) {
-
-                        adapter.setListings(listings);
+                        adapter.setListings(listings); // is this supposed to show listing in swipe container
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
                     }
@@ -167,19 +193,19 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        view.findViewById(R.id.addListingButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final View root = view;
-                Navigation.findNavController(root).navigate(R.id.action_navigation_alllistings_to_navigation_addlisting);
-            }
-        });
+//        view.findViewById(R.id.addListingButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final View root = view;
+//                Navigation.findNavController(root).navigate(R.id.action_navigation_alllistings_to_navigation_addlisting);
+//            }
+//        });
 
 
         return view;
     }
 
-    private void fetchTimelineAsync(final CompletionHandler completionHandler) {
+    private void fetchTimelineAsync(final CompletionHandler completionHandler) { // what does this do fetch time
 
         foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
             @Override
@@ -192,14 +218,12 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                             public void success(List<Reservation> reservations) {
                                 if(map != null){
                                     drawMap(map, foodStops);
-
                                 }
                                 completionHandler.success(foodStops, listings, reservations);
                             }
-
                             @Override
                             public void error(VolleyError error) {
-
+                                completionHandler.error(error);
                             }
                         });
 
@@ -213,6 +237,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             @Override
             public void error(VolleyError error) {
 
+                completionHandler.error(error);
             }
         });
     }

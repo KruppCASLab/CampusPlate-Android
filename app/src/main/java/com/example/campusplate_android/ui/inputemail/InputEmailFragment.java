@@ -53,7 +53,7 @@ public class InputEmailFragment extends Fragment {
         final CredentialManager credentialManager = new CredentialManager(sharedPreferencesManager);
 
 
-        SharedPreferences sp = mActivity.getSharedPreferences("prefs", 0);
+
         if (credentialManager.credentialExists())
         {
             Session.getInstance().setCredential(new Credential(credentialManager.getUsername(), credentialManager.getUserPassword()));

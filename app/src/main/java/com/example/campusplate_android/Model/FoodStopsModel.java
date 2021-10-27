@@ -119,7 +119,7 @@ public class FoodStopsModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                completionHandler.error(error);
             }
         });
     }

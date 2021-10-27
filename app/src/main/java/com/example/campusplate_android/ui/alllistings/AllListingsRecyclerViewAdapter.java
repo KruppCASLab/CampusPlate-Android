@@ -48,15 +48,43 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.listing_row, parent, false);
-        return new ViewHolder(view);
+        if(viewType == 0){
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.reservation_title_row, parent, false);
+            return new ViewHolder(view);
+        }else {
+
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.listing_row, parent, false);
+            return new ViewHolder(view);
+        }
     }
 
 
+    @Override
+    public int getItemViewType(int position) {
+        if(position == 0){
+            return 0;
+        }else {
+            return 1;
+        }
+    }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
+        if(position == 0) {
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Navigation.findNavController(view).navigate(R.id.action_navigation_alllistings_to_reservation_Fragment);
+                }
+            });
+            return;
+        } // set on click and then return
+
+
+        position --;
         final int pos = position;
         Date date = new Date(mValues.get(position).creationTime *1000L);
 
@@ -71,14 +99,12 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         int test = mValues.get(pos).quantity;
         holder.mTitleView.setText(mValues.get(position).title);
         //TODO:Update to value once determined
-        holder.mQuantityView.setText(Integer.toString(mValues.get(position).quantity));
+        holder.mQuantityView.setText(Integer.toString(mValues.get(position).quantityRemaining));
         for(int i = 0; i < mStops.size(); i++){
             String hexColor = "#" + mStops.get(i).hexColor;
             if(mValues.get(position).foodStopId == mStops.get(i).foodStopId){
                 holder.mline.setColorFilter(Color.parseColor(hexColor));
                 holder.mLocationDescriptionView.setText(mStops.get(i).name);
-
-
             }
         }
 
@@ -109,7 +135,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValues.size() + 1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_alllistings_to_navigation_addlisting"
             app:destination="@id/navigation_addlisting" />
+        <action
+            android:id="@+id/action_navigation_alllistings_to_reservation_Fragment"
+            app:destination="@id/reservationFragment" />
     </fragment>
 
     <fragment
@@ -65,10 +68,19 @@
         android:id="@+id/navigation_lisitingConfirmation"
         android:name="com.example.campusplate_android.ui.listingconfirmation.LisitingConfirmationFragment"
         android:label="lisiting_confirmation_fragment"
-        tools:layout="@layout/lisiting_confirmation_fragment" />
+        tools:layout="@layout/lisiting_confirmation_fragment" >
+        <action
+            android:id="@+id/action_navigation_lisitingConfirmation_to_navigation_alllistings"
+            app:destination="@id/navigation_alllistings" />
+    </fragment>
     <fragment
         android:id="@+id/reservationFragment"
-        android:name="com.example.campusplate_android.ReservationFragment"
+        android:name="com.example.campusplate_android.ui.Reservation.ReservationFragment"
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_item_list" />
+    <fragment
+        android:id="@+id/reservation_Fragment"
+        android:name="com.example.campusplate_android.ui.Reservation.Reservation_Fragment"
+        android:label="fragment_reservation_"
+        tools:layout="@layout/fragment_reservation_" />
 </navigation>

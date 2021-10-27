@@ -68,6 +68,7 @@ public class InputCodeFragment extends Fragment {
 
                 final User user = new User(username,Integer.parseInt(inputCode.getText().toString()));
                     UserModel.getSharedInstance().updateUser(user, new UserModel.UpdateUserCompletionHandler() {
+
                     @Override
                     public void success(final String token) {
                         Credential account = new Credential(username, token);
@@ -80,7 +81,7 @@ public class InputCodeFragment extends Fragment {
                     }
                     @Override
                     public void error(int errorCode) {
-                        Toast.makeText(mActivity.getApplicationContext(), "Error:" + errorCode, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity.getApplicationContext(), "Incorrect Pin: " + errorCode, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

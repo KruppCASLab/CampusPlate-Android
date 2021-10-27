@@ -11,6 +11,7 @@ public class Listing implements Comparable<Listing> {
     public int creationTime;
     public int quantity;
     public int weight;
+    public int quantityRemaining;
 
     public String foodImage;
     //TODO: Add image
@@ -24,8 +25,9 @@ public class Listing implements Comparable<Listing> {
         this.foodStopId = listing.foodStopId;
         this.creationTime = listing.creationTime;
         this.quantity = listing.quantity;
+        this.quantityRemaining = listing.quantityRemaining;
     }
-    public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity, int weight) {
+    public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity, int weight,int quantityRemaining) {
         this.listingId = listingId;
         this.userId = userId;
         this.title = title;
@@ -34,6 +36,7 @@ public class Listing implements Comparable<Listing> {
         this.creationTime = creationTime;
         this.quantity = quantity;
         this.weight = weight;
+        this.quantityRemaining = quantityRemaining;
     }
 
     // omitting userId

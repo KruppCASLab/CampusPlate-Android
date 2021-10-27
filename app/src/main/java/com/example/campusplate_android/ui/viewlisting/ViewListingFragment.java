@@ -86,21 +86,21 @@ public class ViewListingFragment extends Fragment {
 
 
                 title.setText(listing.title);
-                quantityToPickUp.setText(calculateQuantity(0, listing.quantity));
+                quantityToPickUp.setText(calculateQuantity(1, listing.quantityRemaining));
 
             foodStopBundle.putInt("foodStopId", listing.foodStopId);
 
             increase.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    quantityToPickUp.setText(calculateQuantity(1, listing.quantity));
+                    quantityToPickUp.setText(calculateQuantity(1, listing.quantityRemaining));
 
                 }
             });
             decrease.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    quantityToPickUp.setText(calculateQuantity(-1, listing.quantity));
+                    quantityToPickUp.setText(calculateQuantity(-1, listing.quantityRemaining));
 
 
                 }
@@ -158,7 +158,6 @@ public class ViewListingFragment extends Fragment {
                                     @Override
                                     public void success(int code, int status) {
                                         if(status == 0) {
-                                            Toast.makeText(mActivity.getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                                             quantityNumber = 0;
                                             foodStopBundle.putInt("code", code);
                                             Navigation.findNavController(root).navigate(R.id.navigation_lisitingConfirmation, foodStopBundle);
@@ -197,7 +196,7 @@ public class ViewListingFragment extends Fragment {
     }
 
     private String calculateQuantity(int number, int totalQuantity){
-        if(quantityNumber+number >= 0 && quantityNumber+number <= totalQuantity){
+        if(quantityNumber + number >= 0 && quantityNumber + number <= totalQuantity){
             this.quantityNumber += number;
         }
         if(totalQuantity == 0){

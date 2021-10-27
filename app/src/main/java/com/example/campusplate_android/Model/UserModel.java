@@ -58,22 +58,25 @@ public class UserModel {
             public void onResponse(JSONObject response) {
         // figure out how to get token on the completionHandler success
                 try {
-                   // JSONObject getStatus = response.getJSONObject("Status");
+                    //JSONObject getStatus = response.getJSONObject("Status");
+                    if(response.getInt("status") != 0){
+                        completionHandler.error(response.getInt("status"));
+                    }
+                    else {
+                        JSONObject getGuid = response.getJSONObject("data");
+                        String guid = getGuid.getString("GUID");
+                        completionHandler.success(guid);
+                    }
 
-                    JSONObject getGuid = response.getJSONObject("data");
-                    String guid = getGuid.getString("GUID");
-                    completionHandler.success(guid);
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                int j =5;
-                //TODO:Handleerror
+                completionHandler.error(1);
             }
         });
 

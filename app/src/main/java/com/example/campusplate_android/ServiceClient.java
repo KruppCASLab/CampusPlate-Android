@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ServiceClient {
+public class                                                                                                                                               ServiceClient {
     private static ServiceClient serviceClient;
     private Context context;
     private RequestQueue requestQueue;
@@ -173,10 +173,6 @@ public class ServiceClient {
     public void post(String broker, Object postObject, final Response.Listener<JSONObject> listener, final Response.ErrorListener errorListener) {
         String path = baseUrl + broker.toLowerCase();
         int method = Request.Method.POST;
-
-
-
-
 
         Gson gson = new Gson();
         String json = gson.toJson(postObject);

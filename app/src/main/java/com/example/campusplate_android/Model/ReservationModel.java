@@ -29,6 +29,10 @@ public class ReservationModel {
     }
     private ReservationModel(){}
 
+    public ArrayList<Reservation> getAllReservations() {
+        return this.reservations;
+    }
+
     static synchronized public ReservationModel getSharedInstance() {
         if (sharedInstance == null) {
             sharedInstance = new ReservationModel();
@@ -59,9 +63,10 @@ public class ReservationModel {
                         Double code = (double) mapItem.get("code");
                         Double timeCreated = (double) mapItem.get("timeCreated");
                         Double timeExpired = (double) mapItem.get("timeExpired");
+                        Double  reservationId = (double) mapItem.get("reservationId");
 
 
-                        reservations.add(new Reservation(listingId.intValue(), quantity.intValue(), userId.intValue(), status.intValue(), code.intValue(), timeCreated.longValue(), timeExpired.longValue()));
+                        reservations.add(new Reservation(listingId.intValue(), quantity.intValue(), userId.intValue(), status.intValue(), code.intValue(), timeCreated.longValue(), timeExpired.longValue(), reservationId.intValue()));
                     }
                     completionHandler.success(reservations);
                 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
+import com.example.campusplate_android.ui.alllistings.AllListingsRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class LisitingConfirmationFragment extends Fragment {
     private ListingModel listingModel;
     private FoodStopsModel foodStopsModel;
     private Context mActivity;
+    private AllListingsRecyclerViewAdapter adapter;
 
     private LisitingConfirmationViewModel mViewModel;
 
@@ -41,7 +44,7 @@ public class LisitingConfirmationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lisiting_confirmation_fragment, container, false);
+        final View view = inflater.inflate(R.layout.lisiting_confirmation_fragment, container, false);
 
         foodStopsModel = FoodStopsModel.getSharedInstance();
 
@@ -79,6 +82,13 @@ public class LisitingConfirmationFragment extends Fragment {
                 }
             });
         }
+
+        view.findViewById(R.id.doneButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_navigation_lisitingConfirmation_to_navigation_alllistings);
+            }
+        });
 
         return view;
     }
