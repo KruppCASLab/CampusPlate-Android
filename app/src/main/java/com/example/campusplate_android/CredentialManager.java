@@ -34,7 +34,7 @@ public class CredentialManager {
             keyStore.load(null);
         }
         catch(Exception e) {
-            Log.e("Keystore", "Unable to initialize keystore");
+
         }
     }
 
@@ -98,7 +98,7 @@ public class CredentialManager {
                 storeUserAlias(alias);
             }
         } catch (Exception e) {
-            Log.e("Keystore", "Unable to generate key");
+
         }
     }
 

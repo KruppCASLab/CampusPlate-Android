@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.campusplate_android">
+    package="com.example.campusplate_android"
+    android:versionCode="1"
+    android:versionName="CPCupcake"
+    >
 
     <application
         android:allowBackup="true"
