@@ -20,7 +20,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.campusplate_android.Credential;
@@ -49,18 +51,14 @@ public class InputCodeFragment extends Fragment {
 
         username = getArguments().getString("username");
 
-        // added id 1/23/2021
-
-        view.findViewById(R.id.textView_terms).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTerms();
-            }
-        });
+        final ProgressBar progressBar = view.findViewById(R.id.progressBarInputCode);
+        final Button submitButton = view.findViewById(R.id.button_submitCode);
 
         view.findViewById(R.id.button_submitCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                submitButton.setEnabled(false);
                 final EditText  inputCode = requireActivity().findViewById(R.id.editText_inputCode);
 
                 SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(getActivity().getApplicationContext().getSharedPreferences("CampusPlate", Context.MODE_PRIVATE));
@@ -71,6 +69,8 @@ public class InputCodeFragment extends Fragment {
 
                     @Override
                     public void success(final String token) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        submitButton.setEnabled(true);
                         Credential account = new Credential(username, token);
                         credentialManager.storeUserCredentials(account);
                         Session.getInstance().setCredential(account);
@@ -81,6 +81,8 @@ public class InputCodeFragment extends Fragment {
                     }
                     @Override
                     public void error(int errorCode) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        submitButton.setEnabled(true);
                             Toast.makeText(mActivity.getApplicationContext(), "Incorrect Pin: " + errorCode, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -97,17 +99,4 @@ public class InputCodeFragment extends Fragment {
         }
     }
 
-    public void showTerms() {
-        new AlertDialog.Builder(mActivity)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Terms and Conditions")
-                .setMessage(mActivity.getResources().getString(R.string.terms_of_service))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 }

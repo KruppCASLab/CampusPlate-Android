@@ -71,13 +71,10 @@ public class InputEmailFragment extends Fragment {
 
             @Override
             public void onClick(final View view) {
-
                 progressBar.setVisibility(ProgressBar.VISIBLE);
                 sendCodeBtn.setEnabled(false);
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
                 final String email = inputEmail.getText().toString();
-
-
 
                 credentialManager.removeUserCredentials();
 
