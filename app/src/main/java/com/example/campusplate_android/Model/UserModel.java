@@ -56,7 +56,6 @@ public class UserModel {
         serviceClient.patch("Users", user, user.getUserName(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-        // figure out how to get token on the completionHandler success
                 try {
                     //JSONObject getStatus = response.getJSONObject("Status");
                     if(response.getInt("status") != 0){
@@ -67,7 +66,6 @@ public class UserModel {
                         String guid = getGuid.getString("GUID");
                         completionHandler.success(guid);
                     }
-
                 }
                 catch (JSONException e) {
                     e.printStackTrace();

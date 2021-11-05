@@ -10,11 +10,11 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="406dp"
-        android:layout_height="721dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/background_texture"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -39,6 +39,7 @@
         android:layout_marginTop="64dp"
         android:background="@drawable/rounded_corners"
         android:ems="10"
+        android:textColor="@color/colorSecondary"
         android:inputType="number"
         android:maxLength="6"
         android:textAlignment="center"

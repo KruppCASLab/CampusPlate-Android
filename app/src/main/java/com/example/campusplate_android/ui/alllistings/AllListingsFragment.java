@@ -160,9 +160,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                     AlertDialog dialog = builder.create();
                         dialog.show();
                 }
-
-
-
             }
         });
 
@@ -226,23 +223,16 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                                 completionHandler.error(error);
                             }
                         });
-
-
-
                     }
-
                 });
             }
 
             @Override
             public void error(VolleyError error) {
-
                 completionHandler.error(error);
             }
         });
     }
-
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -299,9 +289,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
             LatLng latLng = new LatLng(41.3711, -81.8478);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5f));
-
-
-
         }
     }
 
