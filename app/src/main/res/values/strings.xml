@@ -9,6 +9,7 @@
     <string name="dialogue_message"> Your device can no longer login to the Campus Plate. It is recommended you reset your account.</string>
     <string name="positive_button"> Ok </string>
     <string name="alert_title"> Error </string>
+    <string name="networkError"> Unable to connect to network</string>
 
 
     <string name="view_terms">By creating an account with Campus Plate, you are agreeing to the terms and conditions. Click here to view.</string>

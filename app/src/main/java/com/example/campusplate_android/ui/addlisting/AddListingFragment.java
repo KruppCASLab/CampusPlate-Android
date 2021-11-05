@@ -147,7 +147,7 @@ public class AddListingFragment extends Fragment {
                 ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
 
-                Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
+
                 int foodStopId = selectedFoodStop.foodStopId;
 
                 Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,0);

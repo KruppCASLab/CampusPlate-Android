@@ -146,6 +146,7 @@ public class ViewListingFragment extends Fragment {
                 new AlertDialog.Builder(mActivity)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Pick Up Item")
+                        .setCancelable(false)
                         .setMessage("Are you sure you want to pick up this item?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
@@ -168,21 +169,19 @@ public class ViewListingFragment extends Fragment {
                                         else if(status == 2){
                                             Toast.makeText(mActivity, "Listing no longer exists", Toast.LENGTH_LONG).show();
                                         }
+
                                         ((MainActivity) mActivity).stopProgressBar();
 
                                     }
 
                                     @Override
                                     public void error(VolleyError error) {
-                                        int j = 5;
+                                        Toast.makeText(mActivity, R.string.networkError, Toast.LENGTH_LONG).show();
                                     }
                                 });
-
-
-
-
                             }
                         })
+
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -211,9 +210,7 @@ public class ViewListingFragment extends Fragment {
         for (int i = 0; i <foodStops.size(); i++) {
             FoodStop foodStop = foodStops.get(i);
             if (listing.foodStopId == foodStop.foodStopId) {
-
                 return foodStops.get(i);
-
             }
         }
         return null;
@@ -224,12 +221,9 @@ public class ViewListingFragment extends Fragment {
             if(listingId == listings.get(i).listingId){
                 return listings.get(i);
             }
-
-
         }
         return null;
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {

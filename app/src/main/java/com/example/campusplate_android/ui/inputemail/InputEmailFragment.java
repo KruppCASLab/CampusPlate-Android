@@ -15,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,12 +65,19 @@ public class InputEmailFragment extends Fragment {
         }
         View view = inflater.inflate(R.layout.fragment_input_email, container, false);
 
+        final Button sendCodeBtn = view.findViewById(R.id.button_sendCode);
+        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
         view.findViewById(R.id.button_sendCode).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(final View view) {
+
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                sendCodeBtn.setEnabled(false);
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
                 final String email = inputEmail.getText().toString();
-                final Credential credential = new Credential(email);
+
+
 
                 credentialManager.removeUserCredentials();
 
@@ -76,14 +85,19 @@ public class InputEmailFragment extends Fragment {
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
                     public void success() {
+
+
                         Bundle bundle = new Bundle();
                         bundle.putString("username", email);
                         Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment, bundle);
+                        sendCodeBtn.setEnabled(true);
+
                     }
 
                     @Override
                     public void error(int errorCode) {
-                        Toast.makeText(mActivity.getApplicationContext(), "Error:" + errorCode, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity.getApplicationContext(), R.string.networkError, Toast.LENGTH_SHORT).show();
+                        sendCodeBtn.setEnabled(true);
                     }
                 });
 

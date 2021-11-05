@@ -16,9 +16,10 @@
             android:id="@+id/indicator_circle"
             android:layout_width="372dp"
             android:layout_height="438dp"
-            android:layout_marginStart="84dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/ic_circle"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,26 +66,36 @@
 
         <TextView
             android:id="@+id/confCode"
-            android:layout_width="140dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="104dp"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/indicator_circle" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="ConfirmationCode"
+            android:textColor="@color/colorWhite"
+            android:textSize="30dp"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <Button
             android:id="@+id/doneButton"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="76dp"
             android:text="Done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.517"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confCode"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Your reservation number is "
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="@+id/foodStopName"
+            app:layout_constraintTop_toBottomOf="@+id/foodStopAddress" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
