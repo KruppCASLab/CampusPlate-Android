@@ -280,17 +280,11 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.getUiSettings().setMyLocationButtonEnabled(false);
-        if (mActivity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-        else {
-            map.setMyLocationEnabled(true);
 
-            Location currentLocation = ((MainActivity) mActivity).getCurrentLocation();
             LatLng latLng = new LatLng(41.3711, -81.8478);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5f));
         }
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
