@@ -19,7 +19,7 @@ public class                                                                    
     private static ServiceClient serviceClient;
     private Context context;
     private RequestQueue requestQueue;
-    private String baseUrl = "https://mopsdev.bw.edu/cp/rest.php/";
+    private String baseUrl = "https://mops.bw.edu/cp/rest.php/";
 
     private ServiceClient(Context ctx) {
         this.context = ctx;
