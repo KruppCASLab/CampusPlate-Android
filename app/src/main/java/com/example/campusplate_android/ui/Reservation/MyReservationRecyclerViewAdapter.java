@@ -84,6 +84,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
         holder.mFoodStopTitle.setText(foodStop.name);
         holder.mDescriptionView.setText(listing.description);
         holder.mReservationAmount.setText(Integer.toString(reservation.quantity));
+        holder.mReservationCode.setText(Integer.toString(reservation.code));
 
         long time = reservation.timeExpired - (new Date()).getTime() / 1000;
         long minutes = time/ 60;
@@ -112,6 +113,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
        public final TextView mReservationAmount;
        public final TextView mExpirationTime;
        public final ImageView mHexColor;
+       public final TextView mReservationCode;
 
 
         public Reservation reservation;
@@ -127,6 +129,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
           mReservationAmount = view.findViewById(R.id.reservationAmount);
           mExpirationTime = view.findViewById(R.id.expirationTime);
           mHexColor = view.findViewById(R.id.hexColor);
+          mReservationCode = view.findViewById(R.id.reservationCode);
 
         }
 

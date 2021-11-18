@@ -33,13 +33,13 @@
 
         <TextView
             android:id="@+id/reservationDescription"
-            android:layout_width="160dp"
-            android:layout_height="28dp"
+            android:layout_width="195dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:fontFamily="Roboto"
             android:text="Description"
-            android:textStyle="bold"
             android:textColor="@color/colorTextPrimary"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/hexColor"
             app:layout_constraintTop_toBottomOf="@+id/ReservationfoodStopName"
@@ -47,17 +47,14 @@
 
         <ImageView
             android:id="@+id/hexColor"
-            android:layout_width="19dp"
-            android:layout_height="169dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginBottom="11dp"
+            android:layout_width="30dp"
+            android:layout_height="170dp"
+            android:layout_marginStart="4dp"
             android:src="@drawable/ic_green_line"
             android:tint="@color/indicatorBlue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView3"
@@ -67,14 +64,14 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="Roboto"
             android:text="Reserved: "
-            android:textStyle="bold"
             android:textColor="@color/colorTextPrimary"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.188"
+            app:layout_constraintHorizontal_bias="0.192"
             app:layout_constraintStart_toEndOf="@+id/hexColor"
             app:layout_constraintTop_toBottomOf="@+id/reservationDescription"
-            app:layout_constraintVertical_bias="0.375" />
+            app:layout_constraintVertical_bias="0.38" />
 
         <TextView
             android:id="@+id/textView4"
@@ -86,7 +83,7 @@
             android:textColor="@color/colorTextPrimary"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.135"
+            app:layout_constraintHorizontal_bias="0.141"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -95,10 +92,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="72dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="Roboto"
-            android:textColor="@color/colorTextPrimary"
             android:textAlignment="textStart"
+            android:textColor="@color/colorTextPrimary"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -109,16 +106,32 @@
             android:id="@+id/expirationTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="4dp"
             android:fontFamily="Roboto"
             android:text="TextView"
             android:textAlignment="textStart"
+            android:textColor="@color/colorTextPrimary"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/colorTextPrimary"
-            app:layout_constraintHorizontal_bias="0.283"
+            app:layout_constraintHorizontal_bias="0.299"
             app:layout_constraintStart_toEndOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/reservationCode"
+            android:layout_width="124dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="24dp"
+            android:text="Code"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintStart_toEndOf="@+id/reservationDescription"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.496" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
