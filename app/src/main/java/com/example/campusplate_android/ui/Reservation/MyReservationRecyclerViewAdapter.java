@@ -1,5 +1,6 @@
 package com.example.campusplate_android.ui.Reservation;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
@@ -95,7 +96,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
         holder.mExpirationTime.setText(String.format("%d minutes", (int) minutes));
 
         String hexColor = "#" + foodStop.hexColor;
-        holder.mHexColor.setColorFilter(Color.parseColor(hexColor));
+        holder.mHexColor.setCardBackgroundColor(Color.parseColor(hexColor));
 
 
     }
@@ -112,7 +113,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
        public final TextView mFoodStopTitle;
        public final TextView mReservationAmount;
        public final TextView mExpirationTime;
-       public final ImageView mHexColor;
+       public final CardView mHexColor;
        public final TextView mReservationCode;
 
 

@@ -1,5 +1,6 @@
 package com.example.campusplate_android.ui.alllistings;
 
+import androidx.cardview.widget.CardView;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,7 +104,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         for(int i = 0; i < mStops.size(); i++){
             String hexColor = "#" + mStops.get(i).hexColor;
             if(mValues.get(position).foodStopId == mStops.get(i).foodStopId){
-                holder.mline.setColorFilter(Color.parseColor(hexColor));
+                holder.mline.setCardBackgroundColor(Color.parseColor(hexColor));
                 holder.mLocationDescriptionView.setText(mStops.get(i).name);
             }
         }
@@ -145,14 +146,14 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         public final TextView mLocationDescriptionView;
         public Listing mItem;
         public FoodStop mStop;
-        public final ImageView mline;
+        public final CardView mline;
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mTitleView = view.findViewById(R.id.item_title);
             mLocationDescriptionView = view.findViewById(R.id.foodStop);
             mQuantityView = view.findViewById(R.id.quantityView);
-            mline = view.findViewById(R.id.indicator_line);
+            mline = view.findViewById(R.id.cardView);
         }
 
         @Override
