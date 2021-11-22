@@ -83,7 +83,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
 
         //TODO: get the mapping for values
         holder.mFoodStopTitle.setText(foodStop.name);
-        holder.mDescriptionView.setText(listing.description);
+        holder.mDescriptionView.setText(listing.title);
         holder.mReservationAmount.setText(Integer.toString(reservation.quantity));
         holder.mReservationCode.setText(Integer.toString(reservation.code));
 
