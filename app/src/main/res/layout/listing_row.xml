@@ -26,42 +26,38 @@
 
         <TextView
             android:id="@+id/quantityView"
-            android:layout_width="94dp"
+            android:layout_width="wrap_content"
             android:layout_height="22dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:hint="Quantity Remaining"
             android:textColor="@color/colorTextPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.176"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/foodStop"
-            app:layout_constraintVertical_bias="0.842" />
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/foodStop" />
 
         <TextView
             android:id="@+id/foodStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif-medium"
             android:hint="Food Stop"
             android:textColor="@color/colorTextPrimary"
             android:textSize="5pt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.157"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="21dp"
+            android:layout_width="8dp"
             android:layout_height="98dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             app:cardBackgroundColor="@color/buttonBlue"
             app:cardCornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -72,15 +68,15 @@
             android:id="@+id/item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="sans-serif-black"
             android:text="Item Title"
             android:textColor="@color/colorTextPrimary"
             android:textSize="10pt"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
             tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteY="6dp" />
+            tools:layout_editor_absoluteY="4dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
