@@ -22,7 +22,6 @@ import com.example.campusplate_android.Model.Types.Reservation;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.dummy.DummyContent;
 import com.example.campusplate_android.ui.alllistings.AllListingsFragment;
-import com.example.campusplate_android.ui.mylistings.MyListingsFragment;
 
 import java.util.List;
 
