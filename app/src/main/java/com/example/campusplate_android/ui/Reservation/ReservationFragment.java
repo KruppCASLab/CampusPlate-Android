@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.Model.FoodStopsModel;
@@ -68,8 +70,10 @@ public class ReservationFragment extends Fragment {
                              Bundle savedInstanceState) {
         reservationModel = ReservationModel.getSharedInstance();
 
+
         final View view = inflater.inflate(R.layout.fragment_reservation_, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_reservations);
+        //final Button backButton = view.findViewById(R.id.backButton);
 
         // Set the adapter
 
@@ -82,8 +86,6 @@ public class ReservationFragment extends Fragment {
             }
             adapter = new MyReservationRecyclerViewAdapter(reservationModel.getAllReservations());// what needs to be added
             recycler.setAdapter(adapter);
-
-
 
 
 

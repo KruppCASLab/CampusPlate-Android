@@ -1,12 +1,14 @@
 package com.example.campusplate_android.ui.Reservation;
 
 import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,9 +43,10 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.reservation_row, parent, false);
         return new ViewHolder(view);
+
     }
 
 
@@ -55,11 +58,13 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
         holder.reservation = reservations.get(position);
 
 
+
+
         List<Listing> listings = ListingModel.getSharedInstance(null).getAllListings();
         List<FoodStop> foodStops =  FoodStopsModel.getSharedInstance().getCachedFoodStops();
         Reservation reservation = holder.reservation;
         Listing listing = null;
-        FoodStop foodStop =null;
+        FoodStop foodStop = null;
 
         for(Listing aListing: listings) {
             if (aListing.listingId == holder.reservation.listingId) {
@@ -117,6 +122,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
        public final TextView mReservationCode;
 
 
+
         public Reservation reservation;
         public FoodStop mFoodStopItem;
         public Listing mListingItem;
@@ -131,6 +137,8 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
           mExpirationTime = view.findViewById(R.id.expirationTime);
           mHexColor = view.findViewById(R.id.hexColor);
           mReservationCode = view.findViewById(R.id.reservationCode);
+
+
 
         }
 

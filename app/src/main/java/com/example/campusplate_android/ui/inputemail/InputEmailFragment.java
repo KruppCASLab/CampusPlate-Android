@@ -29,6 +29,7 @@ import com.example.campusplate_android.Credential;
 import com.example.campusplate_android.CredentialManager;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.Types.User;
+import com.example.campusplate_android.Model.Types.UserCredential;
 import com.example.campusplate_android.Model.UserModel;
 import com.example.campusplate_android.R;
 import com.example.campusplate_android.ServiceClient;
@@ -78,7 +79,12 @@ public class InputEmailFragment extends Fragment {
 
                 credentialManager.removeUserCredentials();
 
+
+
                 User user = new User(inputEmail.getText().toString());
+                UserCredential credential = new UserCredential(0,"Android");
+
+
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
                     public void success() {
