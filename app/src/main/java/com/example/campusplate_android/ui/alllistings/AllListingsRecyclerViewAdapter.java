@@ -100,7 +100,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         int test = mValues.get(pos).quantity;
         holder.mTitleView.setText(mValues.get(position).title);
         //TODO:Update to value once determined
-        holder.mQuantityView.setText(Integer.toString(mValues.get(position).quantityRemaining));
+        holder.mQuantityView.setText(Integer.toString(mValues.get(position).quantityRemaining) + " Remaining");
         for(int i = 0; i < mStops.size(); i++){
             String hexColor = "#" + mStops.get(i).hexColor;
             if(mValues.get(position).foodStopId == mStops.get(i).foodStopId){
