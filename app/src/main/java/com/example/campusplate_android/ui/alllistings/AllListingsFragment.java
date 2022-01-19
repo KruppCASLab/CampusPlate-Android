@@ -99,7 +99,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
         view.findViewById(R.id.addListingButton).setVisibility(View.INVISIBLE);
         foodStopsModel.getFoodStopManager(new FoodStopsModel.getCompletionHandler() {
-            
+
             @Override
             public void success(List<FoodStop> foodStops) {
                 if(!foodStops.isEmpty()){

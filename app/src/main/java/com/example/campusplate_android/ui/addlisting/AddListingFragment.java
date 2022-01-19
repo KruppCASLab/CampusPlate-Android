@@ -1,11 +1,12 @@
 package com.example.campusplate_android.ui.addlisting;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
+import android.icu.util.EthiopicCalendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,20 +18,17 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.example.campusplate_android.Credential;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
 import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.R;
-import com.example.campusplate_android.Session;
 import com.example.campusplate_android.ui.Select;
 import com.example.campusplate_android.ui.viewlisting.ImageCapturer;
 
@@ -55,6 +53,35 @@ public class AddListingFragment extends Fragment {
     }
 
     ImageView foodImage;
+
+
+
+    //TODO: don't allow to add listing unless all fields that are required // photo is optional alert dialog make sure fields aren't empty
+    //TODO: Make sure that data is valid // private method (boolean) to check is data is valid
+    //TODO: only want to use constructor with image if picture is taken otherwise use other constructor
+
+    private boolean isFormValid(View view){
+        EditText quantityView = view.findViewById(R.id.editText_addQuantity);
+        EditText descriptionView = view.findViewById(R.id.description);
+        EditText listingWeightView = view.findViewById(R.id.listingWeight);
+        EditText expirationDateView = view.findViewById(R.id.expirationDate);
+        EditText titleView = view.findViewById(R.id.editText_addTitle);
+
+        boolean formIsValid = true;
+        // check and see if data is valid and data types match
+        if(quantityView.getText().toString().isEmpty()){
+            formIsValid = false;
+        }else if(titleView.getText().toString().isEmpty()){
+            formIsValid = false;
+        }else if(descriptionView.getText().toString().isEmpty()){
+            formIsValid = false;
+        }else if(listingWeightView.getText().toString().isEmpty()){
+            formIsValid = false;
+        }else if(expirationDateView.getText().toString().isEmpty()){
+            formIsValid = false;
+        }
+        return formIsValid;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -85,21 +112,23 @@ public class AddListingFragment extends Fragment {
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
-        final EditText descriptionView = view.findViewById(R.id.editTextTextPersonName);
+        final EditText descriptionView = view.findViewById(R.id.description);
+        final EditText expirationDateView = view.findViewById(R.id.expirationDate);
+        final EditText listingWeightView = view.findViewById(R.id.listingWeight);
 
 
-        view.findViewById(R.id.allergyButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] allergens = {"shell fish", "peanuts", "dairy"};
-                Select select = new Select("Select Allergens", allergens, true, new Select.SelectComplete() {
-                    @Override
-                    public void didSelectItems(List<Integer> items) {
-                    }
-                });
-                select.show(fragment.getContext());
-            }
-        });
+//        view.findViewById(R.id.allergyButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String[] allergens = {"shell fish", "peanuts", "dairy"};
+//                Select select = new Select("Select Allergens", allergens, true, new Select.SelectComplete() {
+//                    @Override
+//                    public void didSelectItems(List<Integer> items) {
+//                    }
+//                });
+//                select.show(fragment.getContext());
+//            }
+//        });
 
         view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +163,7 @@ public class AddListingFragment extends Fragment {
             }
         });
 
+
         view.findViewById(R.id.addImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,25 +171,45 @@ public class AddListingFragment extends Fragment {
             }
         });
 
+        final View fragmentView = view;
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((MainActivity) mActivity).startProgressBar();
-                final View root = view;
-
 
                 int foodStopId = selectedFoodStop.foodStopId;
 
-                Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,0);
+                int days = Integer.parseInt(expirationDateView.getText().toString());
 
-                listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
-                    @Override
-                    public void postListing() {
-                        Toast.makeText(mActivity, "Listing Added!", Toast.LENGTH_SHORT).show();
-                        ((MainActivity) mActivity).stopProgressBar();
-                        Navigation.findNavController(root).navigate(R.id.navigation_alllistings);
-                    }
-                }, listing);
+                long expirationTime = days * 86400 + System.currentTimeMillis()/ 1000;
+
+                if(isFormValid(fragmentView)){
+                    Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,Integer.parseInt(listingWeightView.getText().toString()), expirationTime);
+                    listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
+                        @Override
+                        public void postListing() {
+                            Toast.makeText(mActivity, "Listing Added!", Toast.LENGTH_SHORT).show();
+                            ((MainActivity) mActivity).stopProgressBar();
+                            Navigation.findNavController(fragmentView).navigate(R.id.navigation_alllistings);
+                            // make sure navigate back to all listing
+                        }
+                    }, listing);
+
+                }
+                else{
+
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Error");
+                    dialog.setMessage("Please make sure all fields are complete");
+                    dialog.setNeutralButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            ((MainActivity) mActivity).stopProgressBar();
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
         return view;

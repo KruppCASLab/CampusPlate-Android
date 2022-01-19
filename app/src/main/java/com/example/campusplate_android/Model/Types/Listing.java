@@ -1,7 +1,5 @@
 package com.example.campusplate_android.Model.Types;
 
-import android.widget.ImageView;
-
 public class Listing implements Comparable<Listing> {
     public int listingId;
     public int userId;
@@ -10,10 +8,11 @@ public class Listing implements Comparable<Listing> {
     public int foodStopId;
     public int creationTime;
     public int quantity;
-    public int weight;
+    public int weightOunces; //why is this not a double
     public int quantityRemaining;
+    public long expirationTime;
 
-    public String foodImage;
+    public String image;
     //TODO: Add image
 
 
@@ -26,7 +25,9 @@ public class Listing implements Comparable<Listing> {
         this.creationTime = listing.creationTime;
         this.quantity = listing.quantity;
         this.quantityRemaining = listing.quantityRemaining;
+        this.expirationTime = listing.expirationTime;
     }
+
     public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity, int weight,int quantityRemaining) {
         this.listingId = listingId;
         this.userId = userId;
@@ -35,19 +36,22 @@ public class Listing implements Comparable<Listing> {
         this.foodStopId = foodStopId;
         this.creationTime = creationTime;
         this.quantity = quantity;
-        this.weight = weight;
+        this.weightOunces = weight;
         this.quantityRemaining = quantityRemaining;
     }
 
     // omitting userId
-    public Listing(String title, String description, int foodStopId, int quantity, String foodImage,int weight) {
+    public Listing(String title, String description, int foodStopId, int quantity, String foodImage,int weight, long expirationTime) {
         this.title = title;
         this.description = description;
         this.foodStopId = foodStopId;
         this.quantity = quantity;
-        this.foodImage = foodImage;
-        this.weight = weight;
+        this.image = foodImage;
+        this.weightOunces = weight;
+        this.expirationTime =  expirationTime;
     }
+
+    //TODO: add constructor that doesn't require image
 
     @Override
     public int compareTo(Listing listing) {
