@@ -109,7 +109,6 @@ public class AddListingFragment extends Fragment {
         foodImage = view.findViewById(R.id.foodImage);
 
 
-
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.description);
@@ -163,7 +162,6 @@ public class AddListingFragment extends Fragment {
             }
         });
 
-
         view.findViewById(R.id.addImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,10 +192,8 @@ public class AddListingFragment extends Fragment {
                             // make sure navigate back to all listing
                         }
                     }, listing);
-
                 }
                 else{
-
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Error");
                     dialog.setMessage("Please make sure all fields are complete");

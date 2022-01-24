@@ -21,40 +21,37 @@
         android:id="@+id/button_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corners"
         android:backgroundTint="@color/colorPrimary"
         android:backgroundTintMode="@color/colorWhite"
         android:enabled="false"
         android:text="Create"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.253"
-        app:layout_constraintStart_toEndOf="@+id/foodImage"
-        app:layout_constraintTop_toBottomOf="@+id/description"
-        app:layout_constraintVertical_bias="0.881" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodImage" />
 
     <EditText
         android:id="@+id/description"
-        android:layout_width="400dp"
+        android:layout_width="0dp"
         android:layout_height="64dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textPersonName"
         android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/location" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="399dp"
         android:layout_height="78dp"
-        android:layout_marginTop="4dp"
         android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:text="Create Listing"
@@ -73,9 +70,11 @@
 
     <EditText
         android:id="@+id/editText_addTitle"
-        android:layout_width="376dp"
+        android:layout_width="0dp"
         android:layout_height="49dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="@string/food_item"
@@ -83,157 +82,148 @@
         android:paddingTop="0dp"
         android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
         android:id="@+id/editText_addQuantity"
         android:layout_width="53dp"
         android:layout_height="48dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="0"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.019"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_quantity" />
 
     <TextView
         android:id="@+id/textView_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Quantity"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/editText_addQuantity"
-        app:layout_constraintEnd_toEndOf="@+id/editText_addQuantity"
-        app:layout_constraintHorizontal_bias="0.047"
-        app:layout_constraintStart_toStartOf="@+id/editText_addQuantity"
-        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_addTitle" />
 
     <Button
         android:id="@+id/location"
-        android:layout_width="389dp"
+        android:layout_width="0dp"
         android:layout_height="39dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_corners"
         android:text="Location"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listingWeight" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addImage"
-        android:layout_width="17dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="3dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         android:foreground="@drawable/ic_add_sign"
         android:src="@drawable/ic_add_sign"
-        app:layout_constraintBottom_toTopOf="@+id/foodImage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintBottom_toBottomOf="@+id/foodImage"
+        app:layout_constraintEnd_toEndOf="@+id/foodImage"
+        app:layout_constraintStart_toStartOf="@+id/foodImage"
+        app:layout_constraintTop_toTopOf="@+id/foodImage" />
 
     <ImageView
         android:id="@+id/foodImage"
         android:layout_width="106dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="1.0"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="264dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Photo"
         android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.191"
-        app:layout_constraintStart_toEndOf="@+id/addImage"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Item Name"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/editText_addTitle"
-        app:layout_constraintStart_toStartOf="@+id/editText_addTitle" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="Description"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/description"
-        app:layout_constraintEnd_toEndOf="@+id/description"
-        app:layout_constraintHorizontal_bias="0.009"
-        app:layout_constraintStart_toStartOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/location"
-        app:layout_constraintVertical_bias="0.536" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location" />
 
     <EditText
         android:id="@+id/expirationDate"
         android:layout_width="71dp"
         android:layout_height="48dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="0"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_addQuantity" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="205dp"
         android:layout_height="18dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Expiration (Days From Today)"
         android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/expirationDate"
-        app:layout_constraintStart_toStartOf="@+id/expirationDate" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_addQuantity" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Weight (Ounces)"
         android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expirationDate" />
 
     <EditText
         android:id="@+id/listingWeight"
-        android:background="@drawable/rounded_corners"
         android:layout_width="72dp"
         android:layout_height="44dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners"
         android:ems="10"
-        android:inputType="number"
         android:hint="0"
+        android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
