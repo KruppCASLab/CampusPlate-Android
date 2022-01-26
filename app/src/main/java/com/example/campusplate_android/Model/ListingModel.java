@@ -148,6 +148,8 @@ public class ListingModel {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -163,7 +165,7 @@ public class ListingModel {
             @Override
             public void onResponse(JSONObject response) {
                 //TODO: Do something with response (confirmation?)
-                completionHandler.postListing();
+                completionHandler.postListing(); //TODO: This is empty, change?
             }
         }, new Response.ErrorListener() {
             @Override
