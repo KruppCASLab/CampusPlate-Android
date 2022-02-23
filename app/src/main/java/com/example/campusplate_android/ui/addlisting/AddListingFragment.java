@@ -1,16 +1,27 @@
 package com.example.campusplate_android.ui.addlisting;
 
+import static android.app.Activity.RESULT_OK;
+import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
+
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.icu.util.EthiopicCalendar;
 import android.os.Bundle;
 
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -54,8 +65,6 @@ public class AddListingFragment extends Fragment {
 
     ImageView foodImage;
 
-
-
     //TODO: don't allow to add listing unless all fields that are required // photo is optional alert dialog make sure fields aren't empty
     //TODO: Make sure that data is valid // private method (boolean) to check is data is valid
     //TODO: only want to use constructor with image if picture is taken otherwise use other constructor
@@ -83,20 +92,53 @@ public class AddListingFragment extends Fragment {
         return formIsValid;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 100){
-            //capture image
-            Bitmap capture = (Bitmap) data.getExtras().get("data"); // null object reference
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            capture.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-            this.encodeImage = Base64.encodeToString(bytes,Base64.DEFAULT);
-            foodImage.setImageBitmap(capture);
+
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                Bundle bundle = result.getData().getExtras();
+                Bitmap bitmap = (Bitmap) bundle.get("data");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bytes = stream.toByteArray();
+                encodeImage = android.util.Base64.encodeToString(bytes, Base64.DEFAULT);
+                foodImage.setImageBitmap(bitmap);
+            }
+            else if (result.getResultCode() != RESULT_OK) {
+                requestPermission.launch(Manifest.permission.CAMERA);
+
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] bytes = stream.toByteArray();
+                    encodeImage = android.util.Base64.encodeToString(bytes, Base64.DEFAULT);
+                    foodImage.setImageBitmap(bitmap);
+                }
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data);
+    });
+
+    private void launchCamera(){
+        Intent intent = new Intent(ACTION_IMAGE_CAPTURE);
+        activityResultLauncher.launch(intent);
+
     }
 
+
+    ActivityResultLauncher<String> requestPermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+        @Override
+        public void onActivityResult(Boolean result) {
+            if (result == true) {
+                launchCamera();
+            } else if (result == false) {
+                Toast.makeText(mActivity.getApplicationContext(), "Access Denied", Toast.LENGTH_LONG).show();
+            }
+        }
+    });
 
 
 
@@ -109,7 +151,6 @@ public class AddListingFragment extends Fragment {
         foodImage = view.findViewById(R.id.foodImage);
 
 
-
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.description);
@@ -117,18 +158,6 @@ public class AddListingFragment extends Fragment {
         final EditText listingWeightView = view.findViewById(R.id.listingWeight);
 
 
-//        view.findViewById(R.id.allergyButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String[] allergens = {"shell fish", "peanuts", "dairy"};
-//                Select select = new Select("Select Allergens", allergens, true, new Select.SelectComplete() {
-//                    @Override
-//                    public void didSelectItems(List<Integer> items) {
-//                    }
-//                });
-//                select.show(fragment.getContext());
-//            }
-//        });
 
         view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +196,22 @@ public class AddListingFragment extends Fragment {
         view.findViewById(R.id.addImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageCapturer.captureImage(mActivity.getApplicationContext(),fragment);
+                if (ContextCompat.checkSelfPermission(mActivity.getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    launchCamera();
+                } else if (ContextCompat.checkSelfPermission(mActivity.getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermission.launch(Manifest.permission.CAMERA);
+                } else if (ContextCompat.checkSelfPermission(mActivity.getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Access Denied");
+                    dialog.setMessage("Access has been denied to use camera please go to setting to change permission so that picture can bee taken");
+                    dialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
             }
         });
 
@@ -215,10 +259,6 @@ public class AddListingFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {

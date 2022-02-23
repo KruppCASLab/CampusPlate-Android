@@ -67,29 +67,26 @@ public class InputEmailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_input_email, container, false);
 
         final Button sendCodeBtn = view.findViewById(R.id.button_sendCode);
-        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
-        view.findViewById(R.id.button_sendCode).setOnClickListener(new View.OnClickListener() {
+      //  final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
 
+        view.findViewById(R.id.button_sendCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                progressBar.setVisibility(ProgressBar.VISIBLE);
+               // progressBar.setVisibility(ProgressBar.VISIBLE);
                 sendCodeBtn.setEnabled(false);
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
                 final String email = inputEmail.getText().toString();
 
-                credentialManager.removeUserCredentials();
-
-
+               // credentialManager.removeUserCredentials();
+                UserCredential credential = new UserCredential(1,"Android");
 
                 User user = new User(inputEmail.getText().toString());
-                UserCredential credential = new UserCredential(0,"Android");
+
 
 
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
                     public void success() {
-
-
                         Bundle bundle = new Bundle();
                         bundle.putString("username", email);
                         Navigation.findNavController(view).navigate(R.id.action_inputEmailFragment_to_inputCodeFragment, bundle);

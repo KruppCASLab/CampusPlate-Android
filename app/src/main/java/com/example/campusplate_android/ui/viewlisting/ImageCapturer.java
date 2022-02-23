@@ -32,6 +32,12 @@ public class ImageCapturer extends AppCompatActivity {
         }
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //reference to data so that it can be sent back to add listing fragment
+
+        intent.putExtra("data", intent);
+
+        setResult(100, intent);
+
         fragment.requireActivity().startActivityFromFragment(fragment, intent, 100);
     }
 }

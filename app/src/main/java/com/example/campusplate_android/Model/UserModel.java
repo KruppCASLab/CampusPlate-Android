@@ -58,9 +58,6 @@ public class UserModel {
     public void addUser(User user, final AddUpdateUserCompletionHandler completionHandler) {
         ServiceClient serviceClient = ServiceClient.getInstance();
 
-
-
-
         serviceClient.post("Users", user, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
