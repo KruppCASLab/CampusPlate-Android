@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -140,8 +141,6 @@ public class AddListingFragment extends Fragment {
         }
     });
 
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -150,14 +149,14 @@ public class AddListingFragment extends Fragment {
         foodStopsModel = FoodStopsModel.getSharedInstance();
         foodImage = view.findViewById(R.id.foodImage);
 
+        ProgressBar bar =  view.findViewById(R.id.progressBar);
+        bar.setVisibility(View.GONE);
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.description);
         final EditText expirationDateView = view.findViewById(R.id.expirationDate);
         final EditText listingWeightView = view.findViewById(R.id.listingWeight);
-
-
 
         view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,11 +214,13 @@ public class AddListingFragment extends Fragment {
             }
         });
 
+
         final View fragmentView = view;
         view.findViewById(R.id.button_post).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) mActivity).startProgressBar();
+                bar.setVisibility(View.VISIBLE);
+                bar.bringToFront();
 
                 int foodStopId = selectedFoodStop.foodStopId;
 
@@ -233,15 +234,19 @@ public class AddListingFragment extends Fragment {
                         @Override
                         public void postListing() {
                             Toast.makeText(mActivity, "Listing Added!", Toast.LENGTH_SHORT).show();
-                            ((MainActivity) mActivity).stopProgressBar();
+                            bar.setVisibility(View.GONE);
+                            fragmentView.findViewById(R.id.button_post).setEnabled(true);
                             Navigation.findNavController(fragmentView).navigate(R.id.navigation_alllistings);
-                            // make sure navigate back to all listing
+                        }
+                        @Override
+                        public void error() {
+                            fragmentView.findViewById(R.id.button_post).setEnabled(true);
+                            Toast.makeText(mActivity, "Error. Try again.", Toast.LENGTH_SHORT).show();
                         }
                     }, listing);
-
+                    fragmentView.findViewById(R.id.button_post).setEnabled(false);
                 }
                 else{
-
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Error");
                     dialog.setMessage("Please make sure all fields are complete");
@@ -258,7 +263,6 @@ public class AddListingFragment extends Fragment {
         });
         return view;
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {

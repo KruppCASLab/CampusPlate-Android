@@ -39,6 +39,7 @@ public class ListingModel {
 
     public interface PostListingCompletionHandler {
         void postListing();
+        void error();
     }
 
     public interface EditListingCompletionHandler {
@@ -170,7 +171,7 @@ public class ListingModel {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Error. Try again.", Toast.LENGTH_SHORT).show();
+                completionHandler.error();
             }
         });
     }
