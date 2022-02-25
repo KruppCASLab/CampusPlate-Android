@@ -17,7 +17,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="388dp"
-        android:layout_height="88dp"
+        android:layout_height="wrap_content"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         tools:ignore="ExtraText"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
-            android:text="My Plates"
+            android:text="Reservations"
             android:textColor="@color/colorTextPrimary"
             android:textSize="10pt"
             android:textStyle="bold"
