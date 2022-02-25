@@ -35,12 +35,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_main);
 
 
         ServiceClient.getInstance(this.getApplicationContext());
 
-        setContentView(R.layout.activity_main);
-        stopProgressBar();
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -59,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startProgressBar() {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.bringToFront();
+//        ProgressBar progressBar =  findViewById(R.id.progressBar);
+//
+//        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.bringToFront();
     }
 
     public void stopProgressBar() {
-        findViewById(R.id.progressBar).setVisibility(View.GONE);
+//        findViewById(R.id.progressBar).setVisibility(View.GONE);
     }
 
 

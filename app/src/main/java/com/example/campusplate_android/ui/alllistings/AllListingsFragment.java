@@ -90,11 +90,31 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         foodStopsModel = FoodStopsModel.getSharedInstance();
         reservationModel = ReservationModel.getSharedInstance();
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());    // why does this get shared instance differ
         final  View view = inflater.inflate(R.layout.fragment_all_listings, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_all_listings);
+
+        view.findViewById(R.id.addListingButton).setVisibility(View.INVISIBLE);
+        foodStopsModel.getFoodStopManager(new FoodStopsModel.getCompletionHandler() {
+
+            @Override
+            public void success(List<FoodStop> foodStops) {
+                if(!foodStops.isEmpty()){
+                    view.findViewById(R.id.addListingButton).setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                // forget about it
+            }
+        });
+
+
+
 
         // Set the adapter
         Context context = view.getContext();
@@ -190,13 +210,13 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-//        view.findViewById(R.id.addListingButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final View root = view;
-//                Navigation.findNavController(root).navigate(R.id.action_navigation_alllistings_to_navigation_addlisting);
-//            }
-//        });
+        view.findViewById(R.id.addListingButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final View root = view;
+                Navigation.findNavController(root).navigate(R.id.action_navigation_alllistings_to_navigation_addlisting);
+            }
+        });
 
 
         return view;

@@ -4,9 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/drawable/rounded_corners.xml" value="0.2703125" />
+        <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/activity_main.xml" value="0.13125" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/event_row.xml" value="0.264" />
-        <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/fragment_add_listing.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/fragment_add_listing.xml" value="0.264" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/fragment_all_listings.xml" value="0.264" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/fragment_input_code.xml" value="0.264" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/fragment_input_email.xml" value="0.264" />
@@ -16,7 +17,7 @@
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/fragment_view_listing.xml" value="0.12183383991894631" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/lisiting_confirmation_fragment.xml" value="0.4" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/listing_row.xml" value="0.4" />
-        <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/reservation_row.xml" value="0.264" />
+        <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/reservation_row.xml" value="0.4" />
         <entry key="..\:/Users/Terrell/Documents/CampusPlate-Android/app/src/main/res/layout/reservation_title_row.xml" value="0.4" />
         <entry key="app/src/main/res/layout/fragment_input_code.xml" value="0.27108489803618907" />
         <entry key="app/src/main/res/layout/fragment_input_email.xml" value="0.3567708333333333" />

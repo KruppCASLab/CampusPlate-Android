@@ -82,5 +82,9 @@
         android:id="@+id/reservation_Fragment"
         android:name="com.example.campusplate_android.ui.Reservation.Reservation_Fragment"
         android:label="fragment_reservation_"
-        tools:layout="@layout/fragment_reservation_" />
+        tools:layout="@layout/fragment_reservation_" >
+        <action
+            android:id="@+id/action_reservation_Fragment_to_navigation_alllistings"
+            app:destination="@id/navigation_alllistings" />
+    </fragment>
 </navigation>

@@ -1,10 +1,8 @@
 package com.example.campusplate_android.Model;
 
-import android.content.Context;
-import android.media.session.MediaSession;
-import java.util.UUID;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.campusplate_android.Model.Types.UserCredential;
 import com.example.campusplate_android.Model.Types.User;
 import com.example.campusplate_android.ServiceClient;
 
@@ -14,6 +12,8 @@ import org.json.JSONObject;
 
 public class UserModel {
     private static UserModel sharedInstance;
+
+   // TODO: use credential in here??
 
     public interface AddUpdateUserCompletionHandler {
         void success();
@@ -25,6 +25,11 @@ public class UserModel {
         void error(int errorCode);
     }
 
+//    public interface GetUserCredentialsCompletionHandler {
+//        void  success();
+//        void error(int errorCode);
+//    }
+
     private UserModel() {
     }
 
@@ -34,6 +39,21 @@ public class UserModel {
         }
         return sharedInstance;
     }
+
+//  public void getUserCredential(User user, final GetUserCredentialsCompletionHandler completionHandler){
+//        ServiceClient serviceClient = ServiceClient.getInstance();
+//        serviceClient.post("Users", user, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                completionHandler.success();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                completionHandler.error(1);
+//            }
+//        });
+//  }
 
     public void addUser(User user, final AddUpdateUserCompletionHandler completionHandler) {
         ServiceClient serviceClient = ServiceClient.getInstance();

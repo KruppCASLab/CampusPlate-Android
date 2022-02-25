@@ -21,15 +21,15 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         tools:ignore="ExtraText"
-
         >
+
 
         <TextView
             android:id="@+id/item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
-            android:text="Reservations"
+            android:text="My Plates"
             android:textColor="@color/colorTextPrimary"
             android:textSize="10pt"
             android:textStyle="bold"

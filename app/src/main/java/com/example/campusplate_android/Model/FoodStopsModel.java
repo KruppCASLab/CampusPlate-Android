@@ -67,7 +67,7 @@ public class FoodStopsModel {
                 if (data != null) {
                     for (int i = 0; i < data.size(); i++) {
                         Map<String, Object> mapItem = (Map) data.get(i);
-//                        foodStopName = mapItem.get("name");
+//                       foodStopName = mapItem.get("name");
                         Double foodStopId = (double) mapItem.get("foodStopId");
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
