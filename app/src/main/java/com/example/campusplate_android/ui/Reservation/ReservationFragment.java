@@ -72,9 +72,6 @@ public class ReservationFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_reservation_, container, false);
         RecyclerView recycler = view.findViewById(R.id.view_recycler_reservations);
-        //final Button backButton = view.findViewById(R.id.backButton);
-
-        // Set the adapter
 
             Context context = view.getContext();
 
@@ -86,17 +83,9 @@ public class ReservationFragment extends Fragment {
             adapter = new MyReservationRecyclerViewAdapter(reservationModel.getAllReservations());// what needs to be added
             recycler.setAdapter(adapter);
 
-
-
-
-
-
-
         return view;
     }
 
-//    public interface OnListFragmentInteractionListener {
-//        void onListFragmentInteraction(Reservation item);
-//    }
+
 
 }

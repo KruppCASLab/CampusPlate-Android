@@ -65,9 +65,9 @@ public class ReservationModel {
                         Double timeExpired = (double) mapItem.get("timeExpired");
                         Double  reservationId = (double) mapItem.get("reservationId");
 
-
                         reservations.add(new Reservation(listingId.intValue(), quantity.intValue(), userId.intValue(), status.intValue(), code.intValue(), timeCreated.longValue(), timeExpired.longValue(), reservationId.intValue()));
                     }
+
                     completionHandler.success(reservations);
                 }
             }
