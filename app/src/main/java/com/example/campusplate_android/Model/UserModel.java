@@ -25,6 +25,11 @@ public class UserModel {
         void error(int errorCode);
     }
 
+//    public interface GetUserCredentialsCompletionHandler {
+//        void  success();
+//        void error(int errorCode);
+//    }
+
     private UserModel() {
     }
 
@@ -35,6 +40,20 @@ public class UserModel {
         return sharedInstance;
     }
 
+//  public void getUserCredential(User user, final GetUserCredentialsCompletionHandler completionHandler){
+//        ServiceClient serviceClient = ServiceClient.getInstance();
+//        serviceClient.post("Users", user, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                completionHandler.success();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                completionHandler.error(1);
+//            }
+//        });
+//  }
 
     public void addUser(User user, final AddUpdateUserCompletionHandler completionHandler) {
         ServiceClient serviceClient = ServiceClient.getInstance();

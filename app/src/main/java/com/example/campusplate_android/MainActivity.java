@@ -29,6 +29,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,14 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_events, R.id.navigation_alllistings, R.id.navigation_mylistings)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+
         //Location stuff
+
+
+
+
+
 
     }
 
@@ -58,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
     public void stopProgressBar() {
 //        findViewById(R.id.progressBar).setVisibility(View.GONE);
     }
+
+
+
+
+
+
 
     @Override
     protected void onResume() {
