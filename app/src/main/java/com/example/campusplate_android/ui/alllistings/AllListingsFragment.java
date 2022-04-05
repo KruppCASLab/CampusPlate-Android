@@ -113,9 +113,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             }
         });
 
-
-
-
         // Set the adapter
         Context context = view.getContext();
         if (mColumnCount <= 1) {
