@@ -142,11 +142,15 @@ public class ListingModel {
                     String data = response.getString("data");
                     byte [] imagebytes = Base64.decode(data, Base64.DEFAULT);
                     Bitmap bmp = BitmapFactory.decodeByteArray(imagebytes, 0, imagebytes.length);
+
+
                     completionHandler.success(bmp);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
             }
         }, new Response.ErrorListener() {
             @Override

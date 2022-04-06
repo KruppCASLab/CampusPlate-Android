@@ -57,6 +57,9 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
 
         holder.reservation = reservations.get(position);
 
+
+
+
         List<Listing> listings = ListingModel.getSharedInstance(null).getAllListings();
         List<FoodStop> foodStops =  FoodStopsModel.getSharedInstance().getCachedFoodStops();
         Reservation reservation = holder.reservation;
@@ -77,7 +80,11 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
             }
         }
 
+
         int count = 0;
+
+
+
 
         //TODO: get the mapping for values
         holder.mFoodStopTitle.setText(foodStop.name);
@@ -88,6 +95,8 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
         long time = reservation.timeExpired - (new Date()).getTime() / 1000;
         long minutes = time/ 60;
         String format = "mm";
+
+
 
         holder.mExpirationTime.setText(String.format("%d minutes", (int) minutes));
 
@@ -112,6 +121,8 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
        public final CardView mHexColor;
        public final TextView mReservationCode;
 
+
+
         public Reservation reservation;
         public FoodStop mFoodStopItem;
         public Listing mListingItem;
@@ -126,6 +137,11 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
           mExpirationTime = view.findViewById(R.id.expirationTime);
           mHexColor = view.findViewById(R.id.hexColor);
           mReservationCode = view.findViewById(R.id.reservationCode);
+
+
+
         }
+
+
     }
 }

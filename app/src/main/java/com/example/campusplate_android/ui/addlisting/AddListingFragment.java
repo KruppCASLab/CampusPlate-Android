@@ -109,6 +109,7 @@ public class AddListingFragment extends Fragment {
             }
             else if (result.getResultCode() != RESULT_OK) {
                 requestPermission.launch(Manifest.permission.CAMERA);
+
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bundle bundle = result.getData().getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");
@@ -161,8 +162,6 @@ public class AddListingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final List<FoodStop> foodStopsList = new ArrayList<>();
-                bar.setVisibility(View.VISIBLE);
-                bar.bringToFront();
                 foodStopsModel.getFoodStopManager(new FoodStopsModel.getCompletionHandler() {
                     @Override
                     public void success(List<FoodStop> foodStops) {
@@ -182,8 +181,8 @@ public class AddListingFragment extends Fragment {
                             }
                         });
                         select.show(fragment.getContext());
-                        bar.setVisibility(View.GONE);
                     }
+
                     @Override
                     public void error(VolleyError error) {
                         //TODO: Provide handling for error

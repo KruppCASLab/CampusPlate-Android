@@ -60,12 +60,14 @@ public class InputEmailFragment extends Fragment {
         if (credentialManager.credentialExists())
         {
             Session.getInstance().setCredential(new Credential(credentialManager.getUsername(), credentialManager.getUserPassword()));
+
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
         View view = inflater.inflate(R.layout.fragment_input_email, container, false);
 
         final Button sendCodeBtn = view.findViewById(R.id.button_sendCode);
+      //  final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar2);
 
         view.findViewById(R.id.button_sendCode).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +81,8 @@ public class InputEmailFragment extends Fragment {
                 UserCredential credential = new UserCredential(1,"Android");
 
                 User user = new User(inputEmail.getText().toString());
+
+
 
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override
