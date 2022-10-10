@@ -145,9 +145,9 @@ public class ViewListingFragment extends Fragment {
                 final View root = view;
                 new AlertDialog.Builder(mActivity)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Pick Up Item")
+                        .setTitle("Reserve Item")
                         .setCancelable(false)
-                        .setMessage("Are you sure you want to pick up this item?")
+                        .setMessage("Are you sure you want to reserve this item?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
