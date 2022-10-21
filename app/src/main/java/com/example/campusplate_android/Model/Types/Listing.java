@@ -8,7 +8,7 @@ public class Listing implements Comparable<Listing> {
     public int foodStopId;
     public int creationTime;
     public int quantity;
-    public int weightOunces; //why is this not a double
+    public float weightOunces; //why is this not a double
     public int quantityRemaining;
     public long expirationTime;
 
@@ -28,7 +28,7 @@ public class Listing implements Comparable<Listing> {
         this.expirationTime = listing.expirationTime;
     }
 
-    public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity, int weight,int quantityRemaining) {
+    public Listing(int listingId, int userId,int foodStopId, String title, String description, int creationTime, int quantity, float weight,int quantityRemaining) {
         this.listingId = listingId;
         this.userId = userId;
         this.title = title;
@@ -41,7 +41,7 @@ public class Listing implements Comparable<Listing> {
     }
 
     // omitting userId
-    public Listing(String title, String description, int foodStopId, int quantity, String foodImage,int weight, long expirationTime) {
+    public Listing(String title, String description, int foodStopId, int quantity, String foodImage,float weight, long expirationTime) {
         this.title = title;
         this.description = description;
         this.foodStopId = foodStopId;

@@ -237,7 +237,7 @@
         android:background="@drawable/rounded_corners"
         android:ems="10"
         android:hint="0"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 

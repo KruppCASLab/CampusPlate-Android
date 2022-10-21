@@ -229,7 +229,7 @@ public class AddListingFragment extends Fragment {
                 long expirationTime = days * 86400 + System.currentTimeMillis()/ 1000;
 
                 if(isFormValid(fragmentView)){
-                    Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,Integer.parseInt(listingWeightView.getText().toString()), expirationTime);
+                    Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,Float.parseFloat(listingWeightView.getText().toString()), expirationTime);
                     listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                         @Override
                         public void postListing() {
