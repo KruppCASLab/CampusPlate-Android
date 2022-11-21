@@ -86,7 +86,6 @@ public class AddListingFragment extends Fragment {
         EditText descriptionView = view.findViewById(R.id.description);
         EditText listingWeightView = view.findViewById(R.id.listingWeight);
         dateButton = (Button) getView().findViewById(R.id.datePickerButton);
-        dateButton.setText(getStartingDate());
         timeButton = (Button) getView().findViewById(R.id.timeButton);
         EditText titleView = view.findViewById(R.id.editText_addTitle);
 
@@ -101,6 +100,9 @@ public class AddListingFragment extends Fragment {
         } else if (listingWeightView.getText().toString().isEmpty()) {
             formIsValid = false;
         } else if (dateButton.getText().toString().isEmpty()) {
+            formIsValid = false;
+        }
+        else if (timeButton.getText().toString().isEmpty()) {
             formIsValid = false;
         }
         return formIsValid;
@@ -250,15 +252,17 @@ public class AddListingFragment extends Fragment {
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         foodStopsModel = FoodStopsModel.getSharedInstance();
         foodImage = view.findViewById(R.id.foodImage);
-        final Button dateButton = view.findViewById(R.id.datePickerButton);
+        initDatePicker();
+        dateButton = view.findViewById(R.id.datePickerButton);
+        dateButton.setText(getStartingDate());
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openDatePicker(view);
             }
         });
-        final Button timePickButton = view.findViewById(R.id.timeButton);
-        timePickButton.setOnClickListener(new View.OnClickListener() {
+        timeButton = view.findViewById(R.id.timeButton);
+        timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popTimePicker(view);
@@ -270,7 +274,8 @@ public class AddListingFragment extends Fragment {
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.description);
-        initDatePicker();
+        dateButton = view.findViewById(R.id.datePickerButton);
+        timeButton = view.findViewById(R.id.timeButton);
     //    final EditText expirationDateView = view.findViewById(R.id.expirationDate); //change here
         final EditText listingWeightView = view.findViewById(R.id.listingWeight);
 
