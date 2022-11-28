@@ -69,7 +69,10 @@ public class AddListingFragment extends Fragment {
     private Button dateButton;
     private Button timeButton;
     private String date;
+    private int year, month, day;
     private int hour, minute;
+    private int currentMonth;
+    private int currentDay;
 
     public static AddListingFragment newInstance() {
         return new AddListingFragment();
@@ -111,10 +114,12 @@ public class AddListingFragment extends Fragment {
     private String getStartingDate()
     {
         Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
         month = month + 1;
-        int day = cal.get(Calendar.DAY_OF_MONTH) + 2;
+        currentMonth = month;
+        day = cal.get(Calendar.DAY_OF_MONTH) + 2;
+        currentDay = day - 2;
         return makeDateString(day, month, year);
     }
 
@@ -132,9 +137,9 @@ public class AddListingFragment extends Fragment {
         };
 
         Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
@@ -345,9 +350,10 @@ public class AddListingFragment extends Fragment {
 
                 int foodStopId = selectedFoodStop.foodStopId;
 
-                int days = Integer.parseInt(date);
+                long daysToExpire = (month - currentMonth) * 30 + (day - currentDay);
 
-                long expirationTime = days * 86400 + System.currentTimeMillis() / 1000; //change here
+                long expirationTime = daysToExpire * 86400 + (hour * 3600) + (minute * 60) + (System.currentTimeMillis() / 1000);
+                //long expirationTime = days * 86400 + System.currentTimeMillis() / 1000; //change here
 
                 if (isFormValid(fragmentView)) {
                     Listing listing = new Listing(titleView.getText().toString(), descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage, Float.parseFloat(listingWeightView.getText().toString()), expirationTime);

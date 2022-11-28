@@ -199,7 +199,7 @@
             android:layout_height="18dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Expiration (Days From Today)"
+            android:text="Expiration Date and Time"
             android:textColor="@color/colorWhite"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText_addQuantity" />
