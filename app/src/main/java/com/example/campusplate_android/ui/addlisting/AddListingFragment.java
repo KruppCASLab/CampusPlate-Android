@@ -114,12 +114,12 @@ public class AddListingFragment extends Fragment {
     private String getStartingDate()
     {
         Calendar cal = Calendar.getInstance();
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-        month = month + 1;
+        int startYear = cal.get(Calendar.YEAR);
+        int startMonth = cal.get(Calendar.MONTH);
+        month = startMonth + 1;
         currentMonth = month;
-        day = cal.get(Calendar.DAY_OF_MONTH) + 2;
-        currentDay = day - 2;
+        int startDay = cal.get(Calendar.DAY_OF_MONTH) + 2;
+        currentDay = startDay - 2;
         return makeDateString(day, month, year);
     }
 
@@ -128,9 +128,11 @@ public class AddListingFragment extends Fragment {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
         {
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
+            public void onDateSet(DatePicker datePicker, int newYear, int newMonth, int newDay)
             {
-                month = month + 1;
+                day = newDay;
+                month = newMonth + 1;
+                year = newYear;
                 date = makeDateString(day, month, year);
                 dateButton.setText(date);
             }
