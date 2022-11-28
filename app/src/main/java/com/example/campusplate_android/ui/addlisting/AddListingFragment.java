@@ -47,8 +47,10 @@ import com.example.campusplate_android.ui.Select;
 import com.example.campusplate_android.ui.viewlisting.ImageCapturer;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -111,7 +113,7 @@ public class AddListingFragment extends Fragment {
         return formIsValid;
     }
 
-    private String getStartingDate()
+    private String getStartingDate  ()
     {
         Calendar cal = Calendar.getInstance();
         int startYear = cal.get(Calendar.YEAR);
@@ -352,10 +354,18 @@ public class AddListingFragment extends Fragment {
 
                 int foodStopId = selectedFoodStop.foodStopId;
 
-                long daysToExpire = (month - currentMonth) * 30 + (day - currentDay);
+                String dateString = String.format("%d/%d/%d %d:%d:%d", day, month, year ,hour, minute, 0);
 
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
+                long daysToExpire = (month - currentMonth) * 30 + (day - currentDay);
                 long expirationTime = daysToExpire * 86400 + (hour * 3600) + (minute * 60) + (System.currentTimeMillis() / 1000);
-                //long expirationTime = days * 86400 + System.currentTimeMillis() / 1000; //change here
+                try {
+                    Date expireDate = format.parse(dateString);
+                    expirationTime = expireDate.getTime() / 1000;
+                }
+                catch(Exception e) {
+                }
 
                 if (isFormValid(fragmentView)) {
                     Listing listing = new Listing(titleView.getText().toString(), descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage, Float.parseFloat(listingWeightView.getText().toString()), expirationTime);
