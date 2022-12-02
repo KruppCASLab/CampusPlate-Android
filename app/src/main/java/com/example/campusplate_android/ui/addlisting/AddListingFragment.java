@@ -6,14 +6,25 @@ import static android.provider.MediaStore.ACTION_IMAGE_CAPTURE;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.icu.util.EthiopicCalendar;
 import android.os.Bundle;
-
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -24,15 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
-import android.util.Base64;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.MainActivity;
@@ -45,8 +47,14 @@ import com.example.campusplate_android.ui.Select;
 import com.example.campusplate_android.ui.viewlisting.ImageCapturer;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AddListingFragment extends Fragment {
     ImageCapturer imageCapturer = new ImageCapturer();
@@ -55,10 +63,18 @@ public class AddListingFragment extends Fragment {
     FoodStop selectedFoodStop;
     private Context mActivity;
     String[] listItems;
-    boolean[]checkedItems;
+    boolean[] checkedItems;
     final AddListingFragment fragment = this;
     ArrayList<Integer> selectedItems = new ArrayList<>();
-   String encodeImage = null;
+    String encodeImage = null;
+    private DatePickerDialog datePickerDialog;
+    private Button dateButton;
+    private Button timeButton;
+    private String date;
+    private int year, month, day;
+    private int hour, minute;
+    private int currentMonth;
+    private int currentDay;
 
     public static AddListingFragment newInstance() {
         return new AddListingFragment();
@@ -70,30 +86,128 @@ public class AddListingFragment extends Fragment {
     //TODO: Make sure that data is valid // private method (boolean) to check is data is valid
     //TODO: only want to use constructor with image if picture is taken otherwise use other constructor
 
-    private boolean isFormValid(View view){
+    private boolean isFormValid(View view) {
         EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         EditText descriptionView = view.findViewById(R.id.description);
         EditText listingWeightView = view.findViewById(R.id.listingWeight);
-        EditText expirationDateView = view.findViewById(R.id.expirationDate);
+        dateButton = (Button) getView().findViewById(R.id.datePickerButton);
+        timeButton = (Button) getView().findViewById(R.id.timeButton);
         EditText titleView = view.findViewById(R.id.editText_addTitle);
 
         boolean formIsValid = true;
         // check and see if data is valid and data types match
-        if(quantityView.getText().toString().isEmpty()){
+        if (quantityView.getText().toString().isEmpty()) {
             formIsValid = false;
-        }else if(titleView.getText().toString().isEmpty()){
+        } else if (titleView.getText().toString().isEmpty()) {
             formIsValid = false;
-        }else if(descriptionView.getText().toString().isEmpty()){
+        } else if (descriptionView.getText().toString().isEmpty()) {
             formIsValid = false;
-        }else if(listingWeightView.getText().toString().isEmpty()){
+        } else if (listingWeightView.getText().toString().isEmpty()) {
             formIsValid = false;
-        }else if(expirationDateView.getText().toString().isEmpty()){
+        } else if (dateButton.getText().toString().isEmpty()) {
+            formIsValid = false;
+        }
+        else if (timeButton.getText().toString().isEmpty()) {
             formIsValid = false;
         }
         return formIsValid;
     }
 
+    private String getStartingDate  ()
+    {
+        Calendar cal = Calendar.getInstance();
+        int startYear = cal.get(Calendar.YEAR);
+        int startMonth = cal.get(Calendar.MONTH);
+        month = startMonth + 1;
+        currentMonth = month;
+        int startDay = cal.get(Calendar.DAY_OF_MONTH) + 2;
+        currentDay = startDay - 2;
+        return makeDateString(day, month, year);
+    }
 
+    private void initDatePicker()
+    {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker datePicker, int newYear, int newMonth, int newDay)
+            {
+                day = newDay;
+                month = newMonth + 1;
+                year = newYear;
+                date = makeDateString(day, month, year);
+                dateButton.setText(date);
+            }
+        };
+
+        Calendar cal = Calendar.getInstance();
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialog = new DatePickerDialog(getActivity(), style, dateSetListener, year, month, day);
+    }
+
+    private String makeDateString(int day, int month, int year)
+    {
+        return getMonthFormat(month) + " " + day + " " + year;
+    }
+
+    private String getMonthFormat(int month)
+    {
+        if(month == 1)
+            return "JAN";
+        if(month == 2)
+            return "FEB";
+        if(month == 3)
+            return "MAR";
+        if(month == 4)
+            return "APR";
+        if(month == 5)
+            return "MAY";
+        if(month == 6)
+            return "JUN";
+        if(month == 7)
+            return "JUL";
+        if(month == 8)
+            return "AUG";
+        if(month == 9)
+            return "SEP";
+        if(month == 10)
+            return "OCT";
+        if(month == 11)
+            return "NOV";
+        if(month == 12)
+            return "DEC";
+
+        return "JAN";
+    }
+
+    public void openDatePicker(View view)
+    {
+        datePickerDialog.show();
+    }
+
+    public void popTimePicker(View view)
+    {
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener()
+        {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute)
+            {
+                hour = selectedHour;
+                minute = selectedMinute;
+                timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d",hour, minute));
+            }
+        };
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), onTimeSetListener, hour, minute, true);
+
+        timePickerDialog.setTitle("Select Time");
+        timePickerDialog.show();
+    }
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -106,8 +220,7 @@ public class AddListingFragment extends Fragment {
                 byte[] bytes = stream.toByteArray();
                 encodeImage = android.util.Base64.encodeToString(bytes, Base64.DEFAULT);
                 foodImage.setImageBitmap(bitmap);
-            }
-            else if (result.getResultCode() != RESULT_OK) {
+            } else if (result.getResultCode() != RESULT_OK) {
                 requestPermission.launch(Manifest.permission.CAMERA);
 
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -123,7 +236,7 @@ public class AddListingFragment extends Fragment {
         }
     });
 
-    private void launchCamera(){
+    private void launchCamera() {
         Intent intent = new Intent(ACTION_IMAGE_CAPTURE);
         activityResultLauncher.launch(intent);
 
@@ -148,14 +261,31 @@ public class AddListingFragment extends Fragment {
         listingModel = ListingModel.getSharedInstance(mActivity.getApplicationContext());
         foodStopsModel = FoodStopsModel.getSharedInstance();
         foodImage = view.findViewById(R.id.foodImage);
-
-        ProgressBar bar =  view.findViewById(R.id.progressBar);
+        initDatePicker();
+        dateButton = view.findViewById(R.id.datePickerButton);
+        dateButton.setText(getStartingDate());
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDatePicker(view);
+            }
+        });
+        timeButton = view.findViewById(R.id.timeButton);
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popTimePicker(view);
+            }
+        });
+        ProgressBar bar = view.findViewById(R.id.progressBar);
         bar.setVisibility(View.GONE);
 
         final EditText titleView = view.findViewById(R.id.editText_addTitle);
         final EditText quantityView = view.findViewById(R.id.editText_addQuantity);
         final EditText descriptionView = view.findViewById(R.id.description);
-        final EditText expirationDateView = view.findViewById(R.id.expirationDate);
+        dateButton = view.findViewById(R.id.datePickerButton);
+        timeButton = view.findViewById(R.id.timeButton);
+    //    final EditText expirationDateView = view.findViewById(R.id.expirationDate); //change here
         final EditText listingWeightView = view.findViewById(R.id.listingWeight);
 
         view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
@@ -168,7 +298,7 @@ public class AddListingFragment extends Fragment {
                         foodStopsList.clear();
                         foodStopsList.addAll(foodStops);
                         String[] locations = new String[foodStops.size()];
-                        for(int i = 0; i < foodStops.size(); i++){
+                        for (int i = 0; i < foodStops.size(); i++) {
                             FoodStop foodStop = foodStops.get(i);
                             locations[i] = foodStop.name;
                         }
@@ -224,12 +354,21 @@ public class AddListingFragment extends Fragment {
 
                 int foodStopId = selectedFoodStop.foodStopId;
 
-                int days = Integer.parseInt(expirationDateView.getText().toString());
+                String dateString = String.format("%d/%d/%d %d:%d:%d", day, month, year ,hour, minute, 0);
 
-                long expirationTime = days * 86400 + System.currentTimeMillis()/ 1000;
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 
-                if(isFormValid(fragmentView)){
-                    Listing listing = new Listing(titleView.getText().toString(),descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage,Float.parseFloat(listingWeightView.getText().toString()), expirationTime);
+                long daysToExpire = (month - currentMonth) * 30 + (day - currentDay);
+                long expirationTime = daysToExpire * 86400 + (hour * 3600) + (minute * 60) + (System.currentTimeMillis() / 1000);
+                try {
+                    Date expireDate = format.parse(dateString);
+                    expirationTime = expireDate.getTime() / 1000;
+                }
+                catch(Exception e) {
+                }
+
+                if (isFormValid(fragmentView)) {
+                    Listing listing = new Listing(titleView.getText().toString(), descriptionView.getText().toString(), foodStopId, Integer.parseInt(quantityView.getText().toString()), fragment.encodeImage, Float.parseFloat(listingWeightView.getText().toString()), expirationTime);
                     listingModel.postListing(new ListingModel.PostListingCompletionHandler() {
                         @Override
                         public void postListing() {
@@ -238,6 +377,7 @@ public class AddListingFragment extends Fragment {
                             fragmentView.findViewById(R.id.button_post).setEnabled(true);
                             Navigation.findNavController(fragmentView).navigate(R.id.navigation_alllistings);
                         }
+
                         @Override
                         public void error() {
                             fragmentView.findViewById(R.id.button_post).setEnabled(true);
@@ -245,8 +385,7 @@ public class AddListingFragment extends Fragment {
                         }
                     }, listing);
                     fragmentView.findViewById(R.id.button_post).setEnabled(false);
-                }
-                else{
+                } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Error");
                     dialog.setMessage("Please make sure all fields are complete");
@@ -267,7 +406,7 @@ public class AddListingFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof Activity){
+        if (context instanceof Activity) {
             mActivity = context;
         }
     }

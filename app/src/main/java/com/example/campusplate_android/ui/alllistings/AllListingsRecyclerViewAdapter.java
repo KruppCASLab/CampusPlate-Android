@@ -34,29 +34,32 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
     public void setListings(List<Listing> listings) {
         mValues = listings;
     }
+
     public void setFoodstops(List<FoodStop> foodstops) {
         mStops = foodstops;
     }
-    public AllListingsRecyclerViewAdapter(List<Listing> items,List<FoodStop> foodStops ,OnListFragmentInteractionListener listener) {
+
+    public AllListingsRecyclerViewAdapter(List<Listing> items, List<FoodStop> foodStops, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
         mStops = foodStops;
     }
 
 
-
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == 0){
+        if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.reservation_title_row, parent, false);
             return new ViewHolder(view);
-        }else {
+        } else if (viewType == 1) {
 
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.listing_row, parent, false);
+            return new ViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.empty_state_reservations, parent, false);
             return new ViewHolder(view);
         }
     }
@@ -64,17 +67,21 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 0){
+        if (position == 0) {
             return 0;
-        }else {
-            return 1;
+        } else {
+            if (mValues.size() > 0) {
+                return 1;
+            } else {
+                return 2;
+            }
         }
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        if(position == 0) {
+        if (position == 0) {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,27 +90,28 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
             });
             return;
         } // set on click and then return
+        else if(position == 1 && mValues.size()== 0){
+            return;
+        }
 
-
-        position --;
+        position--;
         final int pos = position;
-        Date date = new Date(mValues.get(position).creationTime *1000L);
+        Date date = new Date(mValues.get(position).creationTime * 1000L);
 
-        long diff = Math.abs(System.currentTimeMillis() - mValues.get(position).creationTime *1000L);
+        long diff = Math.abs(System.currentTimeMillis() - mValues.get(position).creationTime * 1000L);
         long time = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
 
         holder.mItem = mValues.get(position);
 
 
-
         int test = mValues.get(pos).quantity;
         holder.mTitleView.setText(mValues.get(position).title);
         //TODO:Update to value once determined
         holder.mQuantityView.setText(Integer.toString(mValues.get(position).quantityRemaining) + " Remaining");
-        for(int i = 0; i < mStops.size(); i++){
+        for (int i = 0; i < mStops.size(); i++) {
             String hexColor = "#" + mStops.get(i).hexColor;
-            if(mValues.get(position).foodStopId == mStops.get(i).foodStopId){
+            if (mValues.get(position).foodStopId == mStops.get(i).foodStopId) {
                 holder.mline.setCardBackgroundColor(Color.parseColor(hexColor));
                 holder.mLocationDescriptionView.setText(mStops.get(i).name);
             }
@@ -119,7 +127,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
                     bundle.putInt("index", pos);
                     bundle.putInt("listingId", mValues.get(pos).listingId);
-                    bundle.putInt("foodStopId",mValues.get(pos).foodStopId);
+                    bundle.putInt("foodStopId", mValues.get(pos).foodStopId);
                     bundle.putInt("index", pos);
 
                     Navigation.findNavController(view).navigate(R.id.action_navigation_alllistings_to_navigation_viewlisting, bundle);
@@ -136,7 +144,11 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
 
     @Override
     public int getItemCount() {
-        return mValues.size() + 1;
+        if (mValues.size() > 0) {
+            return mValues.size() + 1;
+        } else {
+            return 2;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -147,6 +159,7 @@ public class AllListingsRecyclerViewAdapter extends RecyclerView.Adapter<AllList
         public Listing mItem;
         public FoodStop mStop;
         public final CardView mline;
+
         public ViewHolder(View view) {
             super(view);
             mView = view;
