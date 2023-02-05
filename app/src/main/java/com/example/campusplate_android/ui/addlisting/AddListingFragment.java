@@ -283,7 +283,6 @@ public class AddListingFragment extends Fragment {
         final EditText descriptionView = view.findViewById(R.id.description);
         dateButton = view.findViewById(R.id.datePickerButton);
         timeButton = view.findViewById(R.id.timeButton);
-    //    final EditText expirationDateView = view.findViewById(R.id.expirationDate); //change here
         final EditText listingWeightView = view.findViewById(R.id.listingWeight);
 
         view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
