@@ -75,6 +75,7 @@ public class AddListingFragment extends Fragment {
     private int hour, minute;
     private int currentMonth;
     private int currentDay;
+    private Button locbtn;
 
     public static AddListingFragment newInstance() {
         return new AddListingFragment();
@@ -291,6 +292,7 @@ public class AddListingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final List<FoodStop> foodStopsList = new ArrayList<>();
+                locbtn = (Button) v.findViewById(R.id.location);
                 foodStopsModel.getFoodStopManager(new FoodStopsModel.getCompletionHandler() {
                     @Override
                     public void success(List<FoodStop> foodStops) {
@@ -307,6 +309,7 @@ public class AddListingFragment extends Fragment {
                             public void didSelectItems(List<Integer> items) {
                                 fragment.selectedFoodStop = foodStopsList.get(items.get(0));
                                 view.findViewById(R.id.button_post).setEnabled(true);
+                                locbtn.setText(fragment.selectedFoodStop.name);
                             }
                         });
                         select.show(fragment.getContext());
