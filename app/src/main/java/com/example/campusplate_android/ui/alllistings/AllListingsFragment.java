@@ -131,6 +131,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         adapter.isClickable = false;
 
 
+
         recycler.addItemDecoration(new DividerItemDecoration(recycler.getContext(), 0));
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
@@ -223,7 +224,6 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     }
 
     private void fetchTimelineAsync(final CompletionHandler completionHandler) { // what does this do fetch time
-
         foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
             @Override
             public void success(final List<FoodStop> foodStops) {
@@ -235,6 +235,7 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
                             public void success(List<Reservation> reservations) {
                                 if(map != null){
                                     drawMap(map, foodStops);
+
                                 }
                                 completionHandler.success(foodStops, listings, reservations);
                             }

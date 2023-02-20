@@ -16,12 +16,11 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="388dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        tools:ignore="ExtraText"
-        >
+        tools:ignore="ExtraText">
 
 
         <TextView
@@ -30,6 +29,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text="Reservations"
+            android:textAlignment="center"
             android:textColor="@color/colorTextPrimary"
             android:textSize="10pt"
             android:textStyle="bold"
@@ -37,6 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533"
             tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
