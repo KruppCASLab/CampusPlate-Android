@@ -395,7 +395,7 @@ public class AddListingFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            ((MainActivity) mActivity).stopProgressBar();
+
                         }
                     });
                     dialog.show();

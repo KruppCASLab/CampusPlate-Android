@@ -12,6 +12,7 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,7 +26,10 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TimePicker;
 
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.CredentialManager;
@@ -46,6 +50,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
@@ -127,7 +132,12 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
 
         recycler.setAdapter(adapter);
 
-        ((MainActivity) mActivity).startProgressBar();
+        FrameLayout progressFrame = view.findViewById(R.id.progressFrame);
+        progressFrame.setClickable(true);
+        ProgressBar progressBar = view.findViewById(R.id.progressBar4);
+        //progressFrame.setVisibility(View.GONE);
+
+
         adapter.isClickable = false;
 
 
@@ -144,7 +154,9 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
             public void success(List<FoodStop> foodStops, List<Listing> listings, List<Reservation> reservations) {
 
                 try {
-                    ((MainActivity) mActivity).stopProgressBar();
+                    progressFrame.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+
                     adapter.isClickable = true;
                 } catch (NullPointerException exception) {
                     //TODO: Do something with exception
@@ -189,12 +201,14 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                progressFrame.setVisibility(View.VISIBLE);
                 fetchTimelineAsync(new CompletionHandler() {
                     @Override
                     public void success(List<FoodStop> foodStops, List<Listing> listings, List<Reservation> reservations) {
                         adapter.setListings(listings); // is this supposed to show listing in swipe container
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
+                        progressFrame.setVisibility(View.GONE);
                     }
 
                     @Override
