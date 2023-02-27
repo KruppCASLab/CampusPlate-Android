@@ -75,6 +75,7 @@ public class AddListingFragment extends Fragment {
     private int hour, minute;
     private int currentMonth;
     private int currentDay;
+    private Button locbtn;
 
     public static AddListingFragment newInstance() {
         return new AddListingFragment();
@@ -285,13 +286,13 @@ public class AddListingFragment extends Fragment {
         final EditText descriptionView = view.findViewById(R.id.description);
         dateButton = view.findViewById(R.id.datePickerButton);
         timeButton = view.findViewById(R.id.timeButton);
-    //    final EditText expirationDateView = view.findViewById(R.id.expirationDate); //change here
         final EditText listingWeightView = view.findViewById(R.id.listingWeight);
 
         view.findViewById(R.id.location).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final List<FoodStop> foodStopsList = new ArrayList<>();
+                locbtn = (Button) v.findViewById(R.id.location);
                 foodStopsModel.getFoodStopManager(new FoodStopsModel.getCompletionHandler() {
                     @Override
                     public void success(List<FoodStop> foodStops) {
@@ -308,6 +309,7 @@ public class AddListingFragment extends Fragment {
                             public void didSelectItems(List<Integer> items) {
                                 fragment.selectedFoodStop = foodStopsList.get(items.get(0));
                                 view.findViewById(R.id.button_post).setEnabled(true);
+                                locbtn.setText(fragment.selectedFoodStop.name);
                             }
                         });
                         select.show(fragment.getContext());
@@ -393,7 +395,7 @@ public class AddListingFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            ((MainActivity) mActivity).stopProgressBar();
+
                         }
                     });
                     dialog.show();

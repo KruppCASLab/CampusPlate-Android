@@ -65,26 +65,10 @@ public class Select {
           });
         }
         mBuilder.setCancelable(false);
-        mBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                select.delegate.didSelectItems(selectedItems);
-            }
-        });
         mBuilder.setNegativeButton("dismiss", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-            }
-        });
-        mBuilder.setNeutralButton("clear all", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for (int i = 0; i < checkedItems.length; i++) {
-                    checkedItems[i] = false;
-                    selectedItems.clear();
-                    //   allergySelected.setText("");
-                }
             }
         });
         AlertDialog mDialog = mBuilder.create();

@@ -141,7 +141,6 @@ public class ViewListingFragment extends Fragment {
         view.findViewById(R.id.button_pickUpItem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) mActivity).startProgressBar();
                 final View root = view;
                 new AlertDialog.Builder(mActivity)
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -170,7 +169,6 @@ public class ViewListingFragment extends Fragment {
                                             Toast.makeText(mActivity, "Listing no longer exists", Toast.LENGTH_LONG).show();
                                         }
 
-                                        ((MainActivity) mActivity).stopProgressBar();
 
                                     }
 
@@ -185,7 +183,6 @@ public class ViewListingFragment extends Fragment {
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ((MainActivity) mActivity).stopProgressBar();
                             }
                         })
                         .show();

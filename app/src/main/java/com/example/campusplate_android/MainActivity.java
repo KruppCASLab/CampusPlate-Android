@@ -57,16 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void startProgressBar() {
-//        ProgressBar progressBar =  findViewById(R.id.progressBar);
-//
-//        progressBar.setVisibility(View.VISIBLE);
-//        progressBar.bringToFront();
-    }
-
-    public void stopProgressBar() {
-//        findViewById(R.id.progressBar).setVisibility(View.GONE);
-    }
 
 
 
