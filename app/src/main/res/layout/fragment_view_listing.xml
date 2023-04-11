@@ -11,45 +11,11 @@
         android:id="@+id/listingImage"
         android:layout_width="277dp"
         android:layout_height="219dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:src="@android:drawable/sym_def_app_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-    <Button
-        android:id="@+id/button_pickUpItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/buttonColorPrimary"
-        android:text="Reserve"
-        android:textColor="@color/buttonColorSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listingImage" />
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="375dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/colorTextPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="375dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/colorTextPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewItemDescription" />
 
     <View
         android:id="@+id/view4"
@@ -62,6 +28,110 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quantityToPickUp" />
 
+    <Button
+        android:id="@+id/increase"
+        android:layout_width="62dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="28dp"
+        android:text="+"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/decrease"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <Button
+        android:id="@+id/decrease"
+        android:layout_width="62dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:text="-"
+        app:layout_constraintStart_toEndOf="@+id/quantityToPickUp"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/quantityToPickUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/quantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Quantity"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintStart_toStartOf="@+id/quantityToPickUp"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewItemDescription" />
+
+    <TextView
+        android:id="@+id/viewItemDescription"
+        android:layout_width="284dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left"
+        android:lines="4"
+
+        android:maxLines="4"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="6pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.236"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Description"
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintStart_toStartOf="@+id/viewItemDescription"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+    <Button
+        android:id="@+id/button_pickUpItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/buttonColorPrimary"
+        android:text="Reserve"
+        android:textColor="@color/buttonColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listingImage" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="375dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/colorTextPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
+
     <TextView
         android:id="@+id/textView_listingLocationDescription"
         android:layout_width="wrap_content"
@@ -73,6 +143,16 @@
         app:layout_constraintStart_toStartOf="@+id/textView_displayLocationDescription"
         app:layout_constraintTop_toBottomOf="@+id/view"
         app:layout_constraintVertical_bias="0.666" />
+
+    <TextView
+        android:id="@+id/textView_listingLocationDescription2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available: "
+        android:textColor="@color/colorTextPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/view5"
+        app:layout_constraintStart_toStartOf="@+id/textView_displayLocationDescription"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
 
     <TextView
         android:id="@+id/textView_displayLocationDescription"
@@ -126,73 +206,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/descriptionLabel"
+        android:id="@+id/textView15"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Description"
-        android:textColor="@color/colorTextPrimary"
-        app:layout_constraintStart_toStartOf="@+id/viewItemDescription"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-    <TextView
-        android:id="@+id/viewItemDescription"
-        android:layout_width="284dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="48dp"
-        android:gravity="left"
-        android:lines="4"
-        android:maxLines="4"
-
-        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="6pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-    <TextView
-        android:id="@+id/quantityToPickUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:text="TextView"
-        android:textColor="@color/colorTextPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-    <Button
-        android:id="@+id/increase"
-        android:layout_width="62dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
-        android:text="+"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.021"
-        app:layout_constraintStart_toEndOf="@+id/decrease"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-    <Button
-        android:id="@+id/decrease"
-        android:layout_width="62dp"
-        android:layout_height="41dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:text="-"
-        app:layout_constraintStart_toEndOf="@+id/quantityToPickUp"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-    <TextView
-        android:id="@+id/quantityLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Quantity"
-        android:textColor="@color/colorTextPrimary"
-        app:layout_constraintStart_toStartOf="@+id/quantityToPickUp"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
+        android:text="Tuesday 3:00 PM - 4:30 PM"
+        android:textColor="@color/indicatorOrange"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view5"
+        app:layout_constraintStart_toEndOf="@+id/textView_listingLocationDescription2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_displayLocationDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
