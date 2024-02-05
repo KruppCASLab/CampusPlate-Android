@@ -72,7 +72,7 @@ public class FoodStopsModel {
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
                         Double foodStopNumber = (double) mapItem.get("foodStopNumber");
-                        managedFoodStops.add(new FoodStop(foodStopId.intValue(), (String) mapItem.get("name"),
+                        managedFoodStops.add(new FoodStop(foodStopId.intValue(), (String) mapItem.get("type"), (String) mapItem.get("name"),
                                 (String) mapItem.get("description"), lat, lng, foodStopNumber.intValue(), (String) mapItem.get("hexColor"), (String) mapItem.get("streetAddress")));
                     }
                     completionHandler.success(managedFoodStops);
@@ -110,7 +110,7 @@ public class FoodStopsModel {
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
                         Double foodStopNumber = (double) mapItem.get("foodStopNumber");
-                        addFoodStop(new FoodStop(foodStopId.intValue(), (String) mapItem.get("name"),
+                        addFoodStop(new FoodStop(foodStopId.intValue(), (String) mapItem.get("type"),(String) mapItem.get("name"),
                                 (String) mapItem.get("description"), lat, lng, foodStopNumber.intValue(), (String) mapItem.get("hexColor"), (String) mapItem.get("streetAddress")));
                     }
                     completionHandler.success(foodStops);

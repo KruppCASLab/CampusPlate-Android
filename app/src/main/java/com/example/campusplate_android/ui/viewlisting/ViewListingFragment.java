@@ -71,6 +71,7 @@ public class ViewListingFragment extends Fragment {
         final TextView quantityToPickUp = view.findViewById(R.id.quantityToPickUp);
         Button increase = view.findViewById(R.id.increase);
         Button decrease = view.findViewById(R.id.decrease);
+        TextView button_pickup = view.findViewById(R.id.button_pickUpItem);
 
 
         if(getArguments() != null){
@@ -83,7 +84,14 @@ public class ViewListingFragment extends Fragment {
             listing = getListingsViewListings(listingId, listings);
             FoodStop foodStop = getFoodStopViewListing(listing, foodStops);
 
+            String type = foodStop.type;
 
+            if(type.equals("unmanaged")) {
+                button_pickup.setText("Retrieve");
+            }
+            else if(type.equals("managed")) {
+                button_pickup.setText("Reserve");
+            }
 
                 title.setText(listing.title);
                 quantityToPickUp.setText(calculateQuantity(1, listing.quantityRemaining));
