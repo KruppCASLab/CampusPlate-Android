@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
@@ -48,23 +49,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         } else {
             // Location already given
         }
+    }
 
-        @Override
-        public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
-            switch (requestCode) {
-                case 1: {  // Replace with your request code
-                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        // Permission was granted. You can perform your operation here.
-                    } else {
-                        Toast.makeText(this, "Location permission is required to use this feature.", Toast.LENGTH_SHORT).show();
-                    }
-                    return;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1: {  // Replace with your request code
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission was granted. You can perform your operation here.
+                } else {
+                    Toast.makeText(this, "Location permission is required to use this feature.", Toast.LENGTH_SHORT).show();
                 }
+                return;
             }
-
         }
-
-
 
     }
 
