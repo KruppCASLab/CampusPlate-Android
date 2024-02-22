@@ -1,36 +1,21 @@
 package com.example.campusplate_android;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import java.util.Objects;
+import com.google.android.gms.location.LocationListener;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
@@ -54,30 +39,32 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         //Location stuff
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        provider = locationManager.getBestProvider(new Criteria(), false);
+        /*ActivityCompat.requestPermissions(this,new String[]
+                {Manifest.permission.ACCESS_COARSE_LOCATION}, 1);*/
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-             // TODO: Consider calling
-             //    ActivityCompat#requestPermissions
-             // here to request the missing permissions, and then overriding
-             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-             //                                          int[] grantResults)
-             // to handle the case where the user grants the permission. See the documentation
-             // for ActivityCompat#requestPermissions for more details.
-             return;
-        }
-        Location location = locationManager.getLastKnownLocation(provider);
-
-        if (location != null) {
-           Log.i("Location Info", "Location achieved!");
-
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
+            // Location already given
+        }
 
-           Log.i("Location Info", "No location :(");
+        @Override
+        public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
+            switch (requestCode) {
+                case 1: {  // Replace with your request code
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // Permission was granted. You can perform your operation here.
+                    } else {
+                        Toast.makeText(this, "Location permission is required to use this feature.", Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+            }
 
         }
+
+
 
     }
 
