@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.campusplate_android.LocationManager;
 import com.example.campusplate_android.MainActivity;
 import com.example.campusplate_android.Model.FoodStopsModel;
 import com.example.campusplate_android.Model.ListingModel;
@@ -35,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ViewListingFragment extends Fragment {
+public class ViewListingFragment extends Fragment implements LocationManager.LocationManagerDelegate {
 
     private Listing listing;
     private ListingModel listingModel;
@@ -62,6 +63,9 @@ public class ViewListingFragment extends Fragment {
         foodStopsModel = FoodStopsModel.getSharedInstance();
         reservationModel = ReservationModel.getSharedInstance();
 
+        LocationManager.getInstance().setDelegate(this);
+        LocationManager.getInstance().getUserLocation();
+
         final Bundle foodStopBundle = new Bundle();
         TextView title = view.findViewById(R.id.textView_displayTitle);
         final TextView locationDescription = view.findViewById(R.id.textView_displayLocationDescription);
@@ -74,7 +78,7 @@ public class ViewListingFragment extends Fragment {
         TextView button_pickup = view.findViewById(R.id.button_pickUpItem);
 
 
-        if(getArguments() != null){
+        if (getArguments() != null) {
             int listingId = getArguments().getInt("listingId");
             int foodStopId = getArguments().getInt("foodStopId");
 
@@ -86,15 +90,14 @@ public class ViewListingFragment extends Fragment {
 
             String type = foodStop.type;
 
-            if(type.equals("unmanaged")) {
+            if (type.equals("unmanaged")) {
                 button_pickup.setText("Retrieve");
-            }
-            else if(type.equals("managed")) {
+            } else if (type.equals("managed")) {
                 button_pickup.setText("Reserve");
             }
 
-                title.setText(listing.title);
-                quantityToPickUp.setText(calculateQuantity(1, listing.quantityRemaining));
+            title.setText(listing.title);
+            quantityToPickUp.setText(calculateQuantity(1, listing.quantityRemaining));
 
             foodStopBundle.putInt("foodStopId", listing.foodStopId);
 
@@ -115,11 +118,9 @@ public class ViewListingFragment extends Fragment {
             });
 
 
+            Date date = new Date(listing.creationTime * 1000L);
 
-
-            Date date = new Date(listing.creationTime*1000L);
-
-            long diff = Math.abs(System.currentTimeMillis() - listing.creationTime*1000L);
+            long diff = Math.abs(System.currentTimeMillis() - listing.creationTime * 1000L);
             long time = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
             datePosted.setText(String.format("Posted %d days ago", time));
             locationDescription.setText(foodStop.name);
@@ -138,10 +139,7 @@ public class ViewListingFragment extends Fragment {
             });
 
 
-
-
-        }
-        else{
+        } else {
             Toast.makeText(mActivity, "There was an error.", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(view).navigate(R.id.action_navigation_viewlisting_pop);
         }
@@ -165,15 +163,13 @@ public class ViewListingFragment extends Fragment {
                                 reservationModel.addReservation(reservation, new ReservationModel.postCompletionHandler() {
                                     @Override
                                     public void success(int code, int status) {
-                                        if(status == 0) {
+                                        if (status == 0) {
                                             quantityNumber = 0;
                                             foodStopBundle.putInt("code", code);
                                             Navigation.findNavController(root).navigate(R.id.navigation_lisitingConfirmation, foodStopBundle);
-                                        }
-                                        else if(status == 1){
+                                        } else if (status == 1) {
                                             Toast.makeText(mActivity, "Quantity greater than available amount", Toast.LENGTH_LONG).show();
-                                        }
-                                        else if(status == 2){
+                                        } else if (status == 2) {
                                             Toast.makeText(mActivity, "Listing no longer exists", Toast.LENGTH_LONG).show();
                                         }
 
@@ -199,11 +195,11 @@ public class ViewListingFragment extends Fragment {
         return view;
     }
 
-    private String calculateQuantity(int number, int totalQuantity){
-        if(quantityNumber + number >= 0 && quantityNumber + number <= totalQuantity){
+    private String calculateQuantity(int number, int totalQuantity) {
+        if (quantityNumber + number >= 0 && quantityNumber + number <= totalQuantity) {
             this.quantityNumber += number;
         }
-        if(totalQuantity == 0){
+        if (totalQuantity == 0) {
             return "0/0";
         }
 
@@ -211,8 +207,8 @@ public class ViewListingFragment extends Fragment {
 
     }
 
-    private FoodStop getFoodStopViewListing(Listing listing, List<FoodStop> foodStops){
-        for (int i = 0; i <foodStops.size(); i++) {
+    private FoodStop getFoodStopViewListing(Listing listing, List<FoodStop> foodStops) {
+        for (int i = 0; i < foodStops.size(); i++) {
             FoodStop foodStop = foodStops.get(i);
             if (listing.foodStopId == foodStop.foodStopId) {
                 return foodStops.get(i);
@@ -221,9 +217,9 @@ public class ViewListingFragment extends Fragment {
         return null;
     }
 
-    private Listing getListingsViewListings(int listingId, List<Listing> listings){
-        for (int i = 0; i <listings.size(); i++) {
-            if(listingId == listings.get(i).listingId){
+    private Listing getListingsViewListings(int listingId, List<Listing> listings) {
+        for (int i = 0; i < listings.size(); i++) {
+            if (listingId == listings.get(i).listingId) {
                 return listings.get(i);
             }
         }
@@ -233,9 +229,16 @@ public class ViewListingFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof Activity){
+        if (context instanceof Activity) {
             mActivity = context;
         }
-      }
     }
+
+    @Override
+    public void receiveLocation(double lat, double lng) {
+        int j = 5;
+    }
+}
+
+
 
