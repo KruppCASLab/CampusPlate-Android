@@ -19,7 +19,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,20 +63,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 }
             }
         }
-
     }
-
-
-
-
 
     @Override
     protected void onResume() {
         super.onResume();
 
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -95,16 +88,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     public void hideUpButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        Double lat = location.getLatitude();
-        Double lng = location.getLongitude();
-
-        Log.i("Location info: Lat", lat.toString());
-        Log.i("Location info: Lng", lng.toString());
-
     }
 }

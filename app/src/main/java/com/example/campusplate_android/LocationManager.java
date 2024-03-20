@@ -3,6 +3,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.LocationRequest;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -55,6 +56,7 @@ public class LocationManager {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        
         fusedLocationClient.getLastLocation().addOnSuccessListener(this.activity, location -> {
                     if (location != null) {
                         double latitude = location.getLatitude();

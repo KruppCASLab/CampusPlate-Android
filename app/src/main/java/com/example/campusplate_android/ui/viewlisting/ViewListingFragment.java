@@ -236,6 +236,7 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
 
     @Override
     public void receiveLocation(double lat, double lng) {
+        // TODO: Check if we are in range and then update UI
         int j = 5;
     }
 }
