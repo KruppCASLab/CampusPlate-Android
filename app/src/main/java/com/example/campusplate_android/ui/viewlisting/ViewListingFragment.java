@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +33,12 @@ import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.Model.Types.Reservation;
 import com.example.campusplate_android.R;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+import java.util.Timer;
 
 public class ViewListingFragment extends Fragment implements LocationManager.LocationManagerDelegate {
 
@@ -45,6 +49,8 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     private Context mActivity;
     private Reservation reservation;
     private int quantityNumber = 0;
+    public Timer timer;
+    public TimerTask timerTask;
 
     public static ViewListingFragment newInstance() {
         return new ViewListingFragment();
@@ -63,8 +69,19 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
         foodStopsModel = FoodStopsModel.getSharedInstance();
         reservationModel = ReservationModel.getSharedInstance();
 
+        timer = new Timer();
+
         LocationManager.getInstance().setDelegate(this);
-        LocationManager.getInstance().getUserLocation();
+
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                LocationManager.getInstance().getUserLocation();
+                Log.i("Testing", "Got Location");
+            }
+        };
+
+        timer.scheduleAtFixedRate(timerTask, 0, 5000);
 
         final Bundle foodStopBundle = new Bundle();
         TextView title = view.findViewById(R.id.textView_displayTitle);
@@ -238,6 +255,40 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     public void receiveLocation(double lat, double lng) {
         // TODO: Check if we are in range and then update UI
         int j = 5;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        timer.cancel();
+        timerTask = null;
+        timer = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (timerTask == null) {
+            timer = new Timer();
+
+            timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    LocationManager.getInstance().getUserLocation();
+                    Log.i("Testing", "Got Location 2");
+                }
+            };
+
+            timer.scheduleAtFixedRate(timerTask, 0, 5000);
+        }
     }
 }
 
