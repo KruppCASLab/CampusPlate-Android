@@ -1,17 +1,24 @@
 package com.example.campusplate_android.ui.viewlisting;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +40,8 @@ import com.example.campusplate_android.Model.Types.Listing;
 import com.example.campusplate_android.Model.Types.Reservation;
 import com.example.campusplate_android.R;
 
+import org.w3c.dom.Text;
+
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +60,8 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     private int quantityNumber = 0;
     public Timer timer;
     public TimerTask timerTask;
+    public TextView button_pickup;
+    private ColorStateList list;
 
     public static ViewListingFragment newInstance() {
         return new ViewListingFragment();
@@ -71,6 +82,11 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
 
         timer = new Timer();
 
+        button_pickup = view.findViewById(R.id.button_pickUpItem);
+
+        list = button_pickup.getBackgroundTintList();
+
+
         LocationManager.getInstance().setDelegate(this);
 
         timerTask = new TimerTask() {
@@ -78,10 +94,15 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
             public void run() {
                 LocationManager.getInstance().getUserLocation();
                 Log.i("Testing", "Got Location");
+
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("Permission", "Now has precise permissions");
+                    button_pickup.setEnabled(true);
+                }
             }
         };
 
-        timer.scheduleAtFixedRate(timerTask, 0, 5000);
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
 
         final Bundle foodStopBundle = new Bundle();
         TextView title = view.findViewById(R.id.textView_displayTitle);
@@ -92,8 +113,6 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
         final TextView quantityToPickUp = view.findViewById(R.id.quantityToPickUp);
         Button increase = view.findViewById(R.id.increase);
         Button decrease = view.findViewById(R.id.decrease);
-        TextView button_pickup = view.findViewById(R.id.button_pickUpItem);
-
 
         if (getArguments() != null) {
             int listingId = getArguments().getInt("listingId");
@@ -111,6 +130,18 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                 button_pickup.setText("Retrieve");
             } else if (type.equals("managed")) {
                 button_pickup.setText("Reserve");
+            }
+
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                button_pickup.setEnabled(false);
+                Toast.makeText(requireContext(), "Location permission is required to use this feature.", Toast.LENGTH_LONG).show();
+                button_pickup.getBackground().setTint(Color.GRAY);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                    }
+                }, 5000);
             }
 
             title.setText(listing.title);
@@ -268,29 +299,40 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
         super.onPause();
 
         timer.cancel();
-        timerTask = null;
-        timer = null;
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        if (timerTask == null) {
-            timer = new Timer();
-
-            timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    LocationManager.getInstance().getUserLocation();
-                    Log.i("Testing", "Got Location 2");
-                }
-            };
-
-            timer.scheduleAtFixedRate(timerTask, 0, 5000);
+        if (timer != null) {
+            timer.cancel();
         }
-    }
-}
+        timer = new Timer();
 
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                LocationManager.getInstance().getUserLocation();
+                Log.i("Testing", "Got Location 2");
+
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("Permission", "Now has precise permissions");
+                    getActivity().runOnUiThread(() -> button_pickup.setEnabled(true));
+                    button_pickup.setBackgroundTintList(list);
+                    //button_pickup.getResources().getColorStateList(R.color.buttonColorPrimary);
+                }
+            }
+        };
+
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+
+//    @Override
+//    public void onConfigurationChanged() {
+//        super.onConfigurationChanged();
+//
+//    }
+}
 
 
