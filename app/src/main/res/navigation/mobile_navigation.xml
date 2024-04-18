@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_navigation_viewlisting_to_lisitingConfirmationFragment"
             app:destination="@id/navigation_lisitingConfirmation" />
+        <action
+            android:id="@+id/action_navigation_viewlisting_to_listingConfirmationRetrieval"
+            app:destination="@id/listingConfirmationRetrieval" />
     </fragment>
     <fragment
         android:id="@+id/navigation_editlisting"
@@ -85,6 +88,15 @@
         tools:layout="@layout/fragment_reservation_" >
         <action
             android:id="@+id/action_reservation_Fragment_to_navigation_alllistings"
+            app:destination="@id/navigation_alllistings" />
+    </fragment>
+    <fragment
+        android:id="@+id/listingConfirmationRetrieval"
+        android:name="com.example.campusplate_android.ui.listingconfirmation.ListingConfirmationRetrieval"
+        android:label="fragment_listing_confirmation_retrieval"
+        tools:layout="@layout/fragment_listing_confirmation_retrieval" >
+        <action
+            android:id="@+id/action_listingConfirmationRetrieval_to_navigation_alllistings"
             app:destination="@id/navigation_alllistings" />
     </fragment>
 </navigation>

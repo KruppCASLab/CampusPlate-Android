@@ -1,5 +1,7 @@
 package com.example.campusplate_android.Model;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.Model.Types.FoodStop;
@@ -93,10 +95,13 @@ public class ReservationModel {
 
                 try {
                     int status = response.getInt("status");
-                    if( status == 0) {
+                    if( status == 0 || status == 3) {
                         JSONObject jsonResponse = response.getJSONObject("data");
 
                         int code = jsonResponse.getInt("code");
+
+                        Log.i("Status", String.valueOf(status));
+                        Log.i("Data", String.valueOf(jsonResponse));
 
 
                         completionHandler.success(code, status);

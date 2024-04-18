@@ -219,6 +219,9 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                                             Toast.makeText(mActivity, "Quantity greater than available amount", Toast.LENGTH_LONG).show();
                                         } else if (status == 2) {
                                             Toast.makeText(mActivity, "Listing no longer exists", Toast.LENGTH_LONG).show();
+                                        } else if (status == 3) {
+                                            //quantityNumber = 0;
+                                            Navigation.findNavController(root).navigate(R.id.listingConfirmationRetrieval, foodStopBundle);
                                         }
 
 
