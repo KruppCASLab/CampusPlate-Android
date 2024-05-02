@@ -11,6 +11,8 @@ public class Reservation {
     public  int reservationId;
     public Listing listing;
 
+    public double lat, lng;
+
 
     public Reservation() {
         this.listingId = -1;
@@ -44,6 +46,13 @@ public class Reservation {
     public Reservation(int listingId, int quantity) {
         this.listingId = listingId;
         this.quantity = quantity;
+    }
 
+    public Reservation(int listingId, int quantity, double lat, double lng) {
+        this.listingId = listingId;
+        this.quantity = quantity;
+        this.lat = lat;
+        this.lng = lng;
+        this.status = 3; // Retrieval status
     }
 }

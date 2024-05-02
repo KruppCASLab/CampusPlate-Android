@@ -63,6 +63,11 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     public TextView button_pickup;
     private ColorStateList list;
 
+    private String foodStopType = "unmanaged";
+    private FoodStop foodStop;
+
+    private double lastSensedLat, lastSensedLng;
+
     public static ViewListingFragment newInstance() {
         return new ViewListingFragment();
     }
@@ -122,13 +127,13 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
             List<FoodStop> foodStops = foodStopsModel.getCachedFoodStops();
             List<Listing> listings = listingModel.getAllListings();
             listing = getListingsViewListings(listingId, listings);
-            FoodStop foodStop = getFoodStopViewListing(listing, foodStops);
+            foodStop = getFoodStopViewListing(listing, foodStops);
 
-            String type = foodStop.type;
+            this.foodStopType = foodStop.type;
 
-            if (type.equals("unmanaged")) {
+            if (foodStopType.equals("unmanaged")) {
                 button_pickup.setText("Retrieve");
-            } else if (type.equals("managed")) {
+            } else if (foodStopType.equals("managed")) {
                 button_pickup.setText("Reserve");
             }
 
@@ -198,16 +203,21 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                 final View root = view;
                 new AlertDialog.Builder(mActivity)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Reserve Item")
+                        .setTitle((foodStopType.equals("unmanaged")) ? "Retrieve Item" : "Reserve Item")
                         .setCancelable(false)
-                        .setMessage("Are you sure you want to reserve this item?")
+                        .setMessage((foodStopType.equals("unmanaged")) ? "Are you sure you want to retrieve this item?" : "Are you sure you want to reserve this item?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
                                 String value = String.valueOf(quantityNumber);
-                                reservation = new Reservation(listing.listingId, Integer.parseInt(value));
+                                if (foodStopType.equals("managed")) {
+                                    reservation = new Reservation(listing.listingId, Integer.parseInt(value));
+                                }
+                                else {
+                                    reservation = new Reservation(listing.listingId, Integer.parseInt(value), lastSensedLat, lastSensedLng);
+                                }
                                 reservationModel.addReservation(reservation, new ReservationModel.postCompletionHandler() {
                                     @Override
                                     public void success(int code, int status) {
@@ -222,6 +232,9 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                                         } else if (status == 3) {
                                             //quantityNumber = 0;
                                             Navigation.findNavController(root).navigate(R.id.listingConfirmationRetrieval, foodStopBundle);
+                                        }
+                                        else if (status == 4) {
+                                            Toast.makeText(mActivity, "Please make sure you are near the food stop", Toast.LENGTH_LONG).show();
                                         }
 
 
@@ -287,8 +300,25 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
 
     @Override
     public void receiveLocation(double lat, double lng) {
-        // TODO: Check if we are in range and then update UI
-        int j = 5;
+        if (foodStop.type.equals("unmanaged")) {
+            this.lastSensedLat = lat;
+            this.lastSensedLng = lng;
+
+            double threshold = 0.0004;
+
+
+            if ((lat < (foodStop.lat + threshold)) && (lat > (foodStop.lat - threshold)) &&
+                    (lng < (foodStop.lng + threshold)) && (lng > (foodStop.lng - threshold))) {
+                getActivity().runOnUiThread(() -> {
+                    button_pickup.setEnabled(true);
+                });
+            } else {
+                getActivity().runOnUiThread(() -> {
+                    button_pickup.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                    button_pickup.setEnabled(false);
+                });
+            }
+        }
     }
 
     @Override
@@ -321,14 +351,17 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
 
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     Log.i("Permission", "Now has precise permissions");
-                    getActivity().runOnUiThread(() -> button_pickup.setEnabled(true));
-                    button_pickup.setBackgroundTintList(list);
-                    //button_pickup.getResources().getColorStateList(R.color.buttonColorPrimary);
+//                    getActivity().runOnUiThread(() -> {
+//                        button_pickup.setEnabled(true);
+//                        button_pickup.setBackgroundTintList(list);
+//                        //button_pickup.getResources().getColorStateList(R.color.buttonColorPrimary);
+//                    });
                 }
             }
         };
-
-        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        if (foodStop.type.equals("unmanaged")) {
+            timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        }
     }
 
 //    @Override
