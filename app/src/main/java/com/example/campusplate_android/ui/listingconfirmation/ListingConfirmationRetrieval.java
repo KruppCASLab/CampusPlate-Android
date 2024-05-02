@@ -1,14 +1,12 @@
 package com.example.campusplate_android.ui.listingconfirmation;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -27,7 +25,12 @@ import com.example.campusplate_android.ui.alllistings.AllListingsRecyclerViewAda
 
 import java.util.List;
 
-public class LisitingConfirmationFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ListingConfirmationRetrieval#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ListingConfirmationRetrieval extends Fragment {
 
     private Listing listing;
     private ListingModel listingModel;
@@ -37,27 +40,23 @@ public class LisitingConfirmationFragment extends Fragment {
 
     private LisitingConfirmationViewModel mViewModel;
 
-    public static LisitingConfirmationFragment newInstance() {
-        return new LisitingConfirmationFragment();
+    public static ListingConfirmationRetrieval newInstance() {
+        return new ListingConfirmationRetrieval();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.lisiting_confirmation_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        final View view = inflater.inflate(R.layout.fragment_listing_confirmation_retrieval, container, false);
 
         foodStopsModel = FoodStopsModel.getSharedInstance();
 
         final ImageView circle = view.findViewById(R.id.indicator_circle);
         final TextView number = view.findViewById(R.id.indicator_number);
-        final TextView location = view.findViewById(R.id.foodStopName);
-        final TextView address = view.findViewById(R.id.foodStopAddress);
-        final TextView confCode = view.findViewById(R.id.reminderMsg);
 
         if(getArguments() != null){
             final int foodStopId = getArguments().getInt("foodStopId");
-            int code = getArguments().getInt("code");
-            confCode.setText(String.format("%d", code));
             foodStopsModel.getFoodStops(new FoodStopsModel.getCompletionHandler() {
                 @Override
                 public void success(List<FoodStop> foodStops) {
@@ -68,9 +67,6 @@ public class LisitingConfirmationFragment extends Fragment {
                             circle.setColorFilter(Color.parseColor(hexColor));
                             number.setTextColor(Color.parseColor(hexColor));
                             number.setText(String.format("%d", foodStop.foodStopNumber));
-                            location.setText(foodStop.name);
-                            address.setText(foodStop.streetAddress);
-
                         }
 
                     }
@@ -86,7 +82,7 @@ public class LisitingConfirmationFragment extends Fragment {
         view.findViewById(R.id.doneButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_navigation_lisitingConfirmation_to_navigation_alllistings);
+                Navigation.findNavController(view).navigate(R.id.action_listingConfirmationRetrieval_to_navigation_alllistings);
             }
         });
 
@@ -99,5 +95,4 @@ public class LisitingConfirmationFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(LisitingConfirmationViewModel.class);
         // TODO: Use the ViewModel
     }
-
 }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.campusplate_android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:versionCode="1"
-    android:versionName="CPCupcake"
-    >
+    android:versionName="CPCupcake">
+
+<!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node = "remove"/>-->
+<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"-->
+<!--        tools:ignore="CoarseFineLocation" />-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"

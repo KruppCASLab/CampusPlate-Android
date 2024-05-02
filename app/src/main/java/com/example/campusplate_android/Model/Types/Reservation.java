@@ -9,6 +9,9 @@ public class Reservation {
     public  long timeCreated;
     public  long timeExpired;
     public  int reservationId;
+    public Listing listing;
+
+    public double lat, lng;
 
 
     public Reservation() {
@@ -16,7 +19,7 @@ public class Reservation {
         this.quantity = 0;
     }
 
-    public Reservation(int listingId, int quantity, int userId, int status, int code, long timeCreated, long timeExpired) {
+    public Reservation(int listingId, int quantity, int userId, int status, int code, long timeCreated, long timeExpired, Listing listing) {
         this.listingId = listingId;
         this.quantity = quantity;
         this.userId = userId;
@@ -24,9 +27,10 @@ public class Reservation {
         this.code = code;
         this.timeCreated = timeCreated;
         this.timeExpired = timeExpired;
+        this.listing = listing;
 
     }
-    public Reservation(int listingId, int quantity, int userId, int status, int code, long timeCreated, long timeExpired, int reservationId) {
+    public Reservation(int listingId, int quantity, int userId, int status, int code, long timeCreated, long timeExpired, int reservationId, Listing listing) {
         this.listingId = listingId;
         this.quantity = quantity;
         this.userId = userId;
@@ -35,12 +39,20 @@ public class Reservation {
         this.timeCreated = timeCreated;
         this.timeExpired = timeExpired;
         this.reservationId = reservationId;
+        this.listing = listing;
     }
 
 
     public Reservation(int listingId, int quantity) {
         this.listingId = listingId;
         this.quantity = quantity;
+    }
 
+    public Reservation(int listingId, int quantity, double lat, double lng) {
+        this.listingId = listingId;
+        this.quantity = quantity;
+        this.lat = lat;
+        this.lng = lng;
+        this.status = 3; // Retrieval status
     }
 }

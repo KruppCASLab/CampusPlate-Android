@@ -66,13 +66,7 @@ public class MyReservationRecyclerViewAdapter extends RecyclerView.Adapter<MyRes
         Listing listing = null;
         FoodStop foodStop = null;
 
-        for(Listing aListing: listings) {
-            if (aListing.listingId == holder.reservation.listingId) {
-                // We have the listing
-                listing = aListing;
-
-            }
-        }
+        listing = reservation.listing;
 
         for(FoodStop aFoodStop: foodStops){
             if(aFoodStop.foodStopId == listing.foodStopId){

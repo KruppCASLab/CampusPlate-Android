@@ -1,11 +1,16 @@
 package com.example.campusplate_android.Model;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.campusplate_android.Model.Types.FoodStop;
 import com.example.campusplate_android.Model.Types.Reservation;
+import com.example.campusplate_android.Model.Types.Listing;
+import com.example.campusplate_android.Model.ListingFactory;
 import com.example.campusplate_android.ServiceClient;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
@@ -65,8 +70,11 @@ public class ReservationModel {
                         Double timeExpired = (double) mapItem.get("timeExpired");
                         Double  reservationId = (double) mapItem.get("reservationId");
 
+                        ListingFactory factory = new ListingFactory();
+                        Listing listingImage = factory.toListing((LinkedTreeMap) mapItem.get("listing"));
 
-                        reservations.add(new Reservation(listingId.intValue(), quantity.intValue(), userId.intValue(), status.intValue(), code.intValue(), timeCreated.longValue(), timeExpired.longValue(), reservationId.intValue()));
+
+                        reservations.add(new Reservation(listingId.intValue(), quantity.intValue(), userId.intValue(), status.intValue(), code.intValue(), timeCreated.longValue(), timeExpired.longValue(), reservationId.intValue(), listingImage));
                     }
                     completionHandler.success(reservations);
                 }
@@ -87,10 +95,13 @@ public class ReservationModel {
 
                 try {
                     int status = response.getInt("status");
-                    if( status == 0) {
+                    if( status == 0 || status == 3) {
                         JSONObject jsonResponse = response.getJSONObject("data");
 
                         int code = jsonResponse.getInt("code");
+
+                        Log.i("Status", String.valueOf(status));
+                        Log.i("Data", String.valueOf(jsonResponse));
 
 
                         completionHandler.success(code, status);
