@@ -3,7 +3,6 @@ package com.example.campusplate_android.ui.inputemail;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,20 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.campusplate_android.Credential;
 import com.example.campusplate_android.CredentialManager;
 import com.example.campusplate_android.MainActivity;
@@ -35,11 +27,6 @@ import com.example.campusplate_android.R;
 import com.example.campusplate_android.ServiceClient;
 import com.example.campusplate_android.Session;
 import com.example.campusplate_android.SharedPreferencesManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Objects;
 
 public class InputEmailFragment extends Fragment {
     private Context mActivity;
@@ -76,13 +63,12 @@ public class InputEmailFragment extends Fragment {
                 sendCodeBtn.setEnabled(false);
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
                 final String email = inputEmail.getText().toString();
-
-               // credentialManager.removeUserCredentials();
+                ServiceClient client = ServiceClient.getInstance(mActivity.getApplicationContext());
+                client.setBaseURL(email.substring(1 + email.indexOf("@")));
+                // credentialManager.removeUserCredentials();
                 UserCredential credential = new UserCredential(1,"Android");
 
                 User user = new User(inputEmail.getText().toString());
-
-
 
                 UserModel.getSharedInstance().addUser(user, new UserModel.AddUpdateUserCompletionHandler() {
                     @Override

@@ -17,7 +17,24 @@ public class ServiceClient {
     private static ServiceClient serviceClient;
     private Context context;
     private RequestQueue requestQueue;
-    private String baseUrl = "https://mopsdev.bw.edu/cp/rest.php/";
+    private String bwUrl = "https://mopsdev.bw.edu/cp/rest.php/";
+    private String cwrUrl = "https://caslab.case.edu/cp/rest.php/";
+    private String baseUrl;
+
+    public void setBaseURL(String emailDomain){
+        String email = "https://";
+        switch(emailDomain){
+            case "case.edu":
+                email += "caslab.case.edu";
+                break;
+            case "bw.edu":
+            default:
+                email+= "mopsdev.bw.edu";
+                break;
+        }
+        baseUrl = email + "/cp/rest.php/";
+    }
+
 
     private ServiceClient(Context ctx) {
         this.context = ctx;
