@@ -21,18 +21,19 @@ public class ServiceClient {
     private String cwrUrl = "https://caslab.case.edu/cp/rest.php/";
     private String baseUrl;
 
-    public void setBaseURL(String emailDomain){
-        String email = "https://";
-        switch(emailDomain){
+    public void setBaseURL(String username){
+        String url = "https://";
+        String domain = username.substring(1 + username.indexOf("@"));
+        switch(domain){
             case "case.edu":
-                email += "caslab.case.edu";
+                url += "caslab.case.edu";
                 break;
             case "bw.edu":
             default:
-                email+= "mopsdev.bw.edu";
+                url+= "mopsdev.bw.edu";
                 break;
         }
-        baseUrl = email + "/cp/rest.php/";
+        baseUrl = url + "/cp/rest.php/";
     }
 
 

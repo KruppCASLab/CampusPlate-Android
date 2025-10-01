@@ -47,7 +47,8 @@ public class InputEmailFragment extends Fragment {
         if (credentialManager.credentialExists())
         {
             Session.getInstance().setCredential(new Credential(credentialManager.getUsername(), credentialManager.getUserPassword()));
-
+            String user = credentialManager.getUsername();
+            ServiceClient.getInstance().setBaseURL(user);
             Intent intent = new Intent(mActivity.getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }
@@ -64,7 +65,7 @@ public class InputEmailFragment extends Fragment {
                 final EditText inputEmail = requireActivity().findViewById(R.id.editText_inputEmail);
                 final String email = inputEmail.getText().toString();
                 ServiceClient client = ServiceClient.getInstance(mActivity.getApplicationContext());
-                client.setBaseURL(email.substring(1 + email.indexOf("@")));
+                client.setBaseURL(email);
                 // credentialManager.removeUserCredentials();
                 UserCredential credential = new UserCredential(1,"Android");
 

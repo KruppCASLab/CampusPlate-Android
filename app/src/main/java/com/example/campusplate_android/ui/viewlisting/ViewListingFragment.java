@@ -64,6 +64,7 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     private ColorStateList list;
 
     private String foodStopType = "unmanaged";
+    private boolean isReservable = false;
     private FoodStop foodStop;
 
     private double lastSensedLat, lastSensedLng;
@@ -135,6 +136,10 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                 button_pickup.setText("Retrieve");
             } else if (foodStopType.equals("managed")) {
                 button_pickup.setText("Reserve");
+            }
+
+            if (!isReservable) {
+                button_pickup.setVisibility(View.GONE);
             }
 
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
