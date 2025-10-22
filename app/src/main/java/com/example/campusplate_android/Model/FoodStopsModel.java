@@ -69,11 +69,23 @@ public class FoodStopsModel {
                         Map<String, Object> mapItem = (Map) data.get(i);
 //                       foodStopName = mapItem.get("name");
                         Double foodStopId = (double) mapItem.get("foodStopId");
+                        boolean reservable = !mapItem.get("reservable").toString().equals("0");
+                        boolean managed = !mapItem.get("managed").toString().equals("0");
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
                         Double foodStopNumber = (double) mapItem.get("foodStopNumber");
-                        managedFoodStops.add(new FoodStop(foodStopId.intValue(), (String) mapItem.get("type"), (String) mapItem.get("name"),
-                                (String) mapItem.get("description"), lat, lng, foodStopNumber.intValue(), (String) mapItem.get("hexColor"), (String) mapItem.get("streetAddress")));
+                        managedFoodStops.add(new FoodStop(
+                                                foodStopId.intValue(),
+                                                reservable,
+                                                managed,
+                                                (String) mapItem.get("name"),
+                                                (String) mapItem.get("description"),
+                                                lat,
+                                                lng,
+                                                foodStopNumber.intValue(),
+                                                (String) mapItem.get("hexColor"),
+                                                (String) mapItem.get("streetAddress")
+                        ));
                     }
                     completionHandler.success(managedFoodStops);
                 }
@@ -107,11 +119,23 @@ public class FoodStopsModel {
                         Map<String, Object> mapItem = (Map) data.get(i);
 //                        foodStopName = mapItem.get("name");
                         Double foodStopId = (double) mapItem.get("foodStopId");
+                        boolean reservable = !mapItem.get("reservable").toString().equals("0");
+                        boolean managed = !mapItem.get("managed").toString().equals("0");
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
                         Double foodStopNumber = (double) mapItem.get("foodStopNumber");
-                        addFoodStop(new FoodStop(foodStopId.intValue(), (String) mapItem.get("type"),(String) mapItem.get("name"),
-                                (String) mapItem.get("description"), lat, lng, foodStopNumber.intValue(), (String) mapItem.get("hexColor"), (String) mapItem.get("streetAddress")));
+
+                        addFoodStop(new FoodStop(
+                                        foodStopId.intValue(),
+                                        reservable,
+                                        managed,
+                                        (String) mapItem.get("name"),
+                                        (String) mapItem.get("description"),
+                                        lat,
+                                        lng,
+                                        foodStopNumber.intValue(),
+                                        (String) mapItem.get("hexColor"),
+                                        (String) mapItem.get("streetAddress")));
                     }
                     completionHandler.success(foodStops);
                 }

@@ -63,7 +63,7 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     public TextView button_pickup;
     private ColorStateList list;
 
-    private String foodStopType = "unmanaged";
+    private boolean isManaged = false;
     private boolean isReservable = false;
     private FoodStop foodStop;
 
@@ -130,12 +130,13 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
             listing = getListingsViewListings(listingId, listings);
             foodStop = getFoodStopViewListing(listing, foodStops);
 
-            this.foodStopType = foodStop.type;
+            this.isReservable = foodStop.reservable;
+            this.isManaged = foodStop.managed;
 
-            if (foodStopType.equals("unmanaged")) {
-                button_pickup.setText("Retrieve");
-            } else if (foodStopType.equals("managed")) {
+            if (isManaged) {
                 button_pickup.setText("Reserve");
+            } else {
+                button_pickup.setText("Retrieve");
             }
 
             if (!isReservable) {
@@ -208,16 +209,16 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                 final View root = view;
                 new AlertDialog.Builder(mActivity)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle((foodStopType.equals("unmanaged")) ? "Retrieve Item" : "Reserve Item")
+                        .setTitle(isManaged ? "Reserve Item" : "Retrieve Item")
                         .setCancelable(false)
-                        .setMessage((foodStopType.equals("unmanaged")) ? "Are you sure you want to retrieve this item?" : "Are you sure you want to reserve this item?")
+                        .setMessage(isManaged ? "Are you sure you want to reserve this item?" : "Are you sure you want to retrieve this item?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
 
                                 String value = String.valueOf(quantityNumber);
-                                if (foodStopType.equals("managed")) {
+                                if (isManaged) {
                                     reservation = new Reservation(listing.listingId, Integer.parseInt(value));
                                 }
                                 else {
@@ -305,7 +306,7 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
 
     @Override
     public void receiveLocation(double lat, double lng) {
-        if (foodStop.type.equals("unmanaged")) {
+        if (!isManaged) {
             this.lastSensedLat = lat;
             this.lastSensedLng = lng;
 
@@ -364,7 +365,7 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
                 }
             }
         };
-        if (foodStop.type.equals("unmanaged")) {
+        if (!isManaged) {
             timer.scheduleAtFixedRate(timerTask, 0, 1000);
         }
     }

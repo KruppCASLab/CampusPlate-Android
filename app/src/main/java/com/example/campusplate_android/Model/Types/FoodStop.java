@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 public class FoodStop  {
     public int foodStopId;
-    public String type;
+    public boolean reservable;
+
+    public boolean managed;
     public int foodStopNumber;
     public String name;
     public String description;
@@ -16,7 +18,8 @@ public class FoodStop  {
 
     public FoodStop() {
         this.foodStopId = -1;
-        this.type = null;
+        this.reservable = false;
+        this.managed = false;
         this.name = null;
         this.description = null;
         this.lat = 0;
@@ -26,9 +29,10 @@ public class FoodStop  {
         this.streetAddress = "";
     }
 
-    public FoodStop(int foodStopId, String type, String name, String description, double lat, double lng, int foodStopNumber, String hexColor, String streetAddress) {
+    public FoodStop(int foodStopId, boolean reservable, boolean managed, String name, String description, double lat, double lng, int foodStopNumber, String hexColor, String streetAddress) {
         this.foodStopId = foodStopId;
-        this.type = type;
+        this.reservable = reservable;
+        this.managed = managed;
         this.name = name;
         this.description = description;
         this.lat = lat;
