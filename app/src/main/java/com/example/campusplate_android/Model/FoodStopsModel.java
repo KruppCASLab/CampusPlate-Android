@@ -69,8 +69,8 @@ public class FoodStopsModel {
                         Map<String, Object> mapItem = (Map) data.get(i);
 //                       foodStopName = mapItem.get("name");
                         Double foodStopId = (double) mapItem.get("foodStopId");
-                        boolean reservable = !mapItem.get("reservable").toString().equals("0");
-                        boolean managed = !mapItem.get("managed").toString().equals("0");
+                        boolean reservable = !mapItem.get("reservable").toString().equals("0.0");
+                        boolean managed = !mapItem.get("managed").toString().equals("0.0");
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
                         Double foodStopNumber = (double) mapItem.get("foodStopNumber");
@@ -119,8 +119,8 @@ public class FoodStopsModel {
                         Map<String, Object> mapItem = (Map) data.get(i);
 //                        foodStopName = mapItem.get("name");
                         Double foodStopId = (double) mapItem.get("foodStopId");
-                        boolean reservable = !mapItem.get("reservable").toString().equals("0");
-                        boolean managed = !mapItem.get("managed").toString().equals("0");
+                        boolean reservable = !mapItem.get("reservable").toString().equals("0.0");
+                        boolean managed = !mapItem.get("managed").toString().equals("0.0");
                         Double lat = (double) mapItem.get("lat");
                         Double lng = (double) mapItem.get("lng");
                         Double foodStopNumber = (double) mapItem.get("foodStopNumber");

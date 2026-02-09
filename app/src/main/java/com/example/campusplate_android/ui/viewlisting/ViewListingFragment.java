@@ -61,6 +61,8 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
     public Timer timer;
     public TimerTask timerTask;
     public TextView button_pickup;
+    public Button increaseButton;
+    public Button decreaseButton;
     private ColorStateList list;
 
     private boolean isManaged = false;
@@ -89,6 +91,9 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
         timer = new Timer();
 
         button_pickup = view.findViewById(R.id.button_pickUpItem);
+        increaseButton = view.findViewById(R.id.increase);
+        decreaseButton = view.findViewById(R.id.decrease);
+
 
         list = button_pickup.getBackgroundTintList();
 
@@ -141,6 +146,9 @@ public class ViewListingFragment extends Fragment implements LocationManager.Loc
 
             if (!isReservable) {
                 button_pickup.setVisibility(View.GONE);
+                increaseButton.setVisibility(View.GONE);
+                decreaseButton.setVisibility(View.GONE);
+
             }
 
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

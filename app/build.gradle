@@ -18,7 +18,13 @@ android {
 
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "BW_URL", '"https://mopsdev.bw.edu/cp/rest.php/"'
+            buildConfigField "String", "CWRU_URL", '"https://caslab.case.edu/~briankrupp/rest.php/"'
+        }
         release {
+            buildConfigField "String", "BW_URL", '"https://mops.bw.edu/cp/rest.php/"'
+            buildConfigField "String", "CWRU_URL", '"https://caslab.case.edu/cp/rest.php/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

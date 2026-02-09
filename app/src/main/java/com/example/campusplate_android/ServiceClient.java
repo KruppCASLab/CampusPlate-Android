@@ -1,6 +1,8 @@
 package com.example.campusplate_android;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,23 +19,24 @@ public class ServiceClient {
     private static ServiceClient serviceClient;
     private Context context;
     private RequestQueue requestQueue;
-    private String bwUrl = "https://mopsdev.bw.edu/cp/rest.php/";
-    private String cwrUrl = "https://caslab.case.edu/cp/rest.php/";
+
     private String baseUrl;
 
     public void setBaseURL(String username){
-        String url = "https://";
         String domain = username.substring(1 + username.indexOf("@"));
         switch(domain){
             case "case.edu":
-                url += "caslab.case.edu";
+                baseUrl = BuildConfig.CWRU_URL;
                 break;
             case "bw.edu":
+                baseUrl = BuildConfig.BW_URL;
+                break;
             default:
-                url+= "mopsdev.bw.edu";
+                baseUrl = BuildConfig.CWRU_URL;
                 break;
         }
-        baseUrl = url + "/cp/rest.php/";
+
+        Log.d("URL Configured", baseUrl);
     }
 
 
