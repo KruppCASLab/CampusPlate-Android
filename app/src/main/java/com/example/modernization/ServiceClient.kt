@@ -4,6 +4,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.VolleyError
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import org.json.JSONException
@@ -213,5 +214,25 @@ class ServiceClient private constructor(ctx: Context) {
                 serviceClient ?: ServiceClient(ctx).also { serviceClient = it }
             }
         }
+    }
+}
+
+/**
+ * A custom Volley request that handles JSON objects and can be extended to include
+ * common headers or logging.
+ */
+class BaseRequest(
+    method: Int,
+    url: String,
+    jsonRequest: JSONObject?,
+    listener: Response.Listener<JSONObject>,
+    errorListener: Response.ErrorListener
+) : JsonObjectRequest(method, url, jsonRequest, listener, errorListener) {
+
+    override fun getHeaders(): MutableMap<String, String> {
+        val headers = HashMap<String, String>()
+        headers["Content-Type"] = "application/json"
+        // Add other common headers like Authorization here if needed
+        return headers
     }
 }
