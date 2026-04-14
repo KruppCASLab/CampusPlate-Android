@@ -315,10 +315,10 @@ public class AllListingsFragment extends Fragment implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.getUiSettings().setMyLocationButtonEnabled(false);
-
-            LatLng latLng = new LatLng(41.3711, -81.8478);
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5f));
-        }
+        
+        LatLng latLng = new LatLng(41.501204, -81.603364);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.5f));
+    }
 
 
     @Override
