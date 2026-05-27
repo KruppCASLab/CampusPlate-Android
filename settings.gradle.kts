@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "modernization"
+rootProject.name = "CampusPlate"
 include(":app")
- 
