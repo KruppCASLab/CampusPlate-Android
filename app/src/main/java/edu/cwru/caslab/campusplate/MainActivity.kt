@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,7 +56,7 @@ fun CampusPlateLogin(
         var value by remember { mutableStateOf("") }
 
         Text(
-            text = "Campus Plate Login",
+            text = stringResource(R.string.campus_plate_login),
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
@@ -65,7 +66,7 @@ fun CampusPlateLogin(
             singleLine = true,
             modifier = Modifier.fillMaxWidth(0.8f),
             onValueChange = { value = it },
-            label = { Text(text = "School Email") },
+            label = { Text(text = stringResource(R.string.school_email_field_label)) },
             keyboardOptions = KeyboardOptions.Default
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -74,7 +75,7 @@ fun CampusPlateLogin(
                 // TODO: Email confirmation logic
             }
         ) {
-            Text(text = "Send PIN")
+            Text(text = stringResource(R.string.send_pin_button_text))
         }
     }
 }
