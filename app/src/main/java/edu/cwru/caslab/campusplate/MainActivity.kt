@@ -17,10 +17,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,7 +29,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.compose.NavHost
+import edu.cwru.caslab.campusplate.ui.LoginViewModel
 import edu.cwru.caslab.campusplate.ui.theme.CampusPlateTheme
+
+enum class PinScreen {
+  Email,
+  Pin
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +46,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CampusPlateTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CampusPlateLogin(Modifier.padding(innerPadding))
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> 
+                  CampusPlateLogin(Modifier.padding(innerPadding))
+                  //CampusPlatePin()
                 }
             }
         }
@@ -46,14 +57,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CampusPlateLogin(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel = viewModel()
 ) {
+    val loginUiState by loginViewModel.uiState.collectAsState()
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        var value by remember { mutableStateOf("") }
 
         Text(
             text = stringResource(R.string.campus_plate_login),
@@ -62,22 +74,44 @@ fun CampusPlateLogin(
         )
         Spacer(modifier = Modifier.height(64.dp))
         TextField(
-            value = value,
+            value = loginViewModel.loginFieldValue,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(0.8f),
-            onValueChange = { value = it },
+            onValueChange = { loginViewModel.updateLoginField(it) },
             label = { Text(text = stringResource(R.string.school_email_field_label)) },
             keyboardOptions = KeyboardOptions.Default
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                // TODO: Email confirmation logic
+                loginViewModel.createUser()
             }
         ) {
             Text(text = stringResource(R.string.send_pin_button_text))
         }
     }
+}
+
+@Composable
+fun CampusPlatePin(
+    //pinUiState: PinUiState,
+    modifier: Modifier = Modifier
+) {
+  var otpValue by remember {
+    mutableStateOf("")
+  }
+  Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+  ) {
+    OtpTextField(
+      otpText = otpValue,
+      onOtpTextChange = { value, otpInputFilled ->
+        otpValue = value
+      }
+    ) 
+  }
 }
 
 @Preview(showBackground = true)
