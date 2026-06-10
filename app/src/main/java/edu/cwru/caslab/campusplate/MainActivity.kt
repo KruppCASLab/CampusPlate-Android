@@ -33,6 +33,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.compose.NavHost
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
+import edu.cwru.caslab.campusplate.ui.PinUiState
+import edu.cwru.caslab.campusplate.ui.PinViewModel
 import edu.cwru.caslab.campusplate.ui.theme.CampusPlateTheme
 
 enum class PinScreen {
@@ -47,8 +49,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             CampusPlateTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> 
-                  CampusPlateLogin(Modifier.padding(innerPadding))
-                  //CampusPlatePin()
+                  //CampusPlateLogin(Modifier.padding(innerPadding))
+                  CampusPlatePin(email = "kxm897@case.edu")
                 }
             }
         }
@@ -93,22 +95,24 @@ fun CampusPlateLogin(
 }
 
 @Composable
-fun CampusPlatePin(
-    //pinUiState: PinUiState,
-    modifier: Modifier = Modifier
+fun CampusPlatePin( 
+    modifier: Modifier = Modifier,
+    pinViewModel: PinViewModel = viewModel(),
+    email: String
 ) {
-  var otpValue by remember {
-    mutableStateOf("")
-  }
+  val pinUiState by pinViewModel.uiState.collectAsState()
+  var otpText by remember { mutableStateOf("") }
   Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-  ) {
+  ) { 
     OtpTextField(
-      otpText = otpValue,
+      otpText = pinViewModel.pinFieldValue,
       onOtpTextChange = { value, otpInputFilled ->
-        otpValue = value
+        pinViewModel.updatePinField(value = value, filled = otpInputFilled, email = email)
+        //otpText = value
+        //if (otpInputFilled) (pinViewModel.validatePin(url = "users/${email}"))
       }
     ) 
   }

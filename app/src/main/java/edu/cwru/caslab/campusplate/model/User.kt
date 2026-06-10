@@ -1,4 +1,4 @@
-package edu.cwru.caslab.campusplate.network
+package edu.cwru.caslab.campusplate.model
 
 data class User(
   val userName: String,

@@ -9,8 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
-import edu.cwru.caslab.campusplate.network.Credential
-import edu.cwru.caslab.campusplate.network.User
+import edu.cwru.caslab.campusplate.model.Credential
+import edu.cwru.caslab.campusplate.model.User
 import kotlinx.coroutines.launch
 import okio.IOException
 
