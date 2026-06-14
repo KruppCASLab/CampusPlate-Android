@@ -10,7 +10,6 @@ data class PinResponse (
   val error: String
 )
 
-
 data class Guid (
   val GUID: String
 )

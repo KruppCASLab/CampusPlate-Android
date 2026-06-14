@@ -3,6 +3,7 @@ package edu.cwru.caslab.campusplate.network
 import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.PinResponse
 import edu.cwru.caslab.campusplate.model.User
+import edu.cwru.caslab.campusplate.model.UserResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.PATCH
@@ -29,8 +30,8 @@ object CampusPlateApi {
 interface CampusPlateApiService {
 
   @POST("users")
-  suspend fun createUser(@Body user: User): Response<User>
+  suspend fun createUser(@Body user: User): Response<UserResponse>
 
-  @PATCH("users/{email}")
-  suspend fun validatePin(@Path("email") email: String, @Body pin: Pin): Response<PinResponse>
+  @PATCH("users/{id}")
+  suspend fun validatePin(@Path("id") id: String?, @Body pin: Pin): Response<PinResponse>
 }

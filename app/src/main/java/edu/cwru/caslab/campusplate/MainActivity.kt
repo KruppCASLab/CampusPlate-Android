@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import edu.cwru.caslab.campusplate.ui.ActiveScreen
+import edu.cwru.caslab.campusplate.ui.LoginUiState
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
 import edu.cwru.caslab.campusplate.ui.PinUiState
 import edu.cwru.caslab.campusplate.ui.PinViewModel
@@ -50,7 +56,7 @@ class MainActivity : ComponentActivity() {
             CampusPlateTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -> 
                   //CampusPlateLogin(Modifier.padding(innerPadding))
-                  CampusPlatePin(email = "kxm897@case.edu")
+                  CampusPlateLoginScreen()
                 }
             }
         }
@@ -58,11 +64,36 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun CampusPlateLoginScreen(
+  modifier: Modifier = Modifier,
+  loginViewModel: LoginViewModel = viewModel(),
+  navController: NavHostController = rememberNavController()
+) {
+  val uiState by loginViewModel.uiState.collectAsState()
+  NavHost(
+    navController = navController,
+    startDestination = ActiveScreen.Login.name,
+    modifier = Modifier
+  ) {
+    composable(route = ActiveScreen.Login.name) { 
+      CampusPlateLogin(modifier = modifier, loginViewModel = loginViewModel, uiState = uiState, navController = navController)
+    }
+    composable(route = ActiveScreen.Pin.name) { 
+      CampusPlatePin(modifier = modifier, loginViewModel = loginViewModel, uiState = uiState, navController = navController)
+    }
+    composable(route = ActiveScreen.Listing.name) { 
+      Listing(modifier = modifier, loginViewModel = loginViewModel, uiState = uiState, navController = navController, credential = uiState.credential)
+    }
+  }
+}
+
+@Composable
 fun CampusPlateLogin(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel()
+    loginViewModel: LoginViewModel = viewModel(),
+    uiState: LoginUiState,
+    navController: NavHostController
 ) {
-    val loginUiState by loginViewModel.uiState.collectAsState()
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +107,7 @@ fun CampusPlateLogin(
         )
         Spacer(modifier = Modifier.height(64.dp))
         TextField(
-            value = loginViewModel.loginFieldValue,
+            value = uiState.loginFieldValue,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(0.8f),
             onValueChange = { loginViewModel.updateLoginField(it) },
@@ -86,7 +117,8 @@ fun CampusPlateLogin(
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                loginViewModel.createUser()
+                loginViewModel.createUser(navController)
+                navController.navigate(ActiveScreen.Pin.name)
             }
         ) {
             Text(text = stringResource(R.string.send_pin_button_text))
@@ -97,24 +129,40 @@ fun CampusPlateLogin(
 @Composable
 fun CampusPlatePin( 
     modifier: Modifier = Modifier,
-    pinViewModel: PinViewModel = viewModel(),
-    email: String
+    loginViewModel: LoginViewModel = viewModel(),
+    uiState: LoginUiState,
+    navController: NavHostController
 ) {
-  val pinUiState by pinViewModel.uiState.collectAsState()
-  var otpText by remember { mutableStateOf("") }
   Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
   ) { 
     OtpTextField(
-      otpText = pinViewModel.pinFieldValue,
+      otpText = uiState.pinFieldValue,
       onOtpTextChange = { value, otpInputFilled ->
-        pinViewModel.updatePinField(value = value, filled = otpInputFilled, email = email)
-        //otpText = value
-        //if (otpInputFilled) (pinViewModel.validatePin(url = "users/${email}"))
+        loginViewModel.updatePinField(value = value, filled = otpInputFilled, navController = navController)
       }
     ) 
+  }
+}
+
+@Composable
+fun Listing(
+  modifier : Modifier = Modifier,
+  loginViewModel: LoginViewModel = viewModel(),
+  uiState: LoginUiState,
+  navController: NavHostController,
+  credential: String
+) { 
+  Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+  ) {
+    Text(
+      text = "Listings Go Here \n $credential" //TODO
+    )
   }
 }
 
@@ -122,6 +170,6 @@ fun CampusPlatePin(
 @Composable
 fun CampusPlatePreview() {
     CampusPlateTheme {
-        CampusPlateLogin()
+        //CampusPlateLogin()
     }
 }

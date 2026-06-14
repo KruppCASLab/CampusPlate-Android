@@ -3,4 +3,7 @@
     <string name="campus_plate_login">Campus Plate Login</string>
     <string name="school_email_field_label">School Email</string>
     <string name="send_pin_button_text">Send PIN</string>
+    <string name="login_screen">Login Screen</string>
+    <string name="pin_screen">Pin Screen</string>
+    <string name="listing_screen">Listing Screen</string>
 </resources>

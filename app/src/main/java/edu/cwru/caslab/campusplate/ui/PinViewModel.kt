@@ -40,7 +40,7 @@ class PinViewModel : ViewModel() {
     viewModelScope.launch { 
       try {
         val pin = Pin(pin = pinFieldValue)
-        val listResult = CampusPlateApi.retrofitService.validatePin(email = email, pin = pin)
+        //val listResult = CampusPlateApi.retrofitService.validatePin(email = email, pin = pin)
       } catch (e: IOException) {
       }
     }

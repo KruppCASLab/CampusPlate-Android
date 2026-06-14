@@ -1,5 +1,6 @@
 package edu.cwru.caslab.campusplate.ui
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -8,40 +9,104 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import edu.cwru.caslab.campusplate.R
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
 import edu.cwru.caslab.campusplate.model.Credential
+import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.User
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okio.IOException
 
+enum class State { Idle, Error, Loading, Success }
+enum class ActiveScreen(@StringRes val title: Int) {
+  Login(title = R.string.login_screen), 
+  Pin(title = R.string.pin_screen),
+  Listing(title = R.string.listing_screen)
+}
+
+
 data class LoginUiState (
-  val loginFieldValue: String = ""
+  val state: State = State.Idle,
+  val activeScreen: ActiveScreen = ActiveScreen.Login,
+  val loginFieldValue: String = "",
+  val pinFieldValue: String = "",
+  val activeEmail: String = "",
+  val credential: String = ""
 )
 
 class LoginViewModel : ViewModel() {
 
-  private var _uiState = MutableStateFlow(LoginUiState())
+  private var _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
   val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
-  var loginFieldValue by mutableStateOf("")
 
   init {
-    clearField()
+    resetScreen()
   }
 
-  fun clearField() {
-    _uiState.value = LoginUiState(loginFieldValue = "")
+  fun resetScreen() {
+    _uiState.value = LoginUiState()
   }
 
   fun updateLoginField(value: String) {
-    loginFieldValue = value
+    if (_uiState.value.activeScreen == ActiveScreen.Login) {
+      _uiState.update { currentState -> currentState.copy( loginFieldValue = value ) }
+    }
   }
 
-  fun createUser() {
+  fun createUser(navController: NavController) {
     viewModelScope.launch { 
       try {
-        val user = User(userName = loginFieldValue, credential = Credential(label = "postman"))
+        _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
+        val user = User(userName = uiState.value.loginFieldValue, credential = Credential(label = "postman"))
         val listResult = CampusPlateApi.retrofitService.createUser(user)
+        if (listResult.isSuccessful) {
+          if (listResult.body()?.status == 0 || listResult.body()?.status == 2) {
+            _uiState.update { currentState -> currentState.copy(
+              activeScreen = ActiveScreen.Pin,
+              activeEmail = uiState.value.loginFieldValue,
+              state = State.Idle
+            ) }
+            navController.navigate(ActiveScreen.Pin.name)
+          } else error()
+        } else error()
       } catch (e: IOException) {
+        error()
+      }
+    }
+  }
+
+  fun updatePinField(value: String, filled: Boolean, navController: NavController) {
+    if (_uiState.value.activeScreen == ActiveScreen.Pin) {
+      _uiState.update { currentState -> currentState.copy( pinFieldValue = value ) }
+    }
+    if (filled) (validatePin(navController))
+  }
+
+  private fun error() {
+    _uiState.update { currentState -> currentState.copy( state = State.Error ) }
+  }
+
+  fun validatePin(navController: NavController) {
+    viewModelScope.launch { 
+      try {
+        val pin = Pin(pin = _uiState.value.pinFieldValue)
+        val listResult = CampusPlateApi.retrofitService.validatePin(id = uiState.value.activeEmail, pin = pin)
+        if (listResult.isSuccessful) {
+          println("\nSuccessful request \n")
+          println("-- ${listResult.body()?.status} --" )
+          if (listResult.body()?.status == 0) {
+            println("\nSuccessful status \n")
+            _uiState.update { currentState -> currentState.copy(
+              credential = listResult.body()?.data?.GUID ?: "",
+              state = if ( listResult.body()?.data?.GUID != null )  State.Success else State.Error
+            ) }
+            if (uiState.value.credential!="") { navController.navigate(ActiveScreen.Listing.name) }
+          } else error()
+        } else error()
+      } catch (e: IOException) {
+        error()
       }
     }
   }
