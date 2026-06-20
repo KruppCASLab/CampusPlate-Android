@@ -15,6 +15,7 @@ import edu.cwru.caslab.campusplate.network.CampusPlateApi
 import edu.cwru.caslab.campusplate.model.Credential
 import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.User
+import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okio.IOException
@@ -36,13 +37,20 @@ data class LoginUiState (
   val credential: String = ""
 )
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+  private val repository: StoredCredentialRepository
+) : ViewModel() {
 
   private var _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
   val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
   init {
     resetScreen()
+    viewModelScope.launch {
+      repository.credential.collect { stored ->
+        _uiState.update { it.copy(credential = stored ?: "") }
+      }
+    }
   }
 
   fun resetScreen() {
@@ -95,11 +103,21 @@ class LoginViewModel : ViewModel() {
         val listResult = CampusPlateApi.retrofitService.validatePin(id = uiState.value.activeEmail, pin = pin)
         if (listResult.isSuccessful) {
           if (listResult.body()?.status == 0) {
-            _uiState.update { currentState -> currentState.copy(
-              credential = listResult.body()?.data?.GUID ?: "",
-              state = if ( listResult.body()?.data?.GUID != null )  State.Success else State.Error
-            ) }
-            if (uiState.value.credential!="") { navController.navigate(ActiveScreen.Listing.name) }
+            val guid = listResult.body()?.data?.GUID
+
+            if (guid != null) {
+              repository.saveCredential(guid)       // GUID is persisted here
+              _uiState.update { it.copy(credential = guid, state = State.Success) }
+              navController.navigate(ActiveScreen.Listing.name)
+            } else {
+              error()
+            }
+            println("\nSuccessful status \n")
+//            _uiState.update { currentState -> currentState.copy(
+//              credential = listResult.body()?.data?.GUID ?: "",
+//              state = if ( listResult.body()?.data?.GUID != null )  State.Success else State.Error
+//            ) }
+//            if (uiState.value.credential!="") { navController.navigate(ActiveScreen.Listing.name) }
           } else error()
         } else error()
       } catch (e: IOException) {
