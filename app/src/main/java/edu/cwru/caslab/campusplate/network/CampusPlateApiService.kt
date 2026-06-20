@@ -1,5 +1,6 @@
 package edu.cwru.caslab.campusplate.network
 
+import edu.cwru.caslab.campusplate.model.ListingResponse
 import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.PinResponse
 import edu.cwru.caslab.campusplate.model.User
@@ -11,6 +12,8 @@ import retrofit2.http.POST
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Url
 
@@ -34,4 +37,7 @@ interface CampusPlateApiService {
 
   @PATCH("users/{id}")
   suspend fun validatePin(@Path("id") id: String?, @Body pin: Pin): Response<PinResponse>
+
+  @GET("listings")
+  suspend fun getListings(@Header("Authorization") authorization: String): Response<ListingResponse> 
 }

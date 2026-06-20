@@ -94,10 +94,7 @@ class LoginViewModel : ViewModel() {
         val pin = Pin(pin = _uiState.value.pinFieldValue)
         val listResult = CampusPlateApi.retrofitService.validatePin(id = uiState.value.activeEmail, pin = pin)
         if (listResult.isSuccessful) {
-          println("\nSuccessful request \n")
-          println("-- ${listResult.body()?.status} --" )
           if (listResult.body()?.status == 0) {
-            println("\nSuccessful status \n")
             _uiState.update { currentState -> currentState.copy(
               credential = listResult.body()?.data?.GUID ?: "",
               state = if ( listResult.body()?.data?.GUID != null )  State.Success else State.Error
