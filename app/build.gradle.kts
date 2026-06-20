@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.com.squareup.retrofit2)
     implementation(libs.com.squareup.retrofit2.converter.scalars)
     implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation(libs.androidx.datastore.preferences)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
