@@ -29,6 +29,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -110,6 +111,14 @@ fun CampusPlateLoginScreen(
   navController: NavHostController = rememberNavController()
 ) {
   val uiState by loginViewModel.uiState.collectAsState()
+  LaunchedEffect(uiState.activeScreen) {
+    if (uiState.activeScreen == ActiveScreen.Listing &&
+        navController.currentDestination?.route != ActiveScreen.Listing.name) {
+      navController.navigate(ActiveScreen.Listing.name) {
+        popUpTo(ActiveScreen.Login.name) { inclusive = true }
+      }
+    }
+  }
   NavHost(
     navController = navController,
     startDestination = ActiveScreen.Login.name,
