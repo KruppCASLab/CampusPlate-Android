@@ -47,8 +47,17 @@ class LoginViewModel(
   init {
     resetScreen()
     viewModelScope.launch {
-      repository.credential.collect { stored ->
-        _uiState.update { it.copy(credential = stored ?: "") }
+      repository.storedCredential.collect { stored ->
+        if (!stored.email.isNullOrBlank() && !stored.credential.isNullOrBlank()) {
+          _uiState.update { it.copy(
+            activeEmail = stored.email,
+            credential = stored.credential,
+            activeScreen = ActiveScreen.Listing,
+            state = State.Success
+          ) }
+        } else {
+          _uiState.update { it.copy(credential = "") }
+        }
       }
     }
   }
@@ -113,17 +122,12 @@ class LoginViewModel(
             val guid = listResult.body()?.data?.GUID
 
             if (guid != null) {
-              repository.saveCredential(guid)       // GUID is persisted here
+              repository.saveCredential(uiState.value.activeEmail, guid)       // email + GUID are persisted here
               _uiState.update { it.copy(credential = guid, state = State.Success) }
               navController.navigate(ActiveScreen.Listing.name)
             } else {
               error()
             }
-//            _uiState.update { currentState -> currentState.copy(
-//              credential = listResult.body()?.data?.GUID ?: "",
-//              state = if ( listResult.body()?.data?.GUID != null )  State.Success else State.Error
-//            ) }
-//            if (uiState.value.credential!="") { navController.navigate(ActiveScreen.Listing.name) }
           } else error()
         } else error()
       } catch (e: IOException) {
