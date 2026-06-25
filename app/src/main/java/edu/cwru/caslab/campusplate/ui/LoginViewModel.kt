@@ -63,7 +63,7 @@ class LoginViewModel(
     }
   }
 
-  fun createUser(navController: NavController) {
+  fun createUser(navController: NavController) { //TODO: Add email validation
     viewModelScope.launch { 
       try {
         _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
@@ -83,6 +83,13 @@ class LoginViewModel(
         error()
       }
     }
+  }
+
+  fun getCensoredEmail(): String {
+    val emailParts = uiState.value.activeEmail.split("@")
+    val email = emailParts.first()
+    val domain = emailParts.last()
+    return "${ email.substring(0..1) }**@${ domain }"
   }
 
   fun updatePinField(value: String, filled: Boolean, navController: NavController) {
@@ -112,7 +119,6 @@ class LoginViewModel(
             } else {
               error()
             }
-            println("\nSuccessful status \n")
 //            _uiState.update { currentState -> currentState.copy(
 //              credential = listResult.body()?.data?.GUID ?: "",
 //              state = if ( listResult.body()?.data?.GUID != null )  State.Success else State.Error

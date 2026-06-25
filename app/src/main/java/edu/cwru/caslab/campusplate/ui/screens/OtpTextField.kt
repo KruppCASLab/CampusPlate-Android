@@ -1,4 +1,4 @@
-package edu.cwru.caslab.campusplate
+package edu.cwru.caslab.campusplate.ui.screens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -61,25 +61,25 @@ private fun CharView(
 ) {
     val isFocused = text.length == index
     val char = when {
-        index == text.length -> "0"
-        index > text.length -> ""
+        index >= text.length -> "_"
         else -> text[index].toString()
     }
     Text(
         modifier = Modifier
-            .width(40.dp)
+            .width(MaterialTheme.typography.displayMedium.fontSize.value.dp)
             .border(
                 1.dp, when {
-                    isFocused -> Color.DarkGray
-                    else -> Color.LightGray
+                    isFocused -> MaterialTheme.colorScheme.primary
+                    else -> MaterialTheme.colorScheme.outline
                 }, RoundedCornerShape(8.dp)
             )
             .wrapContentHeight(Alignment.CenterVertically),
         text = char,
+        style = MaterialTheme.typography.displayMedium,
         color = if (isFocused) {
-            Color.LightGray
+            MaterialTheme.colorScheme.primary
         } else {
-            Color.DarkGray
+            MaterialTheme.colorScheme.outline
         },
         textAlign = TextAlign.Center
     )

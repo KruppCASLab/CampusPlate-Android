@@ -9,8 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import edu.cwru.caslab.campusplate.model.Listing
-
 import android.graphics.BitmapFactory
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -36,9 +36,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.compose.rememberLifecycleOwner
+import androidx.lifecycle.whenResumed
 import androidx.navigation.NavHostController
+import edu.cwru.caslab.campusplate.R
+import edu.cwru.caslab.campusplate.model.FoodStop
 import kotlinx.coroutines.launch
+import org.maplibre.compose.camera.CameraPosition
+import org.maplibre.compose.camera.rememberCameraState
+import org.maplibre.compose.expressions.dsl.const
+import org.maplibre.compose.expressions.dsl.image
+import org.maplibre.compose.expressions.value.SymbolAnchor
+import org.maplibre.compose.layers.CircleLayer
+import org.maplibre.compose.layers.SymbolLayer
+import org.maplibre.compose.map.MaplibreMap
+import org.maplibre.compose.sources.GeoJsonData
+import org.maplibre.compose.sources.getBaseSource
+import org.maplibre.compose.sources.rememberGeoJsonSource
+import org.maplibre.compose.style.BaseStyle
+import org.maplibre.spatialk.geojson.Feature
+import org.maplibre.spatialk.geojson.FeatureCollection
+import org.maplibre.spatialk.geojson.MultiPoint
+import org.maplibre.spatialk.geojson.Point
+import org.maplibre.spatialk.geojson.Position
 
 fun ByteArray.toImageBitmap() = BitmapFactory.decodeByteArray(this, 0, size).asImageBitmap() // Helper
 
@@ -63,8 +90,14 @@ fun ListingCard(
         Column (
           modifier = Modifier.weight(0.7f)
         ){ 
-          Text( text = content.title )
-          Text( text = "${content.quantityRemaining} Remaining" )
+          Text( 
+            text = content.title,
+            style = MaterialTheme.typography.titleLarge
+          )
+          Text(
+            text = "${content.quantityRemaining} Remaining",
+            style = MaterialTheme.typography.bodyLarge
+          )
         }
 
       }
@@ -80,7 +113,6 @@ fun ListingScreen(
   credential: String,
   listingViewModel: ListingViewModel = viewModel()
 ) {
-   
     val uiState by listingViewModel.uiState.collectAsState()
     val configuration = LocalConfiguration.current
     val scope = rememberCoroutineScope() 
@@ -89,9 +121,14 @@ fun ListingScreen(
             skipHiddenState = true
         )
     )
+    val camera =
+      rememberCameraState(
+        firstPosition = CameraPosition(target = Position(latitude = 41.502, longitude = -81.606), zoom = 15.5)
+      )
 
     listingViewModel.setEmailCred(email = email, credential = credential)
     listingViewModel.getListings()
+    listingViewModel.getFoodStops()
 
     Column(
       modifier = Modifier
@@ -114,16 +151,33 @@ fun ListingScreen(
                 }
               }
           }
-      ) { innerPadding ->
-        Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-      ) {
-        Text(
-          text = "Map Goes Here" //TODO
-        )      
+      ) { innerPadding -> 
+        val variant = if (isSystemInDarkTheme()) "dark" else "liberty"
+
+        MaplibreMap(
+          baseStyle = BaseStyle.Uri("https://tiles.openfreemap.org/styles/${variant}"),
+          cameraState = camera,
+
+        ) {  
+          val markerIcon = painterResource(R.drawable.map_marker) 
+
+          val source = rememberGeoJsonSource(
+            data = GeoJsonData.Features( MultiPoint ( 
+              uiState.foodStops?.map { Position( 
+                latitude = it.lat,
+                longitude = it.lng
+              ) } ?: emptyList<Position>()
+            ) )
+          ) 
+
+          SymbolLayer(
+            id = "marker-layer",
+            source = source,
+            iconImage = image(markerIcon),
+            iconAnchor = const(SymbolAnchor.Bottom),
+            iconAllowOverlap = const(true),
+          )     
+        }
       }         
-      }
-  }
+    }
 }

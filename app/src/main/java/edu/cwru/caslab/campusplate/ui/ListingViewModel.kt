@@ -2,6 +2,7 @@ package edu.cwru.caslab.campusplate.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
 import kotlinx.coroutines.cancel
@@ -18,7 +19,8 @@ data class ListingUiState (
   val email: String = "",
   val credential: String = "",
   val state: State = State.Idle,
-  val listings: List<Listing>? = null
+  val listings: List<Listing>? = null,
+  val foodStops: List<FoodStop>? = null
 )
 
 class ListingViewModel: ViewModel() {
@@ -51,6 +53,27 @@ class ListingViewModel: ViewModel() {
           if (listResult.body()?.data != null) {
             _uiState.update { currentState -> currentState.copy(
               listings = listResult.body()?.data,
+              state = State.Success
+            ) }
+          } else error()
+        } else error()
+
+      } catch (e: IOException) {
+        error()
+      }
+    } 
+  }
+
+  fun getFoodStops() {
+    viewModelScope.launch { 
+      try {
+        _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
+        val listResult = CampusPlateApi.retrofitService.getFoodStops(authorization =  getAuthorizaton())
+
+        if (listResult.isSuccessful) {
+          if (listResult.body()?.data != null) {
+            _uiState.update { currentState -> currentState.copy(
+              foodStops = listResult.body()?.data,
               state = State.Success
             ) }
           } else error()

@@ -1,5 +1,6 @@
 package edu.cwru.caslab.campusplate.network
 
+import edu.cwru.caslab.campusplate.model.FoodStopResponse
 import edu.cwru.caslab.campusplate.model.ListingResponse
 import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.PinResponse
@@ -40,4 +41,7 @@ interface CampusPlateApiService {
 
   @GET("listings")
   suspend fun getListings(@Header("Authorization") authorization: String): Response<ListingResponse> 
+
+  @GET("foodstops")
+  suspend fun getFoodStops(@Header("Authorization") authorization: String): Response<FoodStopResponse>
 }
