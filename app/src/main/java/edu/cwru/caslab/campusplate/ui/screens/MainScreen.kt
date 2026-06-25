@@ -3,6 +3,7 @@ package edu.cwru.caslab.campusplate.ui.screens
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +34,15 @@ fun MainScreen(
     navController: NavHostController = rememberNavController()
 ) {
   val uiState by loginViewModel.uiState.collectAsState()
+    LaunchedEffect(uiState.activeScreen) {
+      if (uiState.activeScreen == ActiveScreen.Listing &&
+        navController.currentDestination?.route != ActiveScreen.Listing.name)
+      {
+        navController.navigate(ActiveScreen.Listing.name) {
+        popUpTo(ActiveScreen.Login.name) { inclusive = true }
+      }
+    }
+  }
   NavHost(
     navController = navController,
     startDestination = ActiveScreen.Login.name,
