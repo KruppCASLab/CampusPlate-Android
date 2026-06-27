@@ -56,6 +56,6 @@ fun MainScreen(
     }
     composable(route = ActiveScreen.Listing.name) { 
       ListingScreen(modifier = modifier, navController = navController, email = uiState.activeEmail, credential = uiState.credential)
-    }
+    } 
   }
 }

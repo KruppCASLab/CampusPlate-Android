@@ -2,6 +2,7 @@ package edu.cwru.caslab.campusplate.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
@@ -20,7 +21,10 @@ data class ListingUiState (
   val credential: String = "",
   val state: State = State.Idle,
   val listings: List<Listing>? = null,
-  val foodStops: List<FoodStop>? = null
+  val foodStops: List<FoodStop>? = null,
+  val selectedListing: Listing? = null,
+  val foodStopIDMap: Map<Int, FoodStop>? = null,
+  val menuExpanded: Boolean = false
 )
 
 class ListingViewModel: ViewModel() {
@@ -64,7 +68,7 @@ class ListingViewModel: ViewModel() {
     } 
   }
 
-  fun getFoodStops() {
+  fun getFoodStops() { // TODO: Can Be Simplified
     viewModelScope.launch { 
       try {
         _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
@@ -74,6 +78,7 @@ class ListingViewModel: ViewModel() {
           if (listResult.body()?.data != null) {
             _uiState.update { currentState -> currentState.copy(
               foodStops = listResult.body()?.data,
+              foodStopIDMap = listResult.body()?.data?.associateBy({ it.foodStopId }, { it } ),
               state = State.Success
             ) }
           } else error()
@@ -83,6 +88,23 @@ class ListingViewModel: ViewModel() {
         error()
       }
     } 
+  }
+
+  fun selectListing(listing: Listing) {
+    if (uiState.value.listings?.contains(listing) ?: false) {
+      _uiState.update { it.copy( selectedListing = listing ) }
+    }
+  }
+
+  fun deselectListing() {
+    _uiState.update { it.copy( selectedListing = null ) }
+  }
+
+  fun menuButtonInteract(toggle: Boolean = true) {
+    _uiState.update { it.copy( 
+      menuExpanded = if (toggle) !uiState.value.menuExpanded
+        else false
+    ) }
   }
 
   //fun getImage() {

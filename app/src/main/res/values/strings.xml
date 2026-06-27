@@ -6,4 +6,5 @@
     <string name="login_screen">Login Screen</string>
     <string name="pin_screen">Pin Screen</string>
     <string name="listing_screen">Listing Screen</string>
+    <string name="listing_detail_screen">Listing Detail Screen</string>
 </resources>

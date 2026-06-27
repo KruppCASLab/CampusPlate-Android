@@ -12,11 +12,13 @@ import edu.cwru.caslab.campusplate.model.Listing
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,8 +38,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -48,6 +56,8 @@ import androidx.lifecycle.whenResumed
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.R
 import edu.cwru.caslab.campusplate.model.FoodStop
+import edu.cwru.caslab.campusplate.ui.ActiveScreen
+import edu.cwru.caslab.campusplate.ui.icons.menu
 import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
@@ -78,15 +88,16 @@ fun String.decodeBase64ToByteArray(): ByteArray { // Helper
 fun ListingCard(
     modifier: Modifier = Modifier,
     content: Listing,
+    onClick: () -> Unit
 ) {
     Card(
       modifier = modifier.fillMaxWidth()
-        .padding(bottom = 8.dp)
+        .padding(bottom = 8.dp),
+      onClick = onClick
     ) { 
       Row (
         modifier = modifier
       ) {
-
         Column (
           modifier = Modifier.weight(0.7f)
         ){ 
@@ -105,79 +116,139 @@ fun ListingCard(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun ListingScreen(
-  modifier : Modifier = Modifier,
+  modifier: Modifier = Modifier,
   navController: NavHostController,
   email: String,
   credential: String,
   listingViewModel: ListingViewModel = viewModel()
 ) {
-    val uiState by listingViewModel.uiState.collectAsState()
-    val configuration = LocalConfiguration.current
-    val scope = rememberCoroutineScope() 
-    val scaffoldState = rememberBottomSheetScaffoldState( 
-        bottomSheetState = rememberStandardBottomSheetState(
-            skipHiddenState = true
-        )
-    )
-    val camera =
-      rememberCameraState(
-        firstPosition = CameraPosition(target = Position(latitude = 41.502, longitude = -81.606), zoom = 15.5)
-      )
+    val uiState by listingViewModel.uiState.collectAsState()   
 
     listingViewModel.setEmailCred(email = email, credential = credential)
     listingViewModel.getListings()
     listingViewModel.getFoodStops()
 
-    Column(
-      modifier = Modifier
-    ) {
-      Spacer(
-        modifier = Modifier.padding(top = 48.dp)
-      )
+    if (uiState.selectedListing == null) {
+      Box(
+        modifier = modifier.systemBarsPadding()
+      ) {
+        ListingMap(
+          modifier = modifier,
+          navController = navController,
+          listingViewModel = listingViewModel,
+          uiState = uiState
+        )
 
-      BottomSheetScaffold(
-          scaffoldState = scaffoldState,
-          sheetPeekHeight = configuration.screenHeightDp.dp / 3,
-          sheetContent = {
-              LazyColumn (
-                  Modifier.fillMaxSize()
-                    .padding(start = 8.dp, end = 8.dp),
-                  horizontalAlignment = Alignment.CenterHorizontally,
-              ) {
-                items(uiState.listings ?: emptyList()) { listing ->
-                  ListingCard(content = listing)
-                }
-              }
+        Column(
+          modifier = modifier
+            .align(Alignment.TopEnd)
+            .padding(8.dp)
+        )
+        {  
+          FilledIconButton(
+            onClick = { listingViewModel.menuButtonInteract() },
+          ) {
+            Icon(
+              imageVector = menu,
+              contentDescription = "Menu"
+            )
           }
-      ) { innerPadding -> 
-        val variant = if (isSystemInDarkTheme()) "dark" else "liberty"
-
-        MaplibreMap(
-          baseStyle = BaseStyle.Uri("https://tiles.openfreemap.org/styles/${variant}"),
-          cameraState = camera,
-
-        ) {  
-          val markerIcon = painterResource(R.drawable.map_marker) 
-
-          val source = rememberGeoJsonSource(
-            data = GeoJsonData.Features( MultiPoint ( 
-              uiState.foodStops?.map { Position( 
-                latitude = it.lat,
-                longitude = it.lng
-              ) } ?: emptyList<Position>()
-            ) )
+          DropdownMenu(
+            expanded = uiState.menuExpanded,
+            onDismissRequest = {
+              listingViewModel.menuButtonInteract( toggle = false )
+            }
           ) 
-
-          SymbolLayer(
-            id = "marker-layer",
-            source = source,
-            iconImage = image(markerIcon),
-            iconAnchor = const(SymbolAnchor.Bottom),
-            iconAllowOverlap = const(true),
-          )     
+          {
+            DropdownMenuItem(
+              text = { Text("View Reservations") },
+              onClick = {}
+            )
+          }
         }
-      }         
+      }
+    } else {
+      ListingDetailScreen(
+        listingViewModel = listingViewModel,
+        uiState = uiState
+      )
     }
+}
+
+
+@Composable
+fun ListingMap(
+  modifier: Modifier = Modifier,
+  navController: NavHostController,
+  listingViewModel: ListingViewModel = viewModel(),
+  uiState: ListingUiState
+) {
+  val scope = rememberCoroutineScope() 
+  val configuration = LocalConfiguration.current
+
+  @OptIn(ExperimentalMaterial3Api::class)
+  val scaffoldState = rememberBottomSheetScaffoldState( 
+      bottomSheetState = rememberStandardBottomSheetState(
+          skipHiddenState = true
+      )
+  )
+  val camera =
+    rememberCameraState(
+      firstPosition = CameraPosition(target = Position(latitude = 41.502, longitude = -81.606), zoom = 15.5)
+    )
+  Column(
+    modifier = Modifier
+      .systemBarsPadding()
+  ) { 
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    BottomSheetScaffold( 
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = configuration.screenHeightDp.dp / 3,
+        sheetContent = {
+            LazyColumn (
+                Modifier.fillMaxSize()
+                  .padding(start = 8.dp, end = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+              items(uiState.listings ?: emptyList()) { listing ->
+                ListingCard(
+                  content = listing,
+                  onClick = {
+                    listingViewModel.selectListing(listing)
+                  }
+                )
+              }
+            }
+        }
+    ) { innerPadding -> 
+      val variant = if (isSystemInDarkTheme()) "dark" else "liberty"
+
+      MaplibreMap(
+        baseStyle = BaseStyle.Uri("https://tiles.openfreemap.org/styles/${variant}"),
+        cameraState = camera,
+      ) {  
+        val markerIcon = painterResource(R.drawable.map_marker) 
+
+        val source = rememberGeoJsonSource(
+          data = GeoJsonData.Features( MultiPoint ( 
+            uiState.foodStops?.map { Position( 
+              latitude = it.lat,
+              longitude = it.lng
+            ) } ?: emptyList<Position>()
+          ) )
+        ) 
+
+        SymbolLayer(
+          id = "marker-layer",
+          source = source,
+          iconImage = image(markerIcon),
+          iconAnchor = const(SymbolAnchor.Bottom),
+          iconAllowOverlap = const(true),
+          iconIgnorePlacement = const(false),
+        )     
+      }
+    }         
+  }
 }
