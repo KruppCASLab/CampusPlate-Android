@@ -19,6 +19,8 @@ import edu.cwru.caslab.campusplate.ui.ActiveScreen
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import edu.cwru.caslab.campusplate.model.Listing
+import edu.cwru.caslab.campusplate.ui.ListingViewModel
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES_NAME)
@@ -30,7 +32,8 @@ fun MainScreen(
       factory = LoginViewModelFactory (
           StoredCredentialRepository(LocalContext.current.dataStore)
       )
-  ),
+    ),
+    listingViewModel: ListingViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
   val uiState by loginViewModel.uiState.collectAsState()
@@ -43,6 +46,7 @@ fun MainScreen(
       }
     }
   }
+  val listingUiState by listingViewModel.uiState.collectAsState()
   NavHost(
     navController = navController,
     startDestination = ActiveScreen.Login.name,
@@ -55,7 +59,13 @@ fun MainScreen(
       PinScreen(modifier = modifier, loginViewModel = loginViewModel, uiState = uiState, navController = navController)
     }
     composable(route = ActiveScreen.Listing.name) { 
-      ListingScreen(modifier = modifier, navController = navController, email = uiState.activeEmail, credential = uiState.credential)
+      ListingScreen(modifier = modifier, listingViewModel = listingViewModel, navHostController = navController, email = uiState.activeEmail, credential = uiState.credential)
     } 
+    composable(route = ActiveScreen.Reservation.name) {
+      ReservationScreen(modifier = modifier, navHostController = navController, email = uiState.activeEmail, credential = uiState.credential)
+    }
+    composable(route = ActiveScreen.ReservationCreation.name) {
+      ReservationCreationScreen(modifier = modifier, navController = navController, email = uiState.activeEmail, credential = uiState.credential, listing = listingUiState.selectedListing)
+    }
   }
 }

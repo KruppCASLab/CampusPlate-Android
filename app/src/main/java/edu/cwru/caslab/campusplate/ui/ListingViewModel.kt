@@ -3,6 +3,7 @@ package edu.cwru.caslab.campusplate.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
@@ -105,6 +106,14 @@ class ListingViewModel: ViewModel() {
       menuExpanded = if (toggle) !uiState.value.menuExpanded
         else false
     ) }
+  }
+
+  fun reservationViewInteract(navHostController: NavHostController) {
+    navHostController.navigate(ActiveScreen.Reservation.name)
+  }
+
+  fun reservationCreationInteract(navController: NavHostController) {
+    navController.navigate(ActiveScreen.ReservationCreation.name)
   }
 
   //fun getImage() {

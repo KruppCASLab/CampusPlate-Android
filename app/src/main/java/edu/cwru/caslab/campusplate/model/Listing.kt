@@ -6,8 +6,8 @@ data class Listing(
   val userId: Int,
   val title: String,
   val description: String,
-  val creationTime: Int,
-  val expirationTime: Int,
+  val creationTime: Long,
+  val expirationTime: Long,
   val quantity: Int,
   val weightOunces: Int,
   val quantityRemaining: String,
@@ -18,4 +18,15 @@ data class ListingResponse(
   val data: List<Listing>,
   val status: Int,
   val error: String
+)
+
+data class ListingCreationRequest(
+  val foodStopId: Int,
+  val title: String,
+  val description: String,
+  val quantity: Int,
+  val weightOunces: Int,
+  val creationDate: Long,
+  val expirationDate: Long,
+  val image: String?
 )

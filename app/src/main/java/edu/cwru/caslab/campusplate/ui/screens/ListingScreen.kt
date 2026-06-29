@@ -118,7 +118,7 @@ fun ListingCard(
 @Composable
 fun ListingScreen(
   modifier: Modifier = Modifier,
-  navController: NavHostController,
+  navHostController: NavHostController,
   email: String,
   credential: String,
   listingViewModel: ListingViewModel = viewModel()
@@ -135,7 +135,7 @@ fun ListingScreen(
       ) {
         ListingMap(
           modifier = modifier,
-          navController = navController,
+          navController = navHostController,
           listingViewModel = listingViewModel,
           uiState = uiState
         )
@@ -163,7 +163,7 @@ fun ListingScreen(
           {
             DropdownMenuItem(
               text = { Text("View Reservations") },
-              onClick = {}
+              onClick = { listingViewModel.reservationViewInteract(navHostController = navHostController) }
             )
           }
         }
@@ -171,7 +171,8 @@ fun ListingScreen(
     } else {
       ListingDetailScreen(
         listingViewModel = listingViewModel,
-        uiState = uiState
+        uiState = uiState,
+        navController = navHostController
       )
     }
 }

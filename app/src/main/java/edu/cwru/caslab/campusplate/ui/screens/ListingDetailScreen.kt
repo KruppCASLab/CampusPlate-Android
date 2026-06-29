@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import edu.cwru.caslab.campusplate.ui.ActiveScreen
 import edu.cwru.caslab.campusplate.ui.ListingUiState
 import edu.cwru.caslab.campusplate.ui.ListingViewModel
 
@@ -25,6 +27,7 @@ fun ListingDetailScreen(
   modifier: Modifier = Modifier,
   listingViewModel: ListingViewModel = viewModel(),
   uiState: ListingUiState,
+  navController: NavHostController
 ) {
     Column(
       modifier = modifier
@@ -68,7 +71,9 @@ fun ListingDetailScreen(
               .align(Alignment.CenterHorizontally)
               .fillMaxWidth(0.8f)
               .weight(1f, false),
-            onClick = {},
+            onClick = {
+              listingViewModel.reservationCreationInteract(navController = navController)
+            },
             colors = ButtonDefaults.buttonColors(
               containerColor = MaterialTheme.colorScheme.primary,
               contentColor = MaterialTheme.colorScheme.onPrimary

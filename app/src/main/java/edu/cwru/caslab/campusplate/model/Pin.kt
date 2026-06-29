@@ -7,7 +7,7 @@ data class Pin (
 data class PinResponse (
   val data: Guid,
   val status: Int,
-  val error: String
+  val error: String?
 )
 
 data class Guid (

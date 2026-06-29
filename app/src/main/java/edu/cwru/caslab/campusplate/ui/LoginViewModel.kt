@@ -24,7 +24,9 @@ enum class State { Idle, Error, Loading, Success }
 enum class ActiveScreen(@StringRes val title: Int) {
   Login(title = R.string.login_screen), 
   Pin(title = R.string.pin_screen),
-  Listing(title = R.string.listing_screen)
+  Listing(title = R.string.listing_screen),
+  ReservationCreation(title = R.string.reservation_creation_screen),
+  Reservation(title = R.string.reservation_screen)
 }
 
 

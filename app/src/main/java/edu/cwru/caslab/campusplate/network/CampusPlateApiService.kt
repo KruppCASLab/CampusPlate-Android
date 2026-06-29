@@ -1,11 +1,15 @@
 package edu.cwru.caslab.campusplate.network
 
 import edu.cwru.caslab.campusplate.model.FoodStopResponse
+import edu.cwru.caslab.campusplate.model.GenericResponse
+import edu.cwru.caslab.campusplate.model.ListingCreationRequest
 import edu.cwru.caslab.campusplate.model.ListingResponse
 import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.PinResponse
+import edu.cwru.caslab.campusplate.model.ReservationGetResponse
+import edu.cwru.caslab.campusplate.model.ReservationPostResponse
+import edu.cwru.caslab.campusplate.model.ReservationRequest
 import edu.cwru.caslab.campusplate.model.User
-import edu.cwru.caslab.campusplate.model.UserResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.PATCH
@@ -34,7 +38,7 @@ object CampusPlateApi {
 interface CampusPlateApiService {
 
   @POST("users")
-  suspend fun createUser(@Body user: User): Response<UserResponse>
+  suspend fun createUser(@Body user: User): Response<GenericResponse>
 
   @PATCH("users/{id}")
   suspend fun validatePin(@Path("id") id: String?, @Body pin: Pin): Response<PinResponse>
@@ -42,6 +46,23 @@ interface CampusPlateApiService {
   @GET("listings")
   suspend fun getListings(@Header("Authorization") authorization: String): Response<ListingResponse> 
 
+  @GET("listings/{id}/image")
+  suspend fun getListingImage(@Header("Authorization") authorization: String, @Path("id") id: String?): Response<GenericResponse> 
+  
+  @POST("listings")
+  suspend fun createListing(@Header("Authorization") authorization: String, @Body listingCreationRequest: ListingCreationRequest): Response<GenericResponse>
+
   @GET("foodstops")
   suspend fun getFoodStops(@Header("Authorization") authorization: String): Response<FoodStopResponse>
+
+  @GET("foodstops/manage")
+  suspend fun getManagedFoodStops(@Header("Authorization") authorization: String): Response<FoodStopResponse>
+
+  @POST("reservations")
+  suspend fun createReservation(@Header("Authorization") authorization: String, @Body reservationRequest: ReservationRequest): Response<ReservationPostResponse>
+
+  @GET("reservations")
+  suspend fun getReservations(@Header("Authorization") authorization: String): Response<ReservationGetResponse>
+
+
 }
