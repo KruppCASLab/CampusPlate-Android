@@ -19,6 +19,7 @@ import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okio.IOException
+import java.security.GeneralSecurityException
 
 enum class State { Idle, Error, Loading, Success }
 enum class ActiveScreen(@StringRes val title: Int) {
@@ -91,6 +92,8 @@ class LoginViewModel(
           } else error()
         } else error()
       } catch (e: IOException) {
+        error()
+      } catch (e: GeneralSecurityException) {
         error()
       }
     }
