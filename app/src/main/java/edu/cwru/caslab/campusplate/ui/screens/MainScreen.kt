@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import edu.cwru.caslab.campusplate.LoginViewModelFactory
 import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
+import edu.cwru.caslab.campusplate.security.KeystoreCryptographer
 import edu.cwru.caslab.campusplate.ui.ActiveScreen
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
 import androidx.compose.runtime.setValue
@@ -28,7 +29,7 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = viewModel (
       factory = LoginViewModelFactory (
-          StoredCredentialRepository(LocalContext.current.dataStore)
+          StoredCredentialRepository(LocalContext.current.dataStore, KeystoreCryptographer())
       )
   ),
     navController: NavHostController = rememberNavController()
