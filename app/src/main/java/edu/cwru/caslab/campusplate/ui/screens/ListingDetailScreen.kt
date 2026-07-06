@@ -16,11 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import edu.cwru.caslab.campusplate.ui.ActiveScreen
 import edu.cwru.caslab.campusplate.ui.ListingUiState
 import edu.cwru.caslab.campusplate.ui.ListingViewModel
+import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 
 @Composable
 fun ListingDetailScreen(
@@ -35,8 +34,17 @@ fun ListingDetailScreen(
         .systemBarsPadding()
         .padding(start = 16.dp, end = 16.dp, top = 16.dp),
       verticalArrangement = Arrangement.SpaceBetween
-    ) {
+    ) { 
+
       Column {
+
+        TopNavigationBar(
+          text = "Listing Details",
+          onClick = {
+            listingViewModel.deselectListing()
+          }
+        )
+
         Text(
           text = uiState.selectedListing?.title ?: "",
           style = MaterialTheme.typography.headlineMedium,
@@ -51,19 +59,7 @@ fun ListingDetailScreen(
             uiState.foodStopIDMap?.get(uiState.selectedListing?.foodStopId)?.name}", 
           style = MaterialTheme.typography.titleSmall
         )
-        Button(
-            modifier = Modifier
-              .fillMaxWidth(0.4f),
-            onClick = { listingViewModel.deselectListing() },
-            colors = ButtonDefaults.buttonColors(
-              containerColor = MaterialTheme.colorScheme.primary,
-              contentColor = MaterialTheme.colorScheme.onPrimary
-            )
-        ) {
-          Text(
-            text = "Back" 
-          )
-        }
+        
       }
 
         Button(

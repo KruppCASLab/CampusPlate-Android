@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -19,10 +18,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OtpTextField(
+fun OtpTextField( //TODO: Credits
     modifier: Modifier = Modifier,
     otpText: String,
     otpCount: Int = 6,
+    readOnly: Boolean = false,
     onOtpTextChange: (String, Boolean) -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -34,6 +34,7 @@ fun OtpTextField(
     BasicTextField(
         modifier = modifier,
         value = TextFieldValue(otpText, selection = TextRange(otpText.length)),
+        readOnly = readOnly,
         onValueChange = {
             if (it.text.length <= otpCount) {
                 onOtpTextChange.invoke(it.text, it.text.length == otpCount)

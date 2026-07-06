@@ -5,9 +5,6 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import edu.cwru.caslab.campusplate.R
@@ -120,6 +117,7 @@ class LoginViewModel(
   fun validatePin(navController: NavController) {
     viewModelScope.launch { 
       try {
+        _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
         val pin = Pin(pin = _uiState.value.pinFieldValue)
         val listResult = CampusPlateApi.retrofitService.validatePin(id = uiState.value.activeEmail, pin = pin)
         if (listResult.isSuccessful) {
@@ -129,7 +127,9 @@ class LoginViewModel(
             if (guid != null) {
               repository.saveCredential(uiState.value.activeEmail, guid)       // email + GUID are persisted here
               _uiState.update { it.copy(credential = guid, state = State.Success) }
-              navController.navigate(ActiveScreen.Listing.name)
+              navController.navigate(ActiveScreen.Listing.name) {
+                popUpTo(navController.graph.id) { inclusive = true }
+              }
             } else {
               error()
             }

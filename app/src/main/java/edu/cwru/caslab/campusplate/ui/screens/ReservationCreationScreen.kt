@@ -17,9 +17,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -30,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.ui.ReservationCreationViewModel
+import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import edu.cwru.caslab.campusplate.ui.icons.menu
 
 @Composable
@@ -43,18 +44,29 @@ fun ReservationCreationScreen(
 ) {
 
   val uiState by reservationCreationViewModel.uiState.collectAsState()
-  
-  reservationCreationViewModel.setAuthorization(email = email, credential = credential)
-  reservationCreationViewModel.setListing(listing)
+
+  LaunchedEffect(Unit) {    
+    reservationCreationViewModel.setAuthorization(email = email, credential = credential)
+    reservationCreationViewModel.setListing(listing)
+  }
   
   Column (
       modifier = modifier
         .fillMaxSize()
         .systemBarsPadding()
-        .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        .padding(start = 16.dp, end = 16.dp),
       verticalArrangement = Arrangement.SpaceBetween
-    ) {
+    ) { 
+
       Column {
+
+        TopNavigationBar(
+          text = "Create Reservation",
+          onClick = {
+            reservationCreationViewModel.onBackInteract(navController)
+          }
+        )
+
         Text(
           text = "Select the quantity you want to reserve",
           style = MaterialTheme.typography.headlineMedium,
@@ -85,7 +97,7 @@ fun ReservationCreationScreen(
             modifier = Modifier
                 .width(with(LocalDensity.current){uiState.quantityFieldSize.width.toDp()})
         ) {
-            (1 .. ( uiState.listing?.quantity ?: 0 ) ).forEach {
+            ( 1 .. ( uiState.listing?.quantity ?: 0 ) ).forEach {
                 DropdownMenuItem(
                     text = { Text(text = it.toString()) },
                     onClick = {
@@ -94,20 +106,7 @@ fun ReservationCreationScreen(
                     }
                 )
             }
-        }
-        Button(
-            modifier = Modifier
-              .fillMaxWidth(0.4f),
-            onClick = { reservationCreationViewModel.onBackInteract(navController) },
-            colors = ButtonDefaults.buttonColors(
-              containerColor = MaterialTheme.colorScheme.primary,
-              contentColor = MaterialTheme.colorScheme.onPrimary
-            )
-        ) {
-          Text(
-            text = "Back" 
-          )
-        }
+        } 
       }
 
         Button(

@@ -2,13 +2,11 @@ package edu.cwru.caslab.campusplate.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +18,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavHostController
@@ -28,9 +25,9 @@ import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.model.Reservation
 import edu.cwru.caslab.campusplate.ui.ReservationUiState
 import edu.cwru.caslab.campusplate.ui.ReservationViewModel
+import edu.cwru.caslab.campusplate.ui.components.GenericClickableCard
+import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import kotlinx.coroutines.delay
-import java.sql.Time
-import java.sql.Timestamp
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -41,32 +38,23 @@ fun ReservationCard(
     currentTime: Long,
     onClick: () -> Unit
 ) {
-    Card (
-      modifier = modifier.fillMaxWidth()
-        .padding(bottom = 8.dp),
-      onClick = onClick
-    ) { 
-      Row (
-        modifier = modifier
-      ) {
-        Column (
-          modifier = Modifier.weight(0.7f)
-        ){ 
-          Text( 
-            text = listing?.title ?: "[Error, Please Reload]",
-            style = MaterialTheme.typography.titleLarge
-          )
-          Text(
-            text = "Expires in ${
-              getMinutes(
-                from = currentTime / 1000, // Milliseconds to Seconds
-                to = reservation.timeExpired
-              )} Minutes.",
-            style = MaterialTheme.typography.bodyLarge
-          )
-        }
-      }
-    }
+  GenericClickableCard(
+    modifier = modifier,
+    onClick = onClick
+  ) { 
+
+    val minutes = getMinutes( from = currentTime / 1000, to = reservation.timeExpired )
+    
+    Text( 
+      text = listing?.title ?: "[Error, Please Reload]",
+      style = MaterialTheme.typography.titleLarge
+    )
+
+    Text(
+      text = "Expires in $minutes Minutes.",
+      style = MaterialTheme.typography.bodyLarge
+    )
+  }
 }
 
 private fun getMinutes(from: Long, to: Long): Int {
@@ -93,7 +81,7 @@ fun ReservationScreen(
         delay(15.seconds)
         reservationViewModel.updateTimeMillis()
     }
-  }
+  } 
 
   if (uiState.selectedReservation == null) {
 
@@ -102,11 +90,13 @@ fun ReservationScreen(
         .systemBarsPadding()
         .padding(top = 16.dp),
       horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    ) { 
 
-      Text(
+      TopNavigationBar(
         text = "Reservations",
-        style = MaterialTheme.typography.displaySmall
+        onClick = {
+          reservationViewModel.onBackInteract(navController = navHostController)
+        }
       )
 
       LazyColumn(

@@ -2,12 +2,10 @@ package edu.cwru.caslab.campusplate.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

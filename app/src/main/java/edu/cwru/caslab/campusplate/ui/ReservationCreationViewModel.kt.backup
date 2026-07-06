@@ -4,29 +4,35 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.unit.toSize
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.model.Reservation
 import edu.cwru.caslab.campusplate.model.ReservationRequest
 import edu.cwru.caslab.campusplate.network.CampusPlateApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.Credentials
+import okio.IOException
 
-data class ReservationCreationUiState(
-  override val state: State = State.Idle,
+data class ReservationCreationUiState (
+  val state: State = State.Idle,
   val authorization: String = "",
   val quantityFieldValue: String = "1",
   val reservation: Reservation? = null,
   val listing: Listing? = null,
   val reservationMenuExpanded: Boolean = false,
   val quantityFieldSize: Size = Size.Zero
-): UiStateCommon()
+)
 
-class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
-  defaultState = ReservationCreationUiState()
-) {
+class ReservationCreationViewModel: ViewModel() {
+
+  private var _uiState: MutableStateFlow<ReservationCreationUiState> = MutableStateFlow(ReservationCreationUiState())
+  val uiState: StateFlow<ReservationCreationUiState> = _uiState.asStateFlow() 
 
   fun setQuantityFieldValue(value: String) {
     if (value.isDigitsOnly()) {
@@ -64,33 +70,34 @@ class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
     navController.navigate(ActiveScreen.Listing.name)
   }
 
-  fun createReservation(navController: NavHostController) { 
+  private fun error() {
+    _uiState.update { currentState -> currentState.copy( state = State.Error ) }
+  }
 
-      viewModelScope.launch { 
-
+  fun createReservation(navController: NavHostController) {
+    _uiState.update { it.copy(state = State.Loading) }
+    viewModelScope.launch { 
+      try {
         val reservationRequest = ReservationRequest(
-            listingId = uiState.value.listing?.listingId ?: -1,
-            quanitity = uiState.value.quantityFieldValue.toInt()
+          listingId = uiState.value.listing?.listingId ?: -1,
+          quanitity = uiState.value.quantityFieldValue.toInt()
         )
-
-        val reservation = commonApiCall(
-          onSuccess = { 
-            navController.navigate(ActiveScreen.Listing.name)
-            it.copy(state = State.Success)
-          },
-          onLoad = { it.copy(state = State.Loading) },
-          onError = { it.copy(state = State.Error) },
-          apiCall = { 
-            CampusPlateApi.retrofitService.createReservation(
-              authorization = uiState.value.authorization,
-              reservationRequest = reservationRequest
-            )
-          } 
-        )
-
-        _uiState.update{ it.copy( reservation = reservation ) }
-      } 
-
+        val listResult = CampusPlateApi.retrofitService.createReservation(authorization = uiState.value.authorization, reservationRequest = reservationRequest)
+        if (listResult.isSuccessful) {
+          if (listResult.body()?.status == 0) {
+            val reservation = listResult.body()?.data
+            if (reservation != null) {
+              _uiState.update { it.copy(reservation = reservation, state = State.Success) }
+              navController.navigate(ActiveScreen.Reservation.name)
+            } else {
+              error()
+            }
+          } else error()
+        } else error()
+      } catch (e: IOException) {
+        error()
+      }
+    }
   }
 
 }

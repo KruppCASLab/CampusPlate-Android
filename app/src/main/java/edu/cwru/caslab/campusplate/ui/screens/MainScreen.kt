@@ -1,7 +1,6 @@
 package edu.cwru.caslab.campusplate.ui.screens
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,9 +17,7 @@ import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
 import edu.cwru.caslab.campusplate.security.KeystoreCryptographer
 import edu.cwru.caslab.campusplate.ui.ActiveScreen
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
-import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.ui.ListingViewModel
 
 private const val USER_PREFERENCES_NAME = "user_preferences"

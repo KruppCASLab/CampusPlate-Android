@@ -1,7 +1,9 @@
 package edu.cwru.caslab.campusplate.model
 
-data class GenericResponse(
-  val data: String,
+// NOTE: This cannot be abstract or retrofit throws a fit
+//  pun intended :)
+open class GenericResponse<T>(
+  val data: T,
   val status: Int,
   val error: String?
 )
