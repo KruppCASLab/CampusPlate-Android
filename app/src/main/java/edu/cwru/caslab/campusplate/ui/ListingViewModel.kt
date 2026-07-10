@@ -114,6 +114,10 @@ class ListingViewModel: ViewModel() {
     navController.navigate(ActiveScreen.ReservationCreation.name)
   }
 
+  fun manageFoodStopsInteract(navController: NavHostController) {
+    navController.navigate(ActiveScreen.ManageFoodStops.name)
+  }
+
   //fun getImage() {
   //  viewModelScope.launch {
   //    try {

@@ -65,5 +65,8 @@ fun MainScreen(
     composable(route = ActiveScreen.ReservationCreation.name) {
       ReservationCreationScreen(modifier = modifier, navController = navController, email = uiState.activeEmail, credential = uiState.credential, listing = listingUiState.selectedListing)
     }
+    composable(route = ActiveScreen.ManageFoodStops.name) {
+      ManageFoodStopsScreen(modifier = modifier, navHostController = navController, email = uiState.activeEmail, credential = uiState.credential)
+    }
   }
 }

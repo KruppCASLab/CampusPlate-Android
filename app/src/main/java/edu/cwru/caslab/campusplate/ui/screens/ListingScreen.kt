@@ -156,6 +156,12 @@ fun ListingScreen(
               text = { Text("View Reservations") },
               onClick = { listingViewModel.reservationViewInteract(navHostController = navHostController) }
             )
+            if (uiState.foodStops?.any { it.managed != 0 } == true) {
+              DropdownMenuItem(
+                text = { Text("Manage Food Stops") },
+                onClick = { listingViewModel.manageFoodStopsInteract(navHostController) }
+              )
+            }
           }
         }
       }
