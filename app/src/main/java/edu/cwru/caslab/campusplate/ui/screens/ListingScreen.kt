@@ -28,8 +28,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,7 +40,6 @@ import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.ui.components.GenericClickableCard
 import edu.cwru.caslab.campusplate.ui.icons.getMarkerImage
-import edu.cwru.caslab.campusplate.ui.icons.menu
 import kotlinx.coroutines.delay
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
@@ -131,37 +130,17 @@ fun ListingScreen(
           uiState = uiState
         )
 
-        Column(
-          modifier = modifier
-            .align(Alignment.TopEnd)
-            .padding(8.dp)
-        )
-        {  
+        if (uiState.foodStops?.any { it.managed != 0 } == true) {
           FilledIconButton(
-            onClick = { listingViewModel.menuButtonInteract() },
+            onClick = { listingViewModel.manageFoodStopsInteract(navHostController) },
+            modifier = modifier
+              .align(Alignment.TopEnd)
+              .padding(8.dp)
           ) {
             Icon(
-              imageVector = menu,
-              contentDescription = "Menu"
+              imageVector = Icons.Default.Add,
+              contentDescription = "Create Listing"
             )
-          }
-          DropdownMenu(
-            expanded = uiState.menuExpanded,
-            onDismissRequest = {
-              listingViewModel.menuButtonInteract( toggle = false )
-            }
-          ) 
-          {
-            DropdownMenuItem(
-              text = { Text("View Reservations") },
-              onClick = { listingViewModel.reservationViewInteract(navHostController = navHostController) }
-            )
-            if (uiState.foodStops?.any { it.managed != 0 } == true) {
-              DropdownMenuItem(
-                text = { Text("Manage Food Stops") },
-                onClick = { listingViewModel.manageFoodStopsInteract(navHostController) }
-              )
-            }
           }
         }
       }

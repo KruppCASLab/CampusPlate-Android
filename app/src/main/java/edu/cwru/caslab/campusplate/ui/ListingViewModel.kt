@@ -22,8 +22,7 @@ data class ListingUiState (
   val listings: List<Listing>? = null,
   val foodStops: List<FoodStop>? = null,
   val selectedListing: Listing? = null,
-  val foodStopIDMap: Map<Int, FoodStop>? = null,
-  val menuExpanded: Boolean = false
+  val foodStopIDMap: Map<Int, FoodStop>? = null
 )
 
 class ListingViewModel: ViewModel() {
@@ -97,17 +96,6 @@ class ListingViewModel: ViewModel() {
 
   fun deselectListing() {
     _uiState.update { it.copy( selectedListing = null ) }
-  }
-
-  fun menuButtonInteract(toggle: Boolean = true) {
-    _uiState.update { it.copy( 
-      menuExpanded = if (toggle) !uiState.value.menuExpanded
-        else false
-    ) }
-  }
-
-  fun reservationViewInteract(navHostController: NavHostController) {
-    navHostController.navigate(ActiveScreen.Reservation.name)
   }
 
   fun reservationCreationInteract(navController: NavHostController) {
