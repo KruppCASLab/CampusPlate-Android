@@ -62,11 +62,16 @@ fun ListingDetailScreen(
         
       }
 
+        val reservable = uiState.foodStopIDMap
+            ?.get(uiState.selectedListing?.foodStopId)
+            ?.reservable != 0
+
         Button(
             modifier = Modifier
               .align(Alignment.CenterHorizontally)
               .fillMaxWidth(0.8f)
               .weight(1f, false),
+            enabled = reservable,
             onClick = {
               listingViewModel.reservationCreationInteract(navController = navController)
             },
@@ -76,7 +81,7 @@ fun ListingDetailScreen(
             )
         ) {
           Text(
-            text = "Begin Reservation" 
+            text = "Begin Reservation"
           )
         }
       
