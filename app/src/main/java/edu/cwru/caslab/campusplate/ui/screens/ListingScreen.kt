@@ -29,8 +29,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,7 +50,6 @@ import edu.cwru.caslab.campusplate.ui.SheetActiveView
 import edu.cwru.caslab.campusplate.ui.components.GenericClickableCard
 import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import edu.cwru.caslab.campusplate.ui.icons.getMarkerImage
-import edu.cwru.caslab.campusplate.ui.icons.menu
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
@@ -133,33 +132,18 @@ fun ListingScreen(
         listingViewModel = listingViewModel,
         uiState = uiState
       )
-
-      Column(
-        modifier = modifier
-          .align(Alignment.TopEnd)
-          .padding(8.dp)
-      )
-      {  
-        FilledIconButton(
-          onClick = { listingViewModel.menuButtonInteract() },
-        ) {
-          Icon(
-            imageVector = menu,
-            contentDescription = "Menu"
-          )
-        }
-        DropdownMenu(
-          expanded = uiState.menuExpanded,
-          onDismissRequest = {
-            listingViewModel.menuButtonInteract( toggle = false )
-          }
-        ) 
-        {
-          DropdownMenuItem(
-            text = { Text("View Reservations") },
-            onClick = { listingViewModel.reservationViewInteract(navHostController = navHostController) }
-          )
-        }
+        if (uiState.foodStops?.any { it.managed != 0 } == true) {
+          FilledIconButton(
+            onClick = { listingViewModel.manageFoodStopsInteract(navHostController) },
+            modifier = modifier
+              .align(Alignment.TopEnd)
+              .padding(8.dp)
+          ) {
+            Icon(
+              imageVector = Icons.Default.Add,
+              contentDescription = "Create Listing"
+            )
+          }  
       }
     }
   } 

@@ -158,19 +158,12 @@ class ListingViewModel: ViewModel() {
     changeView(view = SheetActiveView.Listing)
   }
 
-  fun menuButtonInteract(toggle: Boolean = true) {
-    _uiState.update { it.copy( 
-      menuExpanded = if (toggle) !uiState.value.menuExpanded
-        else false
-    ) }
-  }
-
-  fun reservationViewInteract(navHostController: NavHostController) {
-    navHostController.navigate(ActiveScreen.Reservation.name)
-  }
-
   fun reservationCreationInteract(navController: NavHostController) {
     navController.navigate(ActiveScreen.ReservationCreation.name)
+  }
+
+  fun manageFoodStopsInteract(navController: NavHostController) {
+    navController.navigate(ActiveScreen.ManageFoodStops.name)
   }
 
   //fun getImage() {

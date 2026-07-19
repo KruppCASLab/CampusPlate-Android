@@ -9,4 +9,5 @@
     <string name="listing_screen">Listing Screen</string>
     <string name="reservation_creation_screen">Reservation Creation Screen</string>
     <string name="reservation_screen">Reservation Screen</string>
+    <string name="manage_food_stops_screen">Manage Food Stops Screen</string>
 </resources>
