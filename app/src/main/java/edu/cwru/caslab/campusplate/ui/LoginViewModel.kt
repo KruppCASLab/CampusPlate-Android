@@ -20,6 +20,7 @@ import java.security.GeneralSecurityException
 
 enum class State { Idle, Error, Loading, Success }
 enum class ActiveScreen(@StringRes val title: Int) {
+  Splash(title = R.string.splash_screen),
   Login(title = R.string.login_screen), 
   Pin(title = R.string.pin_screen),
   Listing(title = R.string.listing_screen),
@@ -30,7 +31,7 @@ enum class ActiveScreen(@StringRes val title: Int) {
 
 data class LoginUiState (
   val state: State = State.Idle,
-  val activeScreen: ActiveScreen = ActiveScreen.Login,
+  val activeScreen: ActiveScreen = ActiveScreen.Splash,
   val loginFieldValue: String = "",
   val pinFieldValue: String = "",
   val activeEmail: String = "",
@@ -56,7 +57,10 @@ class LoginViewModel(
             state = State.Success
           ) }
         } else {
-          _uiState.update { it.copy(credential = "") }
+          _uiState.update { it.copy(
+            credential = "",
+            activeScreen = ActiveScreen.Login
+          ) }
         }
       }
     }

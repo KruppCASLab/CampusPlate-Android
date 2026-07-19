@@ -11,7 +11,7 @@ data class Listing(
   val quantity: Int,
   val weightOunces: Int,
   val quantityRemaining: String,
-  val image: String?
+  var image: String?
 )
 
 data class ListingResponse(

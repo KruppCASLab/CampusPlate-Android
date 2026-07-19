@@ -1,5 +1,7 @@
 package edu.cwru.caslab.campusplate.ui.screens
 
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,13 +15,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import edu.cwru.caslab.campusplate.R
 import edu.cwru.caslab.campusplate.ui.ListingUiState
 import edu.cwru.caslab.campusplate.ui.ListingViewModel
+import edu.cwru.caslab.campusplate.ui.State
+import edu.cwru.caslab.campusplate.ui.components.Throbber
 import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
+import kotlin.io.encoding.Base64
+
+
 
 @Composable
 fun ListingDetailScreen(
@@ -28,6 +39,11 @@ fun ListingDetailScreen(
   uiState: ListingUiState,
   navController: NavHostController
 ) {
+
+    val selectedListing = uiState.selectedListing
+    val selectedFoodStop = uiState.foodStopIDMap?.get(selectedListing?.foodStopId)
+    val image = uiState.listingImageMap[selectedListing?.listingId]
+
     Column(
       modifier = modifier
         .fillMaxSize()
@@ -36,29 +52,37 @@ fun ListingDetailScreen(
       verticalArrangement = Arrangement.SpaceBetween
     ) { 
 
-      Column {
-
-        TopNavigationBar(
-          text = "Listing Details",
-          onClick = {
-            listingViewModel.deselectListing()
-          }
-        )
+      Column { 
 
         Text(
-          text = uiState.selectedListing?.title ?: "",
+          text = selectedListing?.title ?: "",
           style = MaterialTheme.typography.headlineMedium,
           fontWeight = FontWeight.Bold
         )
         Text(
-          text = uiState.selectedListing?.description ?: "",
+          text = selectedListing?.description ?: "",
           style = MaterialTheme.typography.titleMedium
         )
         Text(
-          text = "${uiState.selectedListing?.quantityRemaining} Remaining at ${
-            uiState.foodStopIDMap?.get(uiState.selectedListing?.foodStopId)?.name}", 
+          text = "${selectedListing?.quantityRemaining} Remaining at ${selectedFoodStop?.name}", 
           style = MaterialTheme.typography.titleSmall
         )
+
+        
+        if (image != null) {
+          Image(
+            bitmap = image,
+            contentDescription = null
+          ) 
+        } else {
+          if (uiState.imageState == State.Loading) Throbber()
+          else {
+            Image(
+              painter = painterResource(id = R.drawable.spoony),
+              contentDescription = null
+            )
+          }
+        }
         
       }
 
@@ -70,13 +94,19 @@ fun ListingDetailScreen(
             onClick = {
               listingViewModel.reservationCreationInteract(navController = navController)
             },
-            colors = ButtonDefaults.buttonColors(
-              containerColor = MaterialTheme.colorScheme.primary,
-              contentColor = MaterialTheme.colorScheme.onPrimary
-            )
+            enabled = selectedFoodStop?.reservable == 1,
+            colors = if (selectedFoodStop?.reservable == 1) {
+              ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+              )
+            } else ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceDim,
+                contentColor = MaterialTheme.colorScheme.onSurface
+              )
         ) {
           Text(
-            text = "Begin Reservation" 
+            text = if (selectedFoodStop?.reservable == 1) "Begin Reservation" else "Unreservable"
           )
         }
       

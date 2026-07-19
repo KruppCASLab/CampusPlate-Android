@@ -1,5 +1,8 @@
 package edu.cwru.caslab.campusplate.ui
 
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
@@ -13,18 +16,31 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.Credentials
 import okio.IOException
+import kotlin.io.encoding.Base64
 
+enum class SheetActiveView { Listing, FoodStop, ListingInfo, Reservation }
 
 data class ListingUiState (
   val email: String = "",
   val credential: String = "",
   val state: State = State.Idle,
+  val imageState: State = State.Idle,
   val listings: List<Listing>? = null,
   val foodStops: List<FoodStop>? = null,
   val selectedListing: Listing? = null,
+  val selectedFoodStop: FoodStop? = null,
   val foodStopIDMap: Map<Int, FoodStop>? = null,
+  val sheetActiveView: SheetActiveView = SheetActiveView.Listing,
+  val listingImageMap: MutableMap<Int, ImageBitmap> = mutableMapOf<Int, ImageBitmap>(),
   val menuExpanded: Boolean = false
 )
+
+fun ByteArray.toImageBitmap() = BitmapFactory.decodeByteArray(this, 0, size).asImageBitmap() // Helper
+
+fun String.decodeBase64ToByteArray(): ByteArray { // Helper
+  val byteArray = encodeToByteArray()
+  return Base64.decode(byteArray, 0, byteArray.size)
+}
 
 class ListingViewModel: ViewModel() {
 
@@ -44,6 +60,26 @@ class ListingViewModel: ViewModel() {
       email = email,
       credential = credential
     ) }
+  }
+
+  fun selectFoodStop(foodstop: FoodStop?) {
+    if (uiState.value.foodStops?.contains(foodstop) ?: false) {
+      _uiState.update { it.copy( selectedFoodStop = foodstop ) }
+    }
+    if (foodstop!=null) 
+      changeView(view = SheetActiveView.FoodStop)
+    else
+      changeView(view = SheetActiveView.Listing)
+  }
+
+  private fun changeView(view: SheetActiveView) {
+    _uiState.update { it.copy( sheetActiveView = view ) }
+  }
+
+  fun toggleListingView() {
+    if (uiState.value.sheetActiveView == SheetActiveView.Listing) { 
+      _uiState.update { it.copy( sheetActiveView = SheetActiveView.Reservation ) }
+    } else _uiState.update { it.copy( sheetActiveView = SheetActiveView.Listing ) }
   }
 
   fun getListings() {
@@ -66,6 +102,27 @@ class ListingViewModel: ViewModel() {
       }
     } 
   }
+
+  fun getListingImage(listing: Listing) {
+    viewModelScope.launch { 
+      try {
+        _uiState.update { it.copy( imageState = State.Loading ) }
+        val listResult = CampusPlateApi.retrofitService.getListingImage(authorization = getAuthorizaton(), id = listing.listingId.toString())
+        if (listResult.isSuccessful) {
+          if (listResult.body()?.data != null) {
+            val imageString = listResult.body()?.data ?: ""
+            if (imageString != "")
+              uiState.value.listingImageMap[listing.listingId] = imageString.decodeBase64ToByteArray().toImageBitmap()
+              _uiState.update { it.copy( imageState = State.Success ) }
+          } else error()
+        } else error()
+
+      } catch (e: IOException) {
+        error()
+      } 
+    }
+  }
+
 
   fun getFoodStops() { // TODO: Can Be Simplified
     viewModelScope.launch { 
@@ -93,10 +150,12 @@ class ListingViewModel: ViewModel() {
     if (uiState.value.listings?.contains(listing) ?: false) {
       _uiState.update { it.copy( selectedListing = listing ) }
     }
+    changeView(view = SheetActiveView.ListingInfo)
   }
 
   fun deselectListing() {
     _uiState.update { it.copy( selectedListing = null ) }
+    changeView(view = SheetActiveView.Listing)
   }
 
   fun menuButtonInteract(toggle: Boolean = true) {

@@ -55,6 +55,10 @@
             export PATH="$GRADLE_HOME:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
             export GRADLE_OPTS="-Dorg.gradle.daemon=false"
             export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.project.android.aapt2FromMavenOverride=$ANDROID_SDK_ROOT/build-tools/36.0.0/aapt2"
+
+            export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH}''${LD_LIBRARY_PATH:+:}${pkgs.stdenv.cc.cc.lib}/lib"
+            export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH}''${LD_LIBRARY_PATH:+:}/run/opengl-driver/lib:/run/opengl-driver-32/lib"
+
             echo "Android Studio + SDK ready"
             echo "SDK: $ANDROID_HOME"
           '';

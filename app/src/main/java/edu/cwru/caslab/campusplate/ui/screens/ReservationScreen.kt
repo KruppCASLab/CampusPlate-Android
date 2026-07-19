@@ -90,14 +90,11 @@ fun ReservationScreen(
         .systemBarsPadding()
         .padding(top = 16.dp),
       horizontalAlignment = Alignment.CenterHorizontally
-    ) { 
+    ) {  
 
-      TopNavigationBar(
-        text = "Reservations",
-        onClick = {
-          reservationViewModel.onBackInteract(navController = navHostController)
-        }
-      )
+      if (uiState.reservations?.isEmpty() ?: true) {
+        //TODO: Nothing Here Icon
+      }
 
       LazyColumn(
         Modifier.fillMaxSize()

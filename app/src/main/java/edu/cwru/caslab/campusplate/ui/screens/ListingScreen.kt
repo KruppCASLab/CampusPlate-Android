@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,15 +34,25 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.FoodStop
+import edu.cwru.caslab.campusplate.ui.SheetActiveView
 import edu.cwru.caslab.campusplate.ui.components.GenericClickableCard
+import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import edu.cwru.caslab.campusplate.ui.icons.getMarkerImage
 import edu.cwru.caslab.campusplate.ui.icons.menu
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.camera.rememberCameraState
 import org.maplibre.compose.expressions.dsl.const
@@ -56,13 +67,6 @@ import org.maplibre.compose.util.ClickResult
 import org.maplibre.spatialk.geojson.Point
 import org.maplibre.spatialk.geojson.Position
 import kotlin.time.Duration.Companion.seconds
-
-fun ByteArray.toImageBitmap() = BitmapFactory.decodeByteArray(this, 0, size).asImageBitmap() // Helper
-
-fun String.decodeBase64ToByteArray(): ByteArray { // Helper
-  val byteArray = encodeToByteArray()
-  return Base64.decode(byteArray, 0, byteArray.size)
-}
 
 private fun getColor(colorString: String): Color { // Helper
   return Color(android.graphics.Color.parseColor("#${colorString}"))
@@ -120,53 +124,46 @@ fun ListingScreen(
       }
     }
 
-    if (uiState.selectedListing == null) {
-      Box(
-        modifier = modifier.systemBarsPadding()
-      ) {
-        ListingMap(
-          modifier = modifier,
-          navController = navHostController,
-          listingViewModel = listingViewModel,
-          uiState = uiState
-        )
+    Box(
+      modifier = modifier.systemBarsPadding()
+    ) {
+      ListingMap(
+        modifier = modifier,
+        navController = navHostController,
+        listingViewModel = listingViewModel,
+        uiState = uiState
+      )
 
-        Column(
-          modifier = modifier
-            .align(Alignment.TopEnd)
-            .padding(8.dp)
-        )
-        {  
-          FilledIconButton(
-            onClick = { listingViewModel.menuButtonInteract() },
-          ) {
-            Icon(
-              imageVector = menu,
-              contentDescription = "Menu"
-            )
+      Column(
+        modifier = modifier
+          .align(Alignment.TopEnd)
+          .padding(8.dp)
+      )
+      {  
+        FilledIconButton(
+          onClick = { listingViewModel.menuButtonInteract() },
+        ) {
+          Icon(
+            imageVector = menu,
+            contentDescription = "Menu"
+          )
+        }
+        DropdownMenu(
+          expanded = uiState.menuExpanded,
+          onDismissRequest = {
+            listingViewModel.menuButtonInteract( toggle = false )
           }
-          DropdownMenu(
-            expanded = uiState.menuExpanded,
-            onDismissRequest = {
-              listingViewModel.menuButtonInteract( toggle = false )
-            }
-          ) 
-          {
-            DropdownMenuItem(
-              text = { Text("View Reservations") },
-              onClick = { listingViewModel.reservationViewInteract(navHostController = navHostController) }
-            )
-          }
+        ) 
+        {
+          DropdownMenuItem(
+            text = { Text("View Reservations") },
+            onClick = { listingViewModel.reservationViewInteract(navHostController = navHostController) }
+          )
         }
       }
-    } else {
-      ListingDetailScreen(
-        listingViewModel = listingViewModel,
-        uiState = uiState,
-        navController = navHostController
-      )
     }
-}
+  } 
+
 
 
 @Composable
@@ -178,6 +175,7 @@ fun ListingMap(
 ) {
   val scope = rememberCoroutineScope() 
   val configuration = LocalConfiguration.current
+  var selectedIndex by remember { mutableIntStateOf(0) }
 
   @OptIn(ExperimentalMaterial3Api::class)
   val scaffoldState = rememberBottomSheetScaffoldState( 
@@ -201,31 +199,117 @@ fun ListingMap(
         scaffoldState = scaffoldState,
         sheetPeekHeight = configuration.screenHeightDp.dp / 3,
         sheetContent = {
-            LazyColumn (
-                Modifier.fillMaxSize()
-                  .padding(start = 8.dp, end = 8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+
+          when (uiState.sheetActiveView) {
+
+            SheetActiveView.Listing, SheetActiveView.Reservation ->  {
+
+            Column(
+              horizontalAlignment = Alignment.CenterHorizontally
             ) {
-              items(uiState.listings ?: emptyList()) { listing ->
-                val foodStop = uiState.foodStopIDMap?.get(listing.foodStopId)
-                ListingCard(
-                  listing = listing,
-                  foodStop = foodStop,
-                  color = foodStop?.hexColor ?: "000000",
-                  onClick = {
-                    listingViewModel.selectListing(listing)
+              
+                SingleChoiceSegmentedButtonRow(
+                  modifier = modifier.fillMaxWidth(0.95f)
+                    .padding(bottom = 8.dp),
+                  
+                ) { 
+                  SegmentedButton(
+                    label = { Text("Listings") },
+                    onClick = { listingViewModel.toggleListingView() },
+                    selected = uiState.sheetActiveView == SheetActiveView.Listing,
+                    shape = SegmentedButtonDefaults.itemShape(
+                      index = 0,
+                      count = 2
+                    ),
+                  )
+                  SegmentedButton(
+                    label = { Text("Reservations") },
+                    onClick = { listingViewModel.toggleListingView() },
+                    selected = uiState.sheetActiveView == SheetActiveView.Reservation,
+                    shape = SegmentedButtonDefaults.itemShape(
+                      index = 1,
+                      count = 2
+                    ),
+                  )
+                }
+
+                when(uiState.sheetActiveView) {
+
+                  SheetActiveView.Listing -> LazyColumn (
+                      Modifier.fillMaxSize()
+                        .padding(start = 8.dp, end = 8.dp),
+                      horizontalAlignment = Alignment.CenterHorizontally,
+                  ) {
+                    items(uiState.listings?.filter { 
+                      //if (uiState.selectedFoodStop != null) { it.foodStopId == uiState.selectedFoodStop.foodStopId }
+                      //  else true
+                      true // TODO: for future use (Filter)
+                    } ?: emptyList()) { listing ->
+                      val foodStop = uiState.foodStopIDMap?.get(listing.foodStopId)
+                      ListingCard(
+                        listing = listing,
+                        foodStop = foodStop,
+                        color = foodStop?.hexColor ?: "000000",
+                        onClick = {
+                          listingViewModel.selectListing(listing)
+                          listingViewModel.getListingImage(listing)
+                          scope.launch { scaffoldState.bottomSheetState.expand() }
+                        }
+                      )
+                    }
+
                   }
-                )
+
+                  else -> ReservationScreen(
+                    email = uiState.email,
+                    credential = uiState.credential,
+                    navHostController = navController
+                  )
+
+                }
 
               }
             }
+
+            SheetActiveView.FoodStop -> {
+              Column {
+                TopNavigationBar(
+                  text = "Food Stop Info",
+                  onClick = {
+                    listingViewModel.selectFoodStop(null)
+                    scope.launch { scaffoldState.bottomSheetState.partialExpand() }
+                  }
+                )
+                FoodStopInfoScreen(
+                  foodStop = uiState.selectedFoodStop 
+                )
+              }
+            }
+
+            SheetActiveView.ListingInfo -> {
+              Column {
+                TopNavigationBar(
+                  text = "Listing Info",
+                  onClick = {
+                    listingViewModel.deselectListing()
+                    scope.launch { scaffoldState.bottomSheetState.partialExpand() }
+                  }
+                )
+                ListingDetailScreen(
+                  listingViewModel = listingViewModel,
+                  uiState = uiState,
+                  navController = navController
+                )
+              }
+            }
+          }
         }
     ) { innerPadding -> 
       val variant = if (isSystemInDarkTheme()) "fiord" else "liberty"
 
       MaplibreMap(
         baseStyle = BaseStyle.Uri("https://tiles.openfreemap.org/styles/${variant}"),
-        cameraState = camera,
+        cameraState = camera, 
       ) {  
 
         // Serialization baffles me and seems like a rabbit hole
@@ -267,7 +351,12 @@ fun ListingMap(
             iconAnchor = const(SymbolAnchor.Bottom),
             iconAllowOverlap = const(true),
             iconIgnorePlacement = const(false),
-            onClick = { features ->
+            onClick = { 
+              scope.launch {
+                camera.animateTo( CameraPosition(target = Position( latitude = foodstop.lat, longitude = foodstop.lng ), zoom = camera.position.zoom ) )
+                listingViewModel.selectFoodStop(foodstop)
+                scaffoldState.bottomSheetState.expand() 
+              }
               ClickResult.Consume
             },
           )     

@@ -41,15 +41,25 @@ fun MainScreen(
       {
         navController.navigate(ActiveScreen.Listing.name) {
         popUpTo(ActiveScreen.Login.name) { inclusive = true }
+        }
+      } else if (uiState.activeScreen == ActiveScreen.Login &&
+        navController.currentDestination?.route != ActiveScreen.Login.name)
+      {    
+        navController.navigate(ActiveScreen.Listing.name) {
+          popUpTo(navController.graph.id) { inclusive = true }
+        }
       }
     }
-  }
+
   val listingUiState by listingViewModel.uiState.collectAsState()
   NavHost(
     navController = navController,
-    startDestination = ActiveScreen.Login.name,
+    startDestination = ActiveScreen.Splash.name,
     modifier = Modifier
   ) {
+    composable(route = ActiveScreen.Splash.name) {
+      SplashScreen(modifier = modifier)
+    }
     composable(route = ActiveScreen.Login.name) { 
       LoginScreen(modifier = modifier, loginViewModel = loginViewModel, uiState = uiState, navController = navController)
     }
