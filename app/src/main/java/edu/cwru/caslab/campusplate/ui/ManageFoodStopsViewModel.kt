@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.Credentials
 import okio.IOException
-import java.time.LocalDate
-import java.time.ZoneOffset
 
 data class ManageFoodStopsUiState(
     val state: State = State.Idle,
@@ -31,7 +29,7 @@ data class ManageFoodStopsUiState(
     val descriptionField: String = "",
     val quantityField: String = "1",
     val weightOuncesField: String = "",
-    val expirationDateField: String = ""
+    val expirationDateMillis: Long? = null
 )
 
 class ManageFoodStopsViewModel : ViewModel() {
@@ -96,8 +94,8 @@ class ManageFoodStopsViewModel : ViewModel() {
         }
     }
 
-    fun updateExpirationDateField(value: String) {
-        _uiState.update { it.copy(expirationDateField = value) }
+    fun setExpirationDate(millis: Long) {
+        _uiState.update { it.copy(expirationDateMillis = millis) }
     }
 
     fun onBackInteract(navController: NavHostController) {
@@ -109,9 +107,7 @@ class ManageFoodStopsViewModel : ViewModel() {
         val foodStopId = state.selectedFoodStop?.foodStopId ?: return
         val quantity = state.quantityField.toIntOrNull() ?: return
         val weightOunces = state.weightOuncesField.toIntOrNull() ?: return
-        val expirationDate = runCatching {
-            LocalDate.parse(state.expirationDateField).atStartOfDay().toEpochSecond(ZoneOffset.UTC)
-        }.getOrNull() ?: return
+        val expirationDate = (state.expirationDateMillis ?: return) / 1000
 
         _uiState.update { it.copy(state = State.Loading) }
         viewModelScope.launch {
@@ -138,7 +134,7 @@ class ManageFoodStopsViewModel : ViewModel() {
                             descriptionField = "",
                             quantityField = "1",
                             weightOuncesField = "",
-                            expirationDateField = ""
+                            expirationDateMillis = null
                         ) }
                     } else error()
                 } else error()
