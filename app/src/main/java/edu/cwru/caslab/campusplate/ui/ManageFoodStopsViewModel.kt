@@ -1,8 +1,5 @@
 package edu.cwru.caslab.campusplate.ui
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.unit.toSize
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +21,6 @@ data class ManageFoodStopsUiState(
     val managedFoodStops: List<FoodStop>? = null,
     val selectedFoodStop: FoodStop? = null,
     val foodStopMenuExpanded: Boolean = false,
-    val foodStopFieldSize: Size = Size.Zero,
     val titleField: String = "",
     val descriptionField: String = "",
     val quantityField: String = "1",
@@ -68,10 +64,6 @@ class ManageFoodStopsViewModel : ViewModel() {
 
     fun toggleFoodStopMenuExpanded() {
         _uiState.update { it.copy(foodStopMenuExpanded = !uiState.value.foodStopMenuExpanded) }
-    }
-
-    fun setFoodStopFieldSize(coordinates: LayoutCoordinates) {
-        _uiState.update { it.copy(foodStopFieldSize = coordinates.size.toSize()) }
     }
 
     fun updateTitleField(value: String) {
