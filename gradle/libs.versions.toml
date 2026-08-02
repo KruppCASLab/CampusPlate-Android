@@ -11,6 +11,8 @@ kotlin = "2.2.10"
 retrofit ="3.0.0"
 composeBom = "2026.02.01"
 datastore = "1.2.1"
+coil = "3.4.0"
+camera = "1.6.1"
 maplibre = "0.13.0"
 
 [libraries]
@@ -37,6 +39,13 @@ com-squareup-retrofit2-converter-gson = { group = "com.squareup.retrofit2", name
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 androidx-compose-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
 maplibre-compose = { group = "org.maplibre.compose", name = "maplibre-compose-android", version.ref = "maplibre" }
+coil-compose = {group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
+coil-network-okhttp = {group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
+androidx-camera-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camera" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

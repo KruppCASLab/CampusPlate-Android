@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
+import edu.cwru.caslab.campusplate.ui.screens.CameraScreen
 import edu.cwru.caslab.campusplate.ui.screens.MainScreen
 import edu.cwru.caslab.campusplate.ui.theme.CampusPlateTheme
 
