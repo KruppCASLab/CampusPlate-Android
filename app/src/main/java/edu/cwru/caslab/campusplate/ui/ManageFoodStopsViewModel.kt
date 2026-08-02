@@ -203,9 +203,12 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
                         val product = result.body()?.product
                         _uiState.update { it.copy(
                             titleField = "${product?.brands}: ${product?.categories}",
-                            descriptionField = "Allergens: ${product?.allergens?.joinToString(separator = ", ")}",
+                            descriptionField = "Allergens: ${ if (product?.allergens == "") "None" else product?.allergens ?: "None"}",
                             state = State.Success
                         ) }
+                        product?.image_url?.let { url ->
+                          _uiState.update { it.copy( capturedImageUri = Uri.parse(url) ) }
+                        }
                     } else error()
                 } else error()
             } catch (e: IOException) {

@@ -10,6 +10,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
@@ -35,6 +38,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -61,9 +66,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import edu.cwru.caslab.campusplate.R
 import edu.cwru.caslab.campusplate.ui.ManageFoodStopsViewModel
 import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
+import edu.cwru.caslab.campusplate.ui.icons.add_a_photo
+import edu.cwru.caslab.campusplate.ui.icons.barcode_scanner
 import edu.cwru.caslab.campusplate.ui.icons.menu
 import java.time.Instant
 import java.time.ZoneId
@@ -98,6 +108,18 @@ fun ManageFoodStopsScreen(
         initialSelectedDateMillis = uiState.expirationDateMillis
     )
 
+    val options = GmsBarcodeScannerOptions.Builder()
+     .setBarcodeFormats( // Looked up common retail and POS formats
+       Barcode.FORMAT_EAN_13,
+       Barcode.FORMAT_EAN_8,
+       Barcode.FORMAT_UPC_A,
+       Barcode.FORMAT_UPC_E
+     )
+     .enableAutoZoom()
+     .build()
+
+    val scanner = GmsBarcodeScanning.getClient(context, options)
+
     if (showDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
@@ -130,6 +152,22 @@ fun ManageFoodStopsScreen(
             TopNavigationBar(
               text = "Create Listing",
               onClick = { onBackInteract() }
+            )
+
+            AutofillButton(
+              onClick = { 
+                scanner.startScan()
+                  .addOnSuccessListener { barcode ->
+                    val rawValue: String = barcode.rawValue ?: ""
+                    manageFoodStopsViewModel.autofillListing(rawValue)
+                  } 
+              },
+              text = "Autofill With Barcode"
+            )
+            
+            LabeledDivider(
+              text = "Review or Add Details Below",
+              modifier = Modifier.padding(vertical = 8.dp)
             )
 
             AddImageBox(
@@ -203,7 +241,7 @@ fun ManageFoodStopsScreen(
                     )
                 },
                 modifier = Modifier.fillMaxWidth()
-            )  
+            )   
             
         }
         Button(
@@ -281,7 +319,7 @@ fun AddImageBox(
                 verticalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    imageVector = Icons.Default.Add,
+                    imageVector = add_a_photo,
                     contentDescription = "Add image",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(48.dp)
@@ -299,5 +337,61 @@ fun AddImageBox(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun AutofillButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    text: String = "Autofill details"
+) {
+    FilledTonalButton(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(52.dp),
+        enabled = enabled,
+        shape = MaterialTheme.shapes.large,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
+    ) {
+        Icon(
+            imageVector = barcode_scanner,
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+        androidx.compose.foundation.layout.Spacer(modifier = Modifier.size(8.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Composable
+fun LabeledDivider(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+          .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
+        Text(
+            text = text,
+            modifier = Modifier.padding(horizontal = 12.dp),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
     }
 }

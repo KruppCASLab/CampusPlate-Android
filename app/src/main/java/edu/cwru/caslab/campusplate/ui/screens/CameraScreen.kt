@@ -116,7 +116,8 @@ fun CameraScreen(
                         },
                         onLoadingChanged = { loading ->
                             isCameraLoading = loading
-                        }
+                        },
+                        isActive = uiState.takingPicture
                     )
 
                     if (isCameraLoading) {

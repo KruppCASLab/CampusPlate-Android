@@ -8,7 +8,7 @@ data class ProductResponse(
 )
 
 data class Product(
-  val allergens: List<String>,
+  val allergens: String,
   val brands: String,
   val categories: String,
   val image_url: String

@@ -14,6 +14,7 @@ datastore = "1.2.1"
 coil = "3.4.0"
 camera = "1.6.1"
 maplibre = "0.13.0"
+scanner = "16.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,7 @@ androidx-camera-core = { group = "androidx.camera", name = "camera-core", versio
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
 androidx-camera-extensions = { group = "androidx.camera", name = "camera-extensions", version.ref = "camera" }
+play-services-code-scanner = { group = "com.google.android.gms", name = "play-services-code-scanner", version.ref = "scanner" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
