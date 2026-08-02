@@ -1,8 +1,5 @@
 package edu.cwru.caslab.campusplate.ui
 
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.unit.toSize
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
@@ -20,8 +17,7 @@ data class ReservationCreationUiState(
   val quantityFieldValue: String = "1",
   val reservation: Reservation? = null,
   val listing: Listing? = null,
-  val reservationMenuExpanded: Boolean = false,
-  val quantityFieldSize: Size = Size.Zero
+  val reservationMenuExpanded: Boolean = false
 ): UiStateCommon()
 
 class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
@@ -34,12 +30,6 @@ class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
         quantityFieldValue = value
       ) }
     }
-  }
-
-  fun setQuantityFieldSize(coordinates: LayoutCoordinates) {
-    _uiState.update { it.copy(
-        quantityFieldSize = coordinates.size.toSize()
-      ) }
   }
 
   fun setListing(listing: Listing?) {

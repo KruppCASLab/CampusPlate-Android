@@ -25,17 +25,28 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,7 +65,19 @@ import edu.cwru.caslab.campusplate.R
 import edu.cwru.caslab.campusplate.ui.ManageFoodStopsViewModel
 import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import edu.cwru.caslab.campusplate.ui.icons.menu
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+private val dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
+
+private fun formatEpochMillis(millis: Long): String =
+    Instant.ofEpochMilli(millis)
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate()
+        .format(dateFormatter)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManageFoodStopsScreen(
     modifier: Modifier = Modifier,
@@ -69,6 +92,30 @@ fun ManageFoodStopsScreen(
     val context = LocalContext.current
     manageFoodStopsViewModel.setAuthorization(email = email, credential = credential)
     manageFoodStopsViewModel.getManagedFoodStops()
+
+    var showDatePicker by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = uiState.expirationDateMillis
+    )
+
+    if (showDatePicker) {
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let {
+                        manageFoodStopsViewModel.setExpirationDate(it)
+                    }
+                    showDatePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
 
     if (!uiState.takingPicture || sheetEnabledOverride) Column(
         modifier = modifier
@@ -89,33 +136,33 @@ fun ManageFoodStopsScreen(
               imageUri = uiState.capturedImageUri,
               onClick = { manageFoodStopsViewModel.onCameraInteract() }
             )
-
-            OutlinedTextField(
-                value = uiState.selectedFoodStop?.name ?: "",
-                readOnly = true,
-                label = { Text("Food Stop") },
-                onValueChange = {},
-                trailingIcon = {
-                    Icon(
-                        menu,
-                        contentDescription = "Select food stop",
-                        modifier = Modifier.clickable { manageFoodStopsViewModel.toggleFoodStopMenuExpanded() }
-                    )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { manageFoodStopsViewModel.setFoodStopFieldSize(it) }
-            )
-            DropdownMenu(
+ 
+            ExposedDropdownMenuBox(
                 expanded = uiState.foodStopMenuExpanded,
-                onDismissRequest = { manageFoodStopsViewModel.toggleFoodStopMenuExpanded() },
-                modifier = Modifier.width(with(LocalDensity.current) { uiState.foodStopFieldSize.width.toDp() })
+                onExpandedChange = { manageFoodStopsViewModel.toggleFoodStopMenuExpanded() }
             ) {
-                uiState.managedFoodStops?.forEach { foodStop ->
-                    DropdownMenuItem(
-                        text = { Text(foodStop.name) },
-                        onClick = { manageFoodStopsViewModel.setSelectedFoodStop(foodStop) }
-                    )
+                OutlinedTextField(
+                    value = uiState.selectedFoodStop?.name ?: "",
+                    readOnly = true,
+                    label = { Text("Food Stop") },
+                    onValueChange = {},
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = uiState.foodStopMenuExpanded)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                )
+                ExposedDropdownMenu(
+                    expanded = uiState.foodStopMenuExpanded,
+                    onDismissRequest = { manageFoodStopsViewModel.toggleFoodStopMenuExpanded() }
+                ) {
+                    uiState.managedFoodStops?.forEach { foodStop ->
+                        DropdownMenuItem(
+                            text = { Text(foodStop.name) },
+                            onClick = { manageFoodStopsViewModel.setSelectedFoodStop(foodStop) }
+                        )
+                    }
                 }
             } 
 
@@ -144,9 +191,17 @@ fun ManageFoodStopsScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
-                value = uiState.expirationDateField,
-                label = { Text("Expiration Date (YYYY-MM-DD)") },
-                onValueChange = { manageFoodStopsViewModel.updateExpirationDateField(it) },
+                value = uiState.expirationDateMillis?.let { formatEpochMillis(it) } ?: "",
+                readOnly = true,
+                label = { Text("Expiration Date") },
+                onValueChange = {},
+                trailingIcon = {
+                    Icon(
+                        Icons.Default.DateRange,
+                        contentDescription = "Select date",
+                        modifier = Modifier.clickable { showDatePicker = true }
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
             )  
             
@@ -246,16 +301,3 @@ fun AddImageBox(
         }
     }
 }
-
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun ManageFoodStopsScreenPreview() {
-//    CampusPlateTheme {
-//        ManageFoodStopsScreen(
-//            navHostController = rememberNavController(),
-//            email = "",
-//            credential = "",
-//            manageFoodStopsViewModel = ManageFoodStopsViewModel()
-//        )
-//    }
-//}

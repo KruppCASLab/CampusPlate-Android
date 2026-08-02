@@ -40,15 +40,14 @@ data class ManageFoodStopsUiState(
     val managedFoodStops: List<FoodStop>? = null,
     val selectedFoodStop: FoodStop? = null,
     val foodStopMenuExpanded: Boolean = false,
-    val foodStopFieldSize: Size = Size.Zero,
     val titleField: String = "",
     val descriptionField: String = "",
     val quantityField: String = "1",
     val weightOuncesField: String = "",
     val expirationDateField: String = "",
     val capturedImageUri: Uri? = null,
-    val takingPicture: Boolean = false
-
+    val takingPicture: Boolean = false,
+    val expirationDateMillis: Long? = null
 ): UiStateCommon()
 
 class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
@@ -113,10 +112,6 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
         _uiState.update { it.copy(foodStopMenuExpanded = !uiState.value.foodStopMenuExpanded) }
     }
 
-    fun setFoodStopFieldSize(coordinates: LayoutCoordinates) {
-        _uiState.update { it.copy(foodStopFieldSize = coordinates.size.toSize()) }
-    }
-
     fun updateTitleField(value: String) {
         _uiState.update { it.copy(titleField = value) }
     }
@@ -137,8 +132,8 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
         }
     }
 
-    fun updateExpirationDateField(value: String) {
-        _uiState.update { it.copy(expirationDateField = value) }
+    fun setExpirationDate(millis: Long) {
+        _uiState.update { it.copy(expirationDateMillis = millis) }
     }
 
     fun onBackInteract(navController: NavHostController) {
@@ -151,9 +146,7 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
         val foodStopId = state.selectedFoodStop?.foodStopId ?: return
         val quantity = state.quantityField.toIntOrNull() ?: return
         val weightOunces = state.weightOuncesField.toIntOrNull() ?: return
-        val expirationDate = runCatching {
-            LocalDate.parse(state.expirationDateField).atStartOfDay().toEpochSecond(ZoneOffset.UTC)
-        }.getOrNull() ?: return
+        val expirationDate = (state.expirationDateMillis ?: return) / 1000
 
         _uiState.update { it.copy(state = State.Loading) }
         viewModelScope.launch {
@@ -185,7 +178,7 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
                             descriptionField = "",
                             quantityField = "1",
                             weightOuncesField = "",
-                            expirationDateField = ""
+                            expirationDateMillis = null
                         ) }
                         clearImage()
                         onComplete()
