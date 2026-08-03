@@ -26,6 +26,7 @@ data class ListingUiState (
   val state: State = State.Idle,
   val imageState: State = State.Idle,
   val listings: List<Listing>? = null,
+  val searchQuery: String = "",
   val foodStops: List<FoodStop>? = null,
   val selectedListing: Listing? = null,
   val selectedFoodStop: FoodStop? = null,
@@ -80,6 +81,10 @@ class ListingViewModel: ViewModel() {
     if (uiState.value.sheetActiveView == SheetActiveView.Listing) { 
       _uiState.update { it.copy( sheetActiveView = SheetActiveView.Reservation ) }
     } else _uiState.update { it.copy( sheetActiveView = SheetActiveView.Listing ) }
+  }
+
+  fun updateSearchQuery(query: String) {
+    _uiState.update { it.copy(searchQuery = query) }
   }
 
   fun getListings() {

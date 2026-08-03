@@ -31,9 +31,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -77,6 +81,12 @@ private fun String.toColor(): Color{
   } catch(e: Exception) {
     Color.Black
   }
+}
+
+private fun Listing.matchesSearch(query: String): Boolean {
+  if (query.isBlank()) return true
+  return title.contains(query, ignoreCase = true) ||
+    description.contains(query, ignoreCase = true)
 }
 
 @Composable
@@ -217,31 +227,62 @@ fun ListingMap(
                   )
                 }
 
+                if (uiState.sheetActiveView == SheetActiveView.Listing) {
+                  OutlinedTextField(
+                    value = uiState.searchQuery,
+                    onValueChange = { listingViewModel.updateSearchQuery(it) },
+                    label = { Text("Search") },
+                    placeholder = { Text("Search by name or description") },
+                    leadingIcon = {
+                      Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                    },
+                    trailingIcon = {
+                      if (uiState.searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { listingViewModel.updateSearchQuery("") }) {
+                          Icon(imageVector = Icons.Default.Close, contentDescription = "Clear search")
+                        }
+                      }
+                    },
+                    singleLine = true,
+                    modifier = modifier.fillMaxWidth(0.95f)
+                      .padding(bottom = 8.dp)
+                  )
+                }
+
                 when(uiState.sheetActiveView) {
 
-                  SheetActiveView.Listing -> LazyColumn (
-                      Modifier.fillMaxSize()
-                        .padding(start = 8.dp, end = 8.dp),
-                      horizontalAlignment = Alignment.CenterHorizontally,
-                  ) {
-                    items(uiState.listings?.filter { 
-                      //if (uiState.selectedFoodStop != null) { it.foodStopId == uiState.selectedFoodStop.foodStopId }
-                      //  else true
-                      true // TODO: for future use (Filter)
-                    } ?: emptyList()) { listing ->
-                      val foodStop = uiState.foodStopIDMap?.get(listing.foodStopId)
-                      ListingCard(
-                        listing = listing,
-                        foodStop = foodStop,
-                        color = foodStop?.hexColor ?: "000000",
-                        onClick = {
-                          listingViewModel.selectListing(listing)
-                          listingViewModel.getListingImage(listing)
-                          scope.launch { scaffoldState.bottomSheetState.expand() }
-                        }
-                      )
-                    }
+                  SheetActiveView.Listing -> {
+                    val filteredListings = uiState.listings?.filter {
+                      it.matchesSearch(uiState.searchQuery)
+                    } ?: emptyList()
 
+                    if (filteredListings.isEmpty() && uiState.searchQuery.isNotBlank()) {
+                      Text(
+                        text = "No listings match \"${uiState.searchQuery}\"",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp)
+                      )
+                    } else {
+                      LazyColumn(
+                          Modifier.fillMaxSize()
+                            .padding(start = 8.dp, end = 8.dp),
+                          horizontalAlignment = Alignment.CenterHorizontally,
+                      ) {
+                        items(filteredListings) { listing ->
+                          val foodStop = uiState.foodStopIDMap?.get(listing.foodStopId)
+                          ListingCard(
+                            listing = listing,
+                            foodStop = foodStop,
+                            color = foodStop?.hexColor ?: "000000",
+                            onClick = {
+                              listingViewModel.selectListing(listing)
+                              listingViewModel.getListingImage(listing)
+                              scope.launch { scaffoldState.bottomSheetState.expand() }
+                            }
+                          )
+                        }
+                      }
+                    }
                   }
 
                   else -> ReservationScreen(
