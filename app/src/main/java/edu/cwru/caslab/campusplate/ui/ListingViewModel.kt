@@ -1,8 +1,11 @@
 package edu.cwru.caslab.campusplate.ui
 
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
@@ -18,7 +21,7 @@ import okhttp3.Credentials
 import okio.IOException
 import kotlin.io.encoding.Base64
 
-enum class SheetActiveView { Listing, FoodStop, ListingInfo, Reservation }
+enum class SheetActiveView { Listing, FoodStop, ListingInfo, Reservation, Manage }
 
 data class ListingUiState (
   val email: String = "",
@@ -168,7 +171,7 @@ class ListingViewModel: ViewModel() {
   }
 
   fun manageFoodStopsInteract(navController: NavHostController) {
-    navController.navigate(ActiveScreen.ManageFoodStops.name)
+    changeView(view = SheetActiveView.Manage)
   }
 
   //fun getImage() {

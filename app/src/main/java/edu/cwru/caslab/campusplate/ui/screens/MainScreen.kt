@@ -19,6 +19,7 @@ import edu.cwru.caslab.campusplate.ui.ActiveScreen
 import edu.cwru.caslab.campusplate.ui.LoginViewModel
 import androidx.compose.runtime.getValue
 import edu.cwru.caslab.campusplate.ui.ListingViewModel
+import edu.cwru.caslab.campusplate.ui.ManageFoodStopsViewModel
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES_NAME)
@@ -40,16 +41,18 @@ fun MainScreen(
         navController.currentDestination?.route != ActiveScreen.Listing.name)
       {
         navController.navigate(ActiveScreen.Listing.name) {
-        popUpTo(ActiveScreen.Login.name) { inclusive = true }
+          popUpTo(ActiveScreen.Splash.name) { inclusive = true }
         }
       } else if (uiState.activeScreen == ActiveScreen.Login &&
         navController.currentDestination?.route != ActiveScreen.Login.name)
       {    
-        navController.navigate(ActiveScreen.Listing.name) {
-          popUpTo(navController.graph.id) { inclusive = true }
+        navController.navigate(ActiveScreen.Login.name) {
+          popUpTo(ActiveScreen.Splash.name) { inclusive = true }
         }
       }
     }
+
+  val manageFoodStopsViewModel: ManageFoodStopsViewModel = viewModel()
 
   val listingUiState by listingViewModel.uiState.collectAsState()
   NavHost(
@@ -75,8 +78,8 @@ fun MainScreen(
     composable(route = ActiveScreen.ReservationCreation.name) {
       ReservationCreationScreen(modifier = modifier, navController = navController, email = uiState.activeEmail, credential = uiState.credential, listing = listingUiState.selectedListing)
     }
-    composable(route = ActiveScreen.ManageFoodStops.name) {
-      ManageFoodStopsScreen(modifier = modifier, navHostController = navController, email = uiState.activeEmail, credential = uiState.credential)
+    composable(route = ActiveScreen.Camera.name) {
+      CameraScreen(viewModel = manageFoodStopsViewModel, navController = navController)
     }
   }
 }
