@@ -25,6 +25,7 @@ import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.model.Reservation
 import edu.cwru.caslab.campusplate.ui.ReservationUiState
 import edu.cwru.caslab.campusplate.ui.ReservationViewModel
+import edu.cwru.caslab.campusplate.ui.components.EmptyPlaceholder
 import edu.cwru.caslab.campusplate.ui.components.GenericClickableCard
 import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import kotlinx.coroutines.delay
@@ -65,7 +66,7 @@ private fun getMinutes(from: Long, to: Long): Int {
 @Composable
 fun ReservationScreen(
   modifier: Modifier = Modifier,
-  reservationViewModel: ReservationViewModel = viewModel(),
+  reservationViewModel: ReservationViewModel = viewModel(factory = ReservationViewModel.Factory),
   navHostController: NavHostController,
   email: String,
   credential: String
@@ -92,11 +93,9 @@ fun ReservationScreen(
       horizontalAlignment = Alignment.CenterHorizontally
     ) {  
 
-      if (uiState.reservations?.isEmpty() ?: true) {
-        //TODO: Nothing Here Icon
-      }
-
-      LazyColumn(
+      if (uiState.reservations.isNullOrEmpty()) {
+        EmptyPlaceholder( text = "No Active Reservations" )
+      } else LazyColumn(
         Modifier.fillMaxSize()
         .padding(start = 8.dp, end = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -128,7 +127,7 @@ fun ReservationScreen(
 @Composable
 fun SelectedReservationScreen(
   modifier: Modifier = Modifier,
-  reservationViewModel: ReservationViewModel = viewModel(),
+  reservationViewModel: ReservationViewModel = viewModel(factory = ReservationViewModel.Factory),
   uiState: ReservationUiState
 ) {
   Column(
@@ -138,6 +137,15 @@ fun SelectedReservationScreen(
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.Center
   ) {
+
+    val listingId = uiState.selectedReservation?.listingId
+    val listing = uiState.listingIDMap?.get(listingId)
+
+    TopNavigationBar(
+      text = "${listing?.title}",
+      onClick = { reservationViewModel.deselectReservation() }
+    )
+
     Text(
       text = uiState.selectedReservation?.code.toString(),
       style = MaterialTheme.typography.displayMedium
@@ -146,20 +154,7 @@ fun SelectedReservationScreen(
       modifier = modifier.padding(16.dp),
       text = "Use this code to pick up your reservation.",
       style = MaterialTheme.typography.titleMedium
-    )
-    Button(
-      modifier = Modifier
-        .fillMaxWidth(0.4f),
-      onClick = { reservationViewModel.deselectReservation() },
-      colors = ButtonDefaults.buttonColors(
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary
-      )
-  ) {
-    Text(
-      text = "Back" 
-    )
-  }
+    ) 
 
   }
 }

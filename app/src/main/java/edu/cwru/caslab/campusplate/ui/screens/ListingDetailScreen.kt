@@ -76,7 +76,7 @@ fun openLocation(context: Context, latitude: Double, longitude: Double, label: S
 @Composable
 fun ListingDetailScreen(
   modifier: Modifier = Modifier,
-  listingViewModel: ListingViewModel = viewModel(),
+  listingViewModel: ListingViewModel = viewModel(factory = ListingViewModel.Factory),
   uiState: ListingUiState,
   navController: NavHostController
 ) {

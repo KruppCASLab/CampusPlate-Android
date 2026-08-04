@@ -1,12 +1,16 @@
 package edu.cwru.caslab.campusplate.ui
 
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
+import edu.cwru.caslab.campusplate.CampusPlateApp
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.model.Reservation
 import edu.cwru.caslab.campusplate.model.ReservationRequest
-import edu.cwru.caslab.campusplate.network.CampusPlateApi
+import edu.cwru.caslab.campusplate.repository.CampusPlateApiRepository
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.Credentials
@@ -16,13 +20,27 @@ data class ReservationCreationUiState(
   val authorization: String = "",
   val quantityFieldValue: String = "1",
   val reservation: Reservation? = null,
+  val email: String = "",
   val listing: Listing? = null,
   val reservationMenuExpanded: Boolean = false
 ): UiStateCommon()
 
-class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
+class ReservationCreationViewModel(
+  private val apiRepository: CampusPlateApiRepository
+): ViewModelCommon<ReservationCreationUiState>(
   defaultState = ReservationCreationUiState()
 ) {
+
+  companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as CampusPlateApp
+                ReservationCreationViewModel(
+                    apiRepository = app.appContainer.apiRepository
+                )
+            }
+        }
+  }
 
   fun setQuantityFieldValue(value: String) {
     if (value.isDigitsOnly()) {
@@ -40,6 +58,7 @@ class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
 
   fun setAuthorization(email: String, credential: String) {
     _uiState.update { it.copy(
+      email = email,
       authorization = Credentials.basic( username = email, password = credential )
     ) }
   }
@@ -71,7 +90,8 @@ class ReservationCreationViewModel: ViewModelCommon<ReservationCreationUiState>(
           onLoad = { it.copy(state = State.Loading) },
           onError = { it.copy(state = State.Error) },
           apiCall = { 
-            CampusPlateApi.retrofitService.createReservation(
+            apiRepository.createReservation(
+              email = uiState.value.email, 
               authorization = uiState.value.authorization,
               reservationRequest = reservationRequest
             )

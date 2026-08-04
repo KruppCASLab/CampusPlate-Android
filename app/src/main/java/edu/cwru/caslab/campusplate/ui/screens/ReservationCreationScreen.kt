@@ -34,7 +34,7 @@ import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 @Composable
 fun ReservationCreationScreen(
   modifier: Modifier = Modifier,
-  reservationCreationViewModel: ReservationCreationViewModel= viewModel(),
+  reservationCreationViewModel: ReservationCreationViewModel= viewModel(factory = ReservationCreationViewModel.Factory),
   email: String,
   credential: String,
   listing: Listing?,

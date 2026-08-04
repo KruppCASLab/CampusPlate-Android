@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import edu.cwru.caslab.campusplate.LoginViewModelFactory
 import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
 import edu.cwru.caslab.campusplate.security.KeystoreCryptographer
 import edu.cwru.caslab.campusplate.ui.ActiveScreen
@@ -27,12 +26,8 @@ private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES_NA
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel (
-      factory = LoginViewModelFactory (
-          StoredCredentialRepository(LocalContext.current.dataStore, KeystoreCryptographer())
-      )
-    ),
-    listingViewModel: ListingViewModel = viewModel(),
+    loginViewModel: LoginViewModel = viewModel ( factory = LoginViewModel.Factory ),
+    listingViewModel: ListingViewModel = viewModel( factory = ListingViewModel.Factory ),
     navController: NavHostController = rememberNavController()
 ) {
   val uiState by loginViewModel.uiState.collectAsState()
@@ -41,10 +36,11 @@ fun MainScreen(
         navController.currentDestination?.route != ActiveScreen.Listing.name)
       {
         navController.navigate(ActiveScreen.Listing.name) {
-          popUpTo(ActiveScreen.Splash.name) { inclusive = true }
+          popUpTo(navController.graph.id) { inclusive = true }
         }
       } else if (uiState.activeScreen == ActiveScreen.Login &&
-        navController.currentDestination?.route != ActiveScreen.Login.name)
+        navController.currentDestination?.route == ActiveScreen.Splash.name
+      )
       {    
         navController.navigate(ActiveScreen.Login.name) {
           popUpTo(ActiveScreen.Splash.name) { inclusive = true }
@@ -52,7 +48,7 @@ fun MainScreen(
       }
     }
 
-  val manageFoodStopsViewModel: ManageFoodStopsViewModel = viewModel()
+  val manageFoodStopsViewModel: ManageFoodStopsViewModel = viewModel(factory = ManageFoodStopsViewModel.Factory)
 
   val listingUiState by listingViewModel.uiState.collectAsState()
   NavHost(

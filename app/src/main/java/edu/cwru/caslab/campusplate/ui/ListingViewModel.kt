@@ -7,11 +7,15 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
+import edu.cwru.caslab.campusplate.CampusPlateApp
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.Listing
-import edu.cwru.caslab.campusplate.network.CampusPlateApi
+import edu.cwru.caslab.campusplate.repository.CampusPlateApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,9 +34,11 @@ data class ListingUiState (
   val imageState: State = State.Idle,
   val listings: List<Listing>? = null,
   val foodStops: List<FoodStop>? = null,
+  val managedFoodStops: List<FoodStop>? = null,
   val selectedListing: Listing? = null,
   val selectedFoodStop: FoodStop? = null,
   val foodStopIDMap: Map<Int, FoodStop>? = null,
+  val managedFoodStopIDMap: Map<Int, FoodStop>? = null,
   val sheetActiveView: SheetActiveView = SheetActiveView.Listing,
   val listingImageMap: MutableMap<Int, ImageBitmap> = mutableMapOf<Int, ImageBitmap>(),
   val menuExpanded: Boolean = false
@@ -45,10 +51,23 @@ fun String.decodeBase64ToByteArray(): ByteArray { // Helper
   return Base64.decode(byteArray, 0, byteArray.size)
 }
 
-class ListingViewModel: ViewModel() {
+class ListingViewModel(
+  private val apiRepository: CampusPlateApiRepository
+): ViewModel() {
 
   private var _uiState: MutableStateFlow<ListingUiState> = MutableStateFlow(ListingUiState())
   val uiState: StateFlow<ListingUiState> = _uiState.asStateFlow()
+
+  companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as CampusPlateApp
+                ListingViewModel(
+                    apiRepository = app.appContainer.apiRepository
+                )
+            }
+        }
+  }
 
   private fun getAuthorizaton(): String {
     return Credentials.basic(username = uiState.value.email, password = uiState.value.credential)
@@ -89,7 +108,7 @@ class ListingViewModel: ViewModel() {
     viewModelScope.launch { 
       try {
         _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
-        val listResult = CampusPlateApi.retrofitService.getListings(authorization =  getAuthorizaton())
+        val listResult = apiRepository.getListings(email = uiState.value.email, authorization =  getAuthorizaton())
 
         if (listResult.isSuccessful) {
           if (listResult.body()?.data != null) {
@@ -110,7 +129,9 @@ class ListingViewModel: ViewModel() {
     viewModelScope.launch { 
       try {
         _uiState.update { it.copy( imageState = State.Loading ) }
-        val listResult = CampusPlateApi.retrofitService.getListingImage(authorization = getAuthorizaton(), id = listing.listingId.toString())
+
+        val listResult = apiRepository.getListingImage(email = uiState.value.email, authorization = getAuthorizaton(), id = listing.listingId.toString())
+
         if (listResult.isSuccessful) {
           if (listResult.body()?.data != null) {
             val imageString = listResult.body()?.data ?: ""
@@ -131,13 +152,35 @@ class ListingViewModel: ViewModel() {
     viewModelScope.launch { 
       try {
         _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
-        val listResult = CampusPlateApi.retrofitService.getFoodStops(authorization =  getAuthorizaton())
+        val listResult = apiRepository.getFoodStops(email = uiState.value.email, authorization =  getAuthorizaton())
 
         if (listResult.isSuccessful) {
           if (listResult.body()?.data != null) {
             _uiState.update { currentState -> currentState.copy(
               foodStops = listResult.body()?.data,
               foodStopIDMap = listResult.body()?.data?.associateBy({ it.foodStopId }, { it } ),
+              state = State.Success
+            ) }
+          } else error()
+        } else error()
+
+      } catch (e: IOException) {
+        error()
+      }
+    } 
+  }
+
+  fun getManagedFoodStops() { // TODO: Can Be Simplified
+    viewModelScope.launch { 
+      try {
+        _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
+        val listResult = apiRepository.getManagedFoodStops(email = uiState.value.email, authorization =  getAuthorizaton())
+
+        if (listResult.isSuccessful) {
+          if (listResult.body()?.data != null) {
+            _uiState.update { currentState -> currentState.copy(
+              managedFoodStops = listResult.body()?.data,
+              managedFoodStopIDMap = listResult.body()?.data?.associateBy({ it.foodStopId }, { it } ),
               state = State.Success
             ) }
           } else error()

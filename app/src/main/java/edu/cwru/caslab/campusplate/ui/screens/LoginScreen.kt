@@ -39,7 +39,7 @@ import edu.cwru.caslab.campusplate.ui.components.Throbber
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel(),
+    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.Factory),
     uiState: LoginUiState,
     navController: NavHostController
 ) {

@@ -96,7 +96,7 @@ fun ManageFoodStopsScreen(
     credential: String,
     onBackInteract: () -> Unit,
     sheetEnabledOverride: Boolean = false,
-    manageFoodStopsViewModel: ManageFoodStopsViewModel = viewModel()
+    manageFoodStopsViewModel: ManageFoodStopsViewModel = viewModel(factory = ManageFoodStopsViewModel.Factory)
 ) {
     val uiState by manageFoodStopsViewModel.uiState.collectAsState()
     val context = LocalContext.current

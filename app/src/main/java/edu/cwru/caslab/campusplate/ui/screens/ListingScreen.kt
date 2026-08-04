@@ -54,6 +54,7 @@ import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.ui.SheetActiveView
+import edu.cwru.caslab.campusplate.ui.components.EmptyPlaceholder
 import edu.cwru.caslab.campusplate.ui.components.GenericClickableCard
 import edu.cwru.caslab.campusplate.ui.components.TopNavigationBar
 import edu.cwru.caslab.campusplate.ui.icons.getMarkerImage
@@ -116,7 +117,7 @@ fun ListingScreen(
   navHostController: NavHostController,
   email: String,
   credential: String,
-  listingViewModel: ListingViewModel = viewModel()
+  listingViewModel: ListingViewModel = viewModel(factory = ListingViewModel.Factory)
 ) {
     val uiState by listingViewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope() 
@@ -133,6 +134,7 @@ fun ListingScreen(
       while(true) {
           listingViewModel.getListings()
           listingViewModel.getFoodStops()
+          listingViewModel.getManagedFoodStops()
           delay(15.seconds)
       }
     }
@@ -149,7 +151,7 @@ fun ListingScreen(
         scaffoldState = scaffoldState,
         uiState = uiState
       )
-        if (uiState.foodStops?.any { it.managed != 0 } == true
+        if ( !uiState.managedFoodStops.isNullOrEmpty()
           && uiState.sheetActiveView != SheetActiveView.Manage) {
           FilledIconButton(
             onClick = { 
@@ -178,7 +180,7 @@ fun ListingScreen(
 fun ListingMap(
   modifier: Modifier = Modifier,
   navController: NavHostController,
-  listingViewModel: ListingViewModel = viewModel(),
+  listingViewModel: ListingViewModel = viewModel(factory = ListingViewModel.Factory),
   scaffoldState: BottomSheetScaffoldState,
   uiState: ListingUiState
 ) {
@@ -244,7 +246,9 @@ fun ListingMap(
 
                 when(uiState.sheetActiveView) {
 
-                  SheetActiveView.Listing -> LazyColumn (
+                  SheetActiveView.Listing -> if (uiState.listings.isNullOrEmpty()) {
+                    EmptyPlaceholder( text = "No Listings Currently Available" )
+                  } else LazyColumn (
                       Modifier.fillMaxSize()
                         .padding(start = 8.dp, end = 8.dp),
                       horizontalAlignment = Alignment.CenterHorizontally,

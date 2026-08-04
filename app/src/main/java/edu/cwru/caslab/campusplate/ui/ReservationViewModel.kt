@@ -1,11 +1,15 @@
 package edu.cwru.caslab.campusplate.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
+import edu.cwru.caslab.campusplate.CampusPlateApp
 import edu.cwru.caslab.campusplate.model.Listing
 import edu.cwru.caslab.campusplate.model.Reservation
-import edu.cwru.caslab.campusplate.network.CampusPlateApi
+import edu.cwru.caslab.campusplate.repository.CampusPlateApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,16 +27,30 @@ data class ReservationUiState (
   val reservations: List<Reservation>? = null,
   val selectedReservation: Reservation? = null,
   val listings: List<Listing>? = null,
+  val email: String = "",
   val listingIDMap: Map<Int, Listing>? = null,
   val listing: Listing? = null,
   val currentTimeMillis: Long = Clock.System.now()
     .toEpochMilliseconds()
 )
 
-class ReservationViewModel: ViewModel() {
+class ReservationViewModel(
+  private val apiRepository: CampusPlateApiRepository
+): ViewModel() {
 
   private var _uiState: MutableStateFlow<ReservationUiState> = MutableStateFlow(ReservationUiState())
   val uiState: StateFlow<ReservationUiState> = _uiState.asStateFlow() 
+
+  companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as CampusPlateApp
+                ReservationViewModel(
+                    apiRepository = app.appContainer.apiRepository
+                )
+            }
+        }
+  }
 
   @OptIn(kotlin.time.ExperimentalTime::class)
   fun updateTimeMillis() {
@@ -48,6 +66,7 @@ class ReservationViewModel: ViewModel() {
 
   fun setAuthorization(email: String, credential: String) {
     _uiState.update { it.copy(
+      email = email,
       authorization = Credentials.basic( username = email, password = credential )
     ) }
   }
@@ -56,7 +75,7 @@ class ReservationViewModel: ViewModel() {
     viewModelScope.launch { 
       try {
         _uiState.update { it.copy( state = State.Loading ) }
-        val listResult = CampusPlateApi.retrofitService.getListings(authorization = uiState.value.authorization)
+        val listResult = apiRepository.getListings(email = uiState.value.email, authorization = uiState.value.authorization)
 
         if (listResult.isSuccessful) {
           if (listResult.body()?.data != null) {
@@ -78,7 +97,7 @@ class ReservationViewModel: ViewModel() {
     viewModelScope.launch { 
       try {
         _uiState.update { it.copy( state = State.Loading ) }
-        val listResult = CampusPlateApi.retrofitService.getReservations(authorization = uiState.value.authorization)
+        val listResult = apiRepository.getReservations(email = uiState.value.email, authorization = uiState.value.authorization)
 
         if (listResult.isSuccessful) {
           if (listResult.body()?.data != null) {

@@ -2,6 +2,7 @@ package edu.cwru.caslab.campusplate.ui
 
 import androidx.lifecycle.ViewModel
 import edu.cwru.caslab.campusplate.model.GenericResponse
+import edu.cwru.caslab.campusplate.repository.CampusPlateApiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,14 +15,14 @@ abstract class UiStateCommon (
 )
 
 abstract class ViewModelCommon<UiState: UiStateCommon>(
-  defaultState: UiState
+  defaultState: UiState,
 ): ViewModel() {
 
   protected var _uiState: MutableStateFlow<UiState> = MutableStateFlow(defaultState)
   val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
   open suspend fun <T> commonApiCall (
-      apiCall:  suspend () -> Response<GenericResponse<T>>,
+      apiCall: suspend () -> Response<GenericResponse<T>>,
       onLoad: (UiState) -> UiState,
       onSuccess: (UiState) -> UiState,
       onError: (UiState) -> UiState

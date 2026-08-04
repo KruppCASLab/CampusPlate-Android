@@ -1,4 +1,4 @@
-package edu.cwru.caslab.campusplate.network
+package edu.cwru.caslab.campusplate.repository
 
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.GenericResponse
@@ -10,13 +10,11 @@ import edu.cwru.caslab.campusplate.model.Reservation
 import edu.cwru.caslab.campusplate.model.ReservationRequest
 import edu.cwru.caslab.campusplate.model.User
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface CampusPlateApiService {

@@ -20,21 +20,6 @@ import edu.cwru.caslab.campusplate.ui.screens.CameraScreen
 import edu.cwru.caslab.campusplate.ui.screens.MainScreen
 import edu.cwru.caslab.campusplate.ui.theme.CampusPlateTheme
 
-private const val USER_PREFERENCES_NAME = "user_preferences"
-private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES_NAME)
-
-class LoginViewModelFactory(
-    private val repository: StoredCredentialRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return LoginViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

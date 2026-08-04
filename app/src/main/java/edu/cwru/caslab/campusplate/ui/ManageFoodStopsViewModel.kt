@@ -10,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import edu.cwru.caslab.campusplate.model.FoodStop
 import edu.cwru.caslab.campusplate.model.ListingCreationRequest
-import edu.cwru.caslab.campusplate.network.CampusPlateApi
 import edu.cwru.caslab.campusplate.network.OpenFoodFactsApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +22,11 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import android.content.Context
 import android.util.Base64
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import edu.cwru.caslab.campusplate.CampusPlateApp
+import edu.cwru.caslab.campusplate.repository.CampusPlateApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -42,6 +46,7 @@ data class ManageFoodStopsUiState(
     val foodStopMenuExpanded: Boolean = false,
     val titleField: String = "",
     val descriptionField: String = "",
+    val email: String = "",
     val quantityField: String = "1",
     val weightOuncesField: String = "",
     val expirationDateField: String = "",
@@ -50,16 +55,26 @@ data class ManageFoodStopsUiState(
     val expirationDateMillis: Long? = null
 ): UiStateCommon()
 
-class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
+class ManageFoodStopsViewModel(
+  private val apiRepository: CampusPlateApiRepository
+) : ViewModelCommon<ManageFoodStopsUiState>(
   defaultState = ManageFoodStopsUiState()
 ) {
-
-    //private var _uiState: MutableStateFlow<ManageFoodStopsUiState> = MutableStateFlow(ManageFoodStopsUiState())
-    //val uiState: StateFlow<ManageFoodStopsUiState> = _uiState.asStateFlow()
-    //    
+    
+    companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as CampusPlateApp
+                ManageFoodStopsViewModel(
+                    apiRepository = app.appContainer.apiRepository
+                )
+            }
+        }
+    }
 
     fun setAuthorization(email: String, credential: String) {
         _uiState.update { it.copy(
+            email = email,
             authorization = Credentials.basic(username = email, password = credential)
         ) }
     } 
@@ -89,7 +104,7 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
         viewModelScope.launch {
             try {
                 _uiState.update { it.copy(state = State.Loading) }
-                val result = CampusPlateApi.retrofitService.getManagedFoodStops(authorization = uiState.value.authorization)
+                val result = apiRepository.getManagedFoodStops(email = uiState.value.email, authorization = uiState.value.authorization)
                 if (result.isSuccessful) {
                     if (result.body()?.data != null) {
                         _uiState.update { it.copy(
@@ -145,7 +160,7 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
         val state = uiState.value
         val foodStopId = state.selectedFoodStop?.foodStopId ?: return
         val quantity = state.quantityField.toIntOrNull() ?: return
-        val weightOunces = state.weightOuncesField.toIntOrNull() ?: return
+        val weightOunces = state.weightOuncesField.toDoubleOrNull() ?: return
         val expirationDate = (state.expirationDateMillis ?: return) / 1000
 
         _uiState.update { it.copy(state = State.Loading) }
@@ -166,7 +181,8 @@ class ManageFoodStopsViewModel : ViewModelCommon<ManageFoodStopsUiState>(
                     expirationDate = expirationDate,
                     image = base64Image
                 )
-                val result = CampusPlateApi.retrofitService.createListing(
+                val result = apiRepository.createListing(
+                    email = uiState.value.email, 
                     authorization = state.authorization,
                     listingCreationRequest = request
                 )

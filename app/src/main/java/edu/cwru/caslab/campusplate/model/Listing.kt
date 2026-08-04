@@ -9,7 +9,7 @@ data class Listing(
   val creationTime: Long,
   val expirationTime: Long,
   val quantity: Int,
-  val weightOunces: Int,
+  val weightOunces: Double,
   val quantityRemaining: String,
   var image: String?
 )
@@ -25,7 +25,7 @@ data class ListingCreationRequest(
   val title: String,
   val description: String,
   val quantity: Int,
-  val weightOunces: Int,
+  val weightOunces: Double,
   val creationDate: Long,
   val expirationDate: Long,
   val image: String?

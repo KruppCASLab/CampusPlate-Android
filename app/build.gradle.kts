@@ -6,6 +6,9 @@ plugins {
 
 android {
     namespace = "edu.cwru.caslab.campusplate"
+
+    buildFeatures.buildConfig = true
+
     compileSdk {
         version = release(36)
     }
@@ -21,7 +24,13 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            buildConfigField("Boolean", "ALLOW_TEST_ENDPOINT", "true")
+        }
+
         release {
+            buildConfigField("Boolean", "ALLOW_TEST_ENDPOINT", "false")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

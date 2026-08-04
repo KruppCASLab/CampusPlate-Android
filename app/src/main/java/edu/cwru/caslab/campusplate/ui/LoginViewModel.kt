@@ -2,19 +2,24 @@ package edu.cwru.caslab.campusplate.ui
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
+import edu.cwru.caslab.campusplate.CampusPlateApp
 import edu.cwru.caslab.campusplate.R
-import edu.cwru.caslab.campusplate.network.CampusPlateApi
 import edu.cwru.caslab.campusplate.model.Credential
 import edu.cwru.caslab.campusplate.model.Pin
 import edu.cwru.caslab.campusplate.model.User
+import edu.cwru.caslab.campusplate.repository.CampusPlateApiRepository
 import edu.cwru.caslab.campusplate.repository.StoredCredentialRepository
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.Credentials
 import okio.IOException
 import java.security.GeneralSecurityException
 
@@ -32,32 +37,58 @@ enum class ActiveScreen(@StringRes val title: Int) {
 
 
 data class LoginUiState (
-  val state: State = State.Idle,
+  override val state: State = State.Idle,
   val activeScreen: ActiveScreen = ActiveScreen.Splash,
   val loginFieldValue: String = "",
   val pinFieldValue: String = "",
   val activeEmail: String = "",
   val credential: String = ""
-)
+): UiStateCommon()
 
 class LoginViewModel(
-  private val repository: StoredCredentialRepository
-) : ViewModel() {
+  private val credentialRepository: StoredCredentialRepository,
+  private val apiRepository: CampusPlateApiRepository
+) : ViewModelCommon<LoginUiState>(
+  defaultState = LoginUiState()
+) {
 
-  private var _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState())
-  val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+  companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as CampusPlateApp
+                LoginViewModel(
+                    credentialRepository = app.appContainer.storedCredentialRepository,
+                    apiRepository = app.appContainer.apiRepository
+                )
+            }
+        }
+  }
 
   init {
     resetScreen()
     viewModelScope.launch {
-      repository.storedCredential.collect { stored ->
+      credentialRepository.storedCredential.collect { stored ->
         if (!stored.email.isNullOrBlank() && !stored.credential.isNullOrBlank()) {
-          _uiState.update { it.copy(
-            activeEmail = stored.email,
-            credential = stored.credential,
-            activeScreen = ActiveScreen.Listing,
-            state = State.Success
-          ) }
+
+          if (apiRepository.getFoodStops( // Check if Credentials are Valid
+            email = stored.email,
+            authorization = Credentials.basic(username = stored.email, password = stored.credential)
+          ).isSuccessful) {
+
+            _uiState.update { it.copy(
+              activeEmail = stored.email,
+              credential = stored.credential,
+              activeScreen = ActiveScreen.Listing,
+              state = State.Success
+            ) }
+        
+          } else {
+            _uiState.update { it.copy(
+              credential = "",
+              activeScreen = ActiveScreen.Login
+            ) }
+          }
+
         } else {
           _uiState.update { it.copy(
             credential = "",
@@ -83,7 +114,7 @@ class LoginViewModel(
       try {
         _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
         val user = User(userName = uiState.value.loginFieldValue, credential = Credential(label = "postman"))
-        val listResult = CampusPlateApi.retrofitService.createUser(user)
+        val listResult = apiRepository.createUser(user)
         if (listResult.isSuccessful) {
           if (listResult.body()?.status == 0 || listResult.body()?.status == 2) {
             _uiState.update { currentState -> currentState.copy(
@@ -97,6 +128,8 @@ class LoginViewModel(
       } catch (e: IOException) {
         error()
       } catch (e: GeneralSecurityException) {
+        error()
+      } catch (e: IllegalArgumentException) {
         error()
       }
     }
@@ -125,17 +158,21 @@ class LoginViewModel(
       try {
         _uiState.update { currentState -> currentState.copy( state = State.Loading ) }
         val pin = Pin(pin = _uiState.value.pinFieldValue)
-        val listResult = CampusPlateApi.retrofitService.validatePin(id = uiState.value.activeEmail, pin = pin)
+        val listResult = apiRepository.validatePin(email = uiState.value.activeEmail, id = uiState.value.activeEmail, pin = pin)
         if (listResult.isSuccessful) {
           if (listResult.body()?.status == 0) {
             val guid = listResult.body()?.data?.GUID
 
             if (guid != null) {
-              repository.saveCredential(uiState.value.activeEmail, guid)       // email + GUID are persisted here
-              _uiState.update { it.copy(credential = guid, state = State.Success) }
-              navController.navigate(ActiveScreen.Listing.name) {
-                popUpTo(navController.graph.id) { inclusive = true }
-              }
+              credentialRepository.saveCredential(uiState.value.activeEmail, guid)       // email + GUID are persisted here
+              _uiState.update { it.copy(
+                credential = guid,
+                state = State.Success,
+                activeScreen = ActiveScreen.Listing
+              ) }
+              //navController.navigate(ActiveScreen.Listing.name) {
+              //  popUpTo(navController.graph.id) { inclusive = true }
+              //}
             } else {
               error()
             }

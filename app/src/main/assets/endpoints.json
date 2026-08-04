@@ -1,0 +1,13 @@
+[
+  {
+    "domain": "case.edu",
+    "production": "https://caslab.case.edu/cp/rest.php/",
+    "testing": "https://caslab.case.edu/~briankrupp/rest.php/"
+  },
+
+  {
+    "domain": "bw.edu",
+    "production": "https://mops.bw.edu/cp/rest.php/",
+    "testing": "https://mopsdev.bw.edu/cp/rest.php/"
+  }
+]
