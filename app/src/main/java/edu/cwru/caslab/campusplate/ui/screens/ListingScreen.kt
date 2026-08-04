@@ -35,10 +35,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SheetValue
@@ -87,6 +91,12 @@ private fun String.toColor(): Color{
   }
 }
 
+private fun Listing.matchesSearch(query: String): Boolean {
+  if (query.isBlank()) return true
+  return title.contains(query, ignoreCase = true) ||
+    description.contains(query, ignoreCase = true)
+}
+
 @Composable
 fun ListingCard(
     modifier: Modifier = Modifier,
@@ -120,17 +130,18 @@ fun ListingScreen(
   listingViewModel: ListingViewModel = viewModel(factory = ListingViewModel.Factory)
 ) {
     val uiState by listingViewModel.uiState.collectAsState()
-    val scope = rememberCoroutineScope() 
-    
+    val scope = rememberCoroutineScope()
+
     @OptIn(ExperimentalMaterial3Api::class)
-    val scaffoldState = rememberBottomSheetScaffoldState( 
+    val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             skipHiddenState = true
         )
     )
 
     LaunchedEffect(Unit) {
-    listingViewModel.setEmailCred(email = email, credential = credential)
+
+      listingViewModel.setEmailCred(email = email, credential = credential)
       while(true) {
           listingViewModel.getListings()
           listingViewModel.getFoodStops()
@@ -154,8 +165,8 @@ fun ListingScreen(
         if ( !uiState.managedFoodStops.isNullOrEmpty()
           && uiState.sheetActiveView != SheetActiveView.Manage) {
           FilledIconButton(
-            onClick = { 
-              listingViewModel.manageFoodStopsInteract(navHostController) 
+            onClick = {
+              listingViewModel.manageFoodStopsInteract(navHostController)
 
               @OptIn(ExperimentalMaterial3Api::class)
               scope.launch { scaffoldState.bottomSheetState.expand() }
@@ -192,11 +203,11 @@ fun ListingMap(
     rememberCameraState(
       firstPosition = CameraPosition(target = Position(latitude = 41.502, longitude = -81.606), zoom = 15.5)
     )
-
+  
   @OptIn(ExperimentalMaterial3Api::class)
   BackHandler(
     enabled = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
-  ) { 
+  ) {
     scope.launch { scaffoldState.bottomSheetState.partialExpand() }
   }
 
@@ -218,7 +229,7 @@ fun ListingMap(
             Column(
               horizontalAlignment = Alignment.CenterHorizontally
             ) {
-              
+                
                 SingleChoiceSegmentedButtonRow(
                   modifier = modifier.fillMaxWidth(0.95f)
                     .padding(bottom = 8.dp),
@@ -242,36 +253,70 @@ fun ListingMap(
                       count = 2
                     ),
                   )
-                }
+                } 
+                
 
-                when(uiState.sheetActiveView) {
+                when(uiState.sheetActiveView) { 
+                  SheetActiveView.Listing -> {
 
-                  SheetActiveView.Listing -> if (uiState.listings.isNullOrEmpty()) {
-                    EmptyPlaceholder( text = "No Listings Currently Available" )
-                  } else LazyColumn (
-                      Modifier.fillMaxSize()
-                        .padding(start = 8.dp, end = 8.dp),
-                      horizontalAlignment = Alignment.CenterHorizontally,
-                  ) {
-                    items(uiState.listings?.filter { 
-                      //if (uiState.selectedFoodStop != null) { it.foodStopId == uiState.selectedFoodStop.foodStopId }
-                      //  else true
-                      true // TODO: for future use (Filter)
-                    } ?: emptyList()) { listing ->
-                      val foodStop = uiState.foodStopIDMap?.get(listing.foodStopId)
-                      ListingCard(
-                        listing = listing,
-                        foodStop = foodStop,
-                        color = foodStop?.hexColor ?: "000000",
-                        onClick = {
-                          listingViewModel.selectListing(listing)
-                          listingViewModel.getListingImage(listing)
-                          scope.launch { scaffoldState.bottomSheetState.expand() }
+                    
+                    OutlinedTextField(
+                      value = uiState.searchQuery,
+                      onValueChange = { listingViewModel.updateSearchQuery(it) },
+                      label = { Text("Search") },
+                      placeholder = { Text("Search by name or description") },
+                      leadingIcon = {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                      },
+                      trailingIcon = {
+                        if (uiState.searchQuery.isNotEmpty()) {
+                          IconButton(onClick = { listingViewModel.updateSearchQuery("") }) {
+                            Icon(imageVector = Icons.Default.Close, contentDescription = "Clear search")
+                          }
                         }
-                      )
-                    }
+                      },
+                      singleLine = true,
+                      modifier = modifier.fillMaxWidth(0.95f)
+                        .padding(bottom = 8.dp)
+                    )
 
-                  }
+                    val filteredListings = uiState.listings?.filter {
+                      it.matchesSearch(uiState.searchQuery)
+                    } ?: emptyList()
+
+                    if (filteredListings.isEmpty() && uiState.searchQuery.isNotBlank()) {
+                      EmptyPlaceholder( 
+                        text = "No listings match \"${uiState.searchQuery}\"",
+                        modifier = Modifier.padding(top = 8.dp)
+                      )
+                    } else if (uiState.listings.isNullOrEmpty()) {
+                      EmptyPlaceholder( 
+                        text = "No Listings Currently Available",
+                        modifier = Modifier.padding(top = 8.dp)
+                      )
+                    } 
+
+                    LazyColumn (
+                          Modifier.fillMaxSize()
+                            .padding(start = 8.dp, end = 8.dp),
+                          horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        items(filteredListings) { listing ->
+                          val foodStop = uiState.foodStopIDMap?.get(listing.foodStopId)
+                          ListingCard(
+                            listing = listing,
+                            foodStop = foodStop,
+                            color = foodStop?.hexColor ?: "000000",
+                            onClick = {
+                              listingViewModel.selectListing(listing)
+                              listingViewModel.getListingImage(listing)
+                              scope.launch { scaffoldState.bottomSheetState.expand() }
+                            }
+                          )
+                        }
+                    }
+                    
+                  } 
 
                   else -> ReservationScreen(
                     email = uiState.email,
@@ -339,24 +384,6 @@ fun ListingMap(
         baseStyle = BaseStyle.Uri("https://tiles.openfreemap.org/styles/${variant}"),
         cameraState = camera, 
       ) {  
-
-        // Serialization baffles me and seems like a rabbit hole
-        //  I should definitley NOT go down...
-        
-        /* WARN: BROKEN
-        val source1 = rememberGeoJsonSource(
-          data = GeoJsonData.Features( FeatureCollection(
-            uiState.foodStops?.map { Feature (
-              geometry = Point(
-                Position( latitude = it.lat, longitude = it.lng)
-              ),
-              properties = mapOf(
-                "color" to JsonPrimitive(it.hexColor),
-              )
-            ) } ?: emptyList()
-          ) )
-        )
-        */  
 
         for( foodstop in uiState.foodStops ?: emptyList()) {
 

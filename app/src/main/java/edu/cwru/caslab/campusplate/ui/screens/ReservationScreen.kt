@@ -73,14 +73,16 @@ fun ReservationScreen(
 ) {
 
   val uiState by reservationViewModel.uiState.collectAsState()   
-  reservationViewModel.setAuthorization(email, credential)
-  reservationViewModel.getListings()
-  reservationViewModel.getReservations()
-  
-  LaunchedEffect(Unit) {
+
+  LaunchedEffect(Unit) { 
+    reservationViewModel.setAuthorization(email, credential)
+    reservationViewModel.getListings()
+    reservationViewModel.getReservations() 
     while(true) {
         delay(15.seconds)
         reservationViewModel.updateTimeMillis()
+        reservationViewModel.getListings()
+        reservationViewModel.getReservations() 
     }
   } 
 
@@ -95,10 +97,10 @@ fun ReservationScreen(
 
       if (uiState.reservations.isNullOrEmpty()) {
         EmptyPlaceholder( text = "No Active Reservations" )
-      } else LazyColumn(
-        Modifier.fillMaxSize()
-        .padding(start = 8.dp, end = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+      }
+      LazyColumn(
+           modifier = Modifier.fillMaxSize()
+          .padding(start = 8.dp, end = 8.dp),
       ) { 
 
         items(uiState.reservations ?: emptyList()) { reservation ->

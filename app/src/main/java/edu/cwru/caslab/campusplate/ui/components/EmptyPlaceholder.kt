@@ -18,8 +18,7 @@ fun EmptyPlaceholder(
   text: String
 ) {
     Column(
-      modifier = modifier
-        .fillMaxWidth(),
+      modifier = modifier,
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
